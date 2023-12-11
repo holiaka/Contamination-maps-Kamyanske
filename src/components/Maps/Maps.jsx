@@ -1,4 +1,5 @@
 // import { Suspense, lazy } from "react";
+
 import { ContactForm } from '../ContactForm/ContactForm';
 import { Filter } from '../Filter/Filter';
 import { ContactList } from '../ContactList/ContactList';
@@ -9,7 +10,7 @@ import { useEffect } from 'react';
 import { fetchContacts } from 'redux/contacts/operations';
 import { selectError, selectIsLoading } from 'redux/contacts/selector';
 
-export const Contacts = () => {
+export const Maps = () => {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
@@ -53,6 +54,8 @@ export const Contacts = () => {
         { isLoading && <Loader></Loader> }
         {!isLoading && !error && <ContactList></ContactList>}
         {!isLoading && error && <Error></Error>}
+        <div id="map" style={{ width: '600px', height: '400px', }}>
+        </div>
       </div>     
     </div>
   );

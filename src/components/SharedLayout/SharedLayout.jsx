@@ -23,7 +23,7 @@ export const SharedLayout = () => {
         <HeaderSide>
           <HeaderNav>
             <ChakraLink as={ReactRouterLink} to="/">
-              Home
+              Map
             </ChakraLink>
             <ChakraLink as={ReactRouterLink} to="/about">
               About
