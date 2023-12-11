@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Contamination-maps-Kamyanske/static/css/main.c9b904da.css",
+    "main.js": "/Contamination-maps-Kamyanske/static/js/main.34b67fc5.js",
+    "index.html": "/Contamination-maps-Kamyanske/index.html",
+    "main.c9b904da.css.map": "/Contamination-maps-Kamyanske/static/css/main.c9b904da.css.map",
+    "main.34b67fc5.js.map": "/Contamination-maps-Kamyanske/static/js/main.34b67fc5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c9b904da.css",
+    "static/js/main.34b67fc5.js"
+  ]
+}
