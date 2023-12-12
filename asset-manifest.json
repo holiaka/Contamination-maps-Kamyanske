@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Contamination-maps-Kamyanske/static/css/main.c9b904da.css",
-    "main.js": "/Contamination-maps-Kamyanske/static/js/main.894842bc.js",
+    "main.css": "/Contamination-maps-Kamyanske/static/css/main.b930bb68.css",
+    "main.js": "/Contamination-maps-Kamyanske/static/js/main.5d0c62b2.js",
     "index.html": "/Contamination-maps-Kamyanske/index.html",
-    "main.c9b904da.css.map": "/Contamination-maps-Kamyanske/static/css/main.c9b904da.css.map",
-    "main.894842bc.js.map": "/Contamination-maps-Kamyanske/static/js/main.894842bc.js.map"
+    "main.b930bb68.css.map": "/Contamination-maps-Kamyanske/static/css/main.b930bb68.css.map",
+    "main.5d0c62b2.js.map": "/Contamination-maps-Kamyanske/static/js/main.5d0c62b2.js.map"
   },
   "entrypoints": [
-    "static/css/main.c9b904da.css",
-    "static/js/main.894842bc.js"
+    "static/css/main.b930bb68.css",
+    "static/js/main.5d0c62b2.js"
   ]
 }
