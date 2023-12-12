@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/contacts/operations';
 import { selectError, selectIsLoading } from 'redux/contacts/selector';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import '../../../node_modules/leaflet/dist/leaflet.css';
 
 export const Maps = () => {
   const isLoading = useSelector(selectIsLoading);
@@ -30,7 +32,7 @@ export const Maps = () => {
         color: '#010101',
       }}
     >
-        <div>
+      <div>
         <h1
           style={{
             margin: 0,
@@ -51,12 +53,23 @@ export const Maps = () => {
           Contacts
         </h2>
         <Filter></Filter>
-        { isLoading && <Loader></Loader> }
+        {isLoading && <Loader></Loader>}
         {!isLoading && !error && <ContactList></ContactList>}
         {!isLoading && error && <Error></Error>}
-        <div id="map" style={{ width: '600px', height: '400px', }}>
-        </div>
-      </div>     
+        <MapContainer
+          center={[53, 48]}
+          zoom={8}
+          style={{
+            height: '100vh',
+            width: '100%',
+          }}
+        >
+          <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+        </MapContainer>
+      </div>
     </div>
   );
 };
