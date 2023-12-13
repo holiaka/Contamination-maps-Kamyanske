@@ -9,8 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/contacts/operations';
 import { selectError, selectIsLoading } from 'redux/contacts/selector';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
+import geoData from './../../data/obsPointsGammaOld.json';
+console.log(geoData);
 
 export const Maps = () => {
   const isLoading = useSelector(selectIsLoading);
@@ -20,6 +22,9 @@ export const Maps = () => {
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
+
+  // const pointGammaData = JSON.parse(geoData);
+  // console.log(pointGammaData);
 
   return (
     <div
@@ -68,6 +73,7 @@ export const Maps = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          {geoData.features.map((point) => (<Marker key={String(point.geometry.coordinates[0]) + String(point.geometry.coordinates[1])} position={point.geometry.coordinates}></Marker>))}
         </MapContainer>
       </div>
     </div>
