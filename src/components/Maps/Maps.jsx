@@ -9,8 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/contacts/operations';
 import { selectError, selectIsLoading } from 'redux/contacts/selector';
-import { MapContainer, Marker, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer} from 'react-leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
+import MarkerClusterGroup from 'react-leaflet-cluster';
+import { GiRadioactive } from "react-icons/gi";
+import { Icon } from 'leaflet';
+
+
 import geoData from './../../data/obsPointsGammaOld.json';
 console.log(geoData);
 
@@ -23,8 +28,11 @@ export const Maps = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  // const pointGammaData = JSON.parse(geoData);
-  // console.log(pointGammaData);
+  const customIcon = new Icon({
+    iconUrl: require ("./../../img/png/radiation-icon.png"),
+    iconSize: [20, 20]
+
+  })
 
   return (
     <div
@@ -62,18 +70,21 @@ export const Maps = () => {
         {!isLoading && !error && <ContactList></ContactList>}
         {!isLoading && error && <Error></Error>}
         <MapContainer
-          center={[53, 48]}
-          zoom={8}
+          center={[48.5, 34.65]}
+          zoom={10}
           style={{
             height: '100vh',
             width: '100%',
           }}
         >
           <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {geoData.features.map((point) => (<Marker key={String(point.geometry.coordinates[0]) + String(point.geometry.coordinates[1])} position={point.geometry.coordinates}></Marker>))}
+          <MarkerClusterGroup>
+            {geoData.features.map((point, index) => (<Marker key={index} position={[point.properties.lat, point.properties.lon]} icon={customIcon} ></Marker>))}          
+            {/* <GeoJSON data={geoData}></GeoJSON> */}
+          </MarkerClusterGroup>
         </MapContainer>
       </div>
     </div>
