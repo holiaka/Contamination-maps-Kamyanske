@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/contacts/operations';
 import { selectError, selectIsLoading } from 'redux/contacts/selector';
-import { MapContainer, Marker, TileLayer} from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer} from 'react-leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 /* import { GiRadioactive } from "react-icons/gi"; */
@@ -32,6 +32,15 @@ export const Maps = () => {
     iconUrl: require ("./../../img/png/radiation-icon.png"),
     iconSize: [20, 20],
   })
+
+  const roundFn = function (num) {
+    if (num >= 2.1) {
+      num = num.toFixed(1);
+    } else {
+      num = num.toFixed(2);      
+    }
+    return num;
+  }
 
   return (
     <div
@@ -77,14 +86,13 @@ export const Maps = () => {
           }}          
           minZoom = {4}
           maxZoom = {24}
-
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <MarkerClusterGroup maxClusterRadius={40}>
-            {geoData.features.map((point, index) => (<Marker key={index} position={[point.properties.lat, point.properties.lon]} icon={customIcon} ></Marker>))}          
+            {geoData.features.map((point, index) => (<Marker key={index} position={[point.properties.lat, point.properties.lon]} icon={customIcon} ><Popup><b>Equvivalent dose rate: </b>{roundFn(point.properties.gamma)}</Popup></Marker>))}          
             {/* <GeoJSON data={geoData}></GeoJSON> */}
           </MarkerClusterGroup>
         </MapContainer>
