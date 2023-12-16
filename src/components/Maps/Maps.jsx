@@ -12,7 +12,7 @@ import { selectError, selectIsLoading } from 'redux/contacts/selector';
 import { MapContainer, Marker, TileLayer} from 'react-leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import { GiRadioactive } from "react-icons/gi";
+/* import { GiRadioactive } from "react-icons/gi"; */
 import { Icon } from 'leaflet';
 
 
@@ -30,8 +30,7 @@ export const Maps = () => {
 
   const customIcon = new Icon({
     iconUrl: require ("./../../img/png/radiation-icon.png"),
-    iconSize: [20, 20]
-
+    iconSize: [20, 20],
   })
 
   return (
@@ -75,13 +74,16 @@ export const Maps = () => {
           style={{
             height: '100vh',
             width: '100%',
-          }}
+          }}          
+          minZoom = {4}
+          maxZoom = {24}
+
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <MarkerClusterGroup>
+          <MarkerClusterGroup maxClusterRadius={40}>
             {geoData.features.map((point, index) => (<Marker key={index} position={[point.properties.lat, point.properties.lon]} icon={customIcon} ></Marker>))}          
             {/* <GeoJSON data={geoData}></GeoJSON> */}
           </MarkerClusterGroup>
