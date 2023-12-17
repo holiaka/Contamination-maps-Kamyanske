@@ -15,9 +15,9 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 /* import { GiRadioactive } from "react-icons/gi"; */
 import { Icon } from 'leaflet';
 
-
+import buildings from './../../data/fixBuildings.json';
+import boundery from './../../data/bounderiesLine.json';
 import geoData from './../../data/obsPointsGammaOld.json';
-console.log(geoData);
 
 export const Maps = () => {
   const isLoading = useSelector(selectIsLoading);
@@ -91,11 +91,17 @@ export const Maps = () => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          <GeoJSON data={buildings.features} style={{
+            capasity: 1.0,
+          }}>{console.log(buildings.features)}</GeoJSON>  
+          <GeoJSON data={boundery} style={{
+            capasity: 1.0,
+          }}>{ console.log(boundery)}</GeoJSON>  
           <MarkerClusterGroup maxClusterRadius={40}>
             {geoData.features.map((point, index) => (<Marker key={index} position={[point.properties.lat, point.properties.lon]} icon={customIcon} ><Popup><b>Equvivalent dose rate: </b>{roundFn(point.properties.gamma)}</Popup></Marker>))}          
-            {/* <GeoJSON data={geoData}></GeoJSON> */}
+            
           </MarkerClusterGroup>
-          <GeoJSON></GeoJSON>
+                    
         </MapContainer>
       </div>
     </div>
