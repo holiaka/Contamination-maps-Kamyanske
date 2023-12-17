@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/contacts/operations';
 import { selectError, selectIsLoading } from 'redux/contacts/selector';
-import { MapContainer, Marker, Popup, TileLayer} from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer, GeoJSON} from 'react-leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 /* import { GiRadioactive } from "react-icons/gi"; */
@@ -95,6 +95,7 @@ export const Maps = () => {
             {geoData.features.map((point, index) => (<Marker key={index} position={[point.properties.lat, point.properties.lon]} icon={customIcon} ><Popup><b>Equvivalent dose rate: </b>{roundFn(point.properties.gamma)}</Popup></Marker>))}          
             {/* <GeoJSON data={geoData}></GeoJSON> */}
           </MarkerClusterGroup>
+          <GeoJSON></GeoJSON>
         </MapContainer>
       </div>
     </div>
