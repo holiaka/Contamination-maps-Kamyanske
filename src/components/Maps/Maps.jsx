@@ -80,7 +80,7 @@ export const Maps = () => {
         {!isLoading && error && <Error></Error>}
         <MapContainer
           center={[48.5, 34.65]}
-          zoom={10}
+          zoom={12}
           style={{
             height: '100vh',
             width: '100%',
@@ -91,20 +91,24 @@ export const Maps = () => {
           {/* <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />     
-                */}
+          />                
           <TileLayer
               attribution='&copy; <a href="https://www.mapbox.com">Mapbox</a> '
               url="https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}"
               accessToken={"pk.eyJ1IjoiMDAwMC0wMDAxLTgwMjUtODg4NSIsImEiOiJjbHFhdjNqY2ExZHZyMnJueHJmeXc1ZHduIn0.WsmLYujm4HrDa-K-VjJ2xA"}
+          /> */}
+          <TileLayer
+              attribution='&copy; <a href="https://www.mapbox.com">Mapbox</a> '
+              url="https://api.mapbox.com/v/mapbox.terrain-rgb/{z}/{x}/{y}{@2x}.pngraw?access_token={accessToken}"
+              accessToken={"pk.eyJ1IjoiMDAwMC0wMDAxLTgwMjUtODg4NSIsImEiOiJjbHFhdjNqY2ExZHZyMnJueHJmeXc1ZHduIn0.WsmLYujm4HrDa-K-VjJ2xA"}
             />
           <GeoJSON data={buildings.features} style={{
             capasity: 1.0,
-          }}>{console.log(buildings.features)}</GeoJSON>  
+          }}></GeoJSON>  
           <GeoJSON data={boundery} style={{
             capasity: 1.0,
-          }}>{ console.log(boundery)}</GeoJSON>  
-          <MarkerClusterGroup maxClusterRadius={20}>
+          }}></GeoJSON>  
+          <MarkerClusterGroup maxClusterRadius={30}>
             {geoData.features.map((point, index) => (<Marker key={index} position={[point.properties.lat, point.properties.lon]} icon={customIcon} ><Popup><b>Equvivalent dose rate: </b>{roundFn(point.properties.gamma)}</Popup></Marker>))}          
             
           </MarkerClusterGroup>
