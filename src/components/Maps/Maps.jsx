@@ -13,7 +13,8 @@ import { MapContainer, Marker, Popup, TileLayer, GeoJSON} from 'react-leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 /* import { GiRadioactive } from "react-icons/gi"; */
-import { Icon } from 'leaflet';
+import { Icon,  } from 'leaflet';
+
 
 import buildings from './../../data/fixBuildings.json';
 import boundery from './../../data/bounderiesLine.json';
@@ -87,22 +88,28 @@ export const Maps = () => {
           minZoom = {4}
           maxZoom = {24}
         >
-          <TileLayer
+          {/* <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+          />     
+                */}
+          <TileLayer
+              attribution='&copy; <a href="https://www.mapbox.com">Mapbox</a> '
+              url="https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}"
+              accessToken={"pk.eyJ1IjoiMDAwMC0wMDAxLTgwMjUtODg4NSIsImEiOiJjbHFhdjNqY2ExZHZyMnJueHJmeXc1ZHduIn0.WsmLYujm4HrDa-K-VjJ2xA"}
+            />
           <GeoJSON data={buildings.features} style={{
             capasity: 1.0,
           }}>{console.log(buildings.features)}</GeoJSON>  
           <GeoJSON data={boundery} style={{
             capasity: 1.0,
           }}>{ console.log(boundery)}</GeoJSON>  
-          <MarkerClusterGroup maxClusterRadius={40}>
+          <MarkerClusterGroup maxClusterRadius={20}>
             {geoData.features.map((point, index) => (<Marker key={index} position={[point.properties.lat, point.properties.lon]} icon={customIcon} ><Popup><b>Equvivalent dose rate: </b>{roundFn(point.properties.gamma)}</Popup></Marker>))}          
             
           </MarkerClusterGroup>
                     
-        </MapContainer>
+        </MapContainer>        
       </div>
     </div>
   );
