@@ -9,11 +9,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/contacts/operations';
 import { selectError, selectIsLoading } from 'redux/contacts/selector';
-import { MapContainer, Marker, Popup, TileLayer, GeoJSON} from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer, GeoJSON, ImageOverlay, } from 'react-leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 /* import { GiRadioactive } from "react-icons/gi"; */
-import { Icon,  } from 'leaflet';
+import { Icon, LatLngBounds } from 'leaflet';
 
 
 import buildings from './../../data/fixBuildings.json';
@@ -42,6 +42,8 @@ export const Maps = () => {
     }
     return num;
   }
+
+  const bounds = new LatLngBounds([48.494322, 34.657910], [48.509732, 34.693679])
 
   return (
     <div
@@ -101,7 +103,13 @@ export const Maps = () => {
               attribution='&copy; <a href="https://www.mapbox.com">Mapbox</a> '
               url="https://api.mapbox.com/v/mapbox.terrain-rgb/{z}/{x}/{y}{@2x}.pngraw?access_token={accessToken}"
               accessToken={"pk.eyJ1IjoiMDAwMC0wMDAxLTgwMjUtODg4NSIsImEiOiJjbHFhdjNqY2ExZHZyMnJueHJmeXc1ZHduIn0.WsmLYujm4HrDa-K-VjJ2xA"}
-            />
+          />
+          <ImageOverlay
+          url='./../../img/png/png-gamma-modified.png'
+          bounds={bounds}
+          opacity={0.5}>
+            
+  </ImageOverlay>
           <GeoJSON data={buildings.features} style={{
             capasity: 1.0,
           }}></GeoJSON>  
@@ -113,7 +121,7 @@ export const Maps = () => {
             
           </MarkerClusterGroup>
                     
-        </MapContainer>        
+        </MapContainer>              
       </div>
     </div>
   );
