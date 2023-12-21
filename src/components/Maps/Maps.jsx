@@ -95,7 +95,7 @@ export const Maps = () => {
             width: '100%',
           }}
           minZoom={4}
-          maxZoom={24}
+          maxZoom={22}
         >
           <LayersControl position="topright">
             <LayersControl.BaseLayer name="Open Street Maps (OSM)">
@@ -113,9 +113,9 @@ export const Maps = () => {
                 }
               />
               </LayersControl.BaseLayer>
-            <LayersControl.Overlay name="Data Layers">
+            <LayersControl.Overlay name="Gamma dose rate, mkSv/h">
               <ImageOverlay
-                name="Gamma dose rate, mkSv/h"
+                
                 url="https://github.com/holiaka/Contamination-maps-Kamyanske/blob/main/src/layers/png-gamma-modified.png?raw=true"
                 bounds={[
                   [48.492114, 34.658991],
@@ -123,18 +123,25 @@ export const Maps = () => {
                 ]}
                 opacity={0.5}
               ></ImageOverlay>
+              </LayersControl.Overlay>
+              <LayersControl.Overlay name="Buldings">
               <GeoJSON
                 data={buildings.features}
                 style={{
                   capasity: 1.0,
                 }}
               ></GeoJSON>
+              </LayersControl.Overlay>
+              <LayersControl.Overlay chacked name="Boundary of Prydniprovsky Chemical Plant">
               <GeoJSON
                 data={boundary}
                 style={{
+                  color: '#f70101',
                   capasity: 1.0,
                 }}
               ></GeoJSON>
+            </LayersControl.Overlay>
+            <LayersControl.Overlay name="Old observations (2016-2011)">
               <MarkerClusterGroup maxClusterRadius={40}>
                 {geoData.features.map((point, index) => (
                   <Marker
