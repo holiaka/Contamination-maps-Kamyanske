@@ -1,8 +1,5 @@
 // import { Suspense, lazy } from "react";
 
-import { ContactForm } from '../ContactForm/ContactForm';
-import { Filter } from '../Filter/Filter';
-import { ContactList } from '../ContactList/ContactList';
 import { Loader } from '../Loader/Loader';
 import { Error } from '../Error/Error';
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,17 +60,8 @@ export const Maps = () => {
         color: '#010101',
       }}
     >
-      <div>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: '36px',
-            textAlign: 'center',
-          }}
-        >
-          Phonebook
-        </h1>
-        <ContactForm></ContactForm>
+      <div>        
+        
         <h2
           style={{
             margin: 0,
@@ -83,9 +71,9 @@ export const Maps = () => {
         >
           Contacts
         </h2>
-        <Filter></Filter>
+        
         {isLoading && <Loader></Loader>}
-        {!isLoading && !error && <ContactList></ContactList>}
+        {!isLoading && !error && <MapContainer></MapContainer>}
         {!isLoading && error && <Error></Error>}
         <MapContainer
           center={[48.5, 34.68]}
