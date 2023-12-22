@@ -6,11 +6,18 @@ export const Container = styled.div`
     height: 100%;
     margin-left: auto;
     margin-right: auto;
+    background: linear-gradient(90deg, rgba(134,135,136,0) 0%, rgba(134,135,136,0.19931722689075626) 10%, rgba(116,121,116,0.30015756302521013) 50%, rgba(134,135,136,0.2) 90%, rgba(134,135,136,0) 100%);
 `
 
 export const Header = styled.header`
     display: flex;
     justify-content: space-between;
+    height: 10vh;
+    
+
+`
+export const InnerHeader = styled.div`
+
 `
 export const HeaderSide = styled.div`
 
@@ -33,7 +40,8 @@ export const Link = styled(NavLink)`
 `;
 
 export const Footer = styled.footer`
-position: fixed;
+
+height: 5vh;
 bottom: 0px;
 display: flex;
 gap: 20px;
