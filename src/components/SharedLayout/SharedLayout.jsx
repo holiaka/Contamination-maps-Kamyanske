@@ -14,6 +14,7 @@ import {
   HeaderSide,
   InnerHeader, 
 } from './SharedLayout.styled';
+import { linkFontSize, authFontSize } from './SharedLayout.my-chakra-ui';
 
 export const SharedLayout = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -24,27 +25,27 @@ export const SharedLayout = () => {
         <InnerHeader>
         <HeaderSide>
           <HeaderNav >
-            <ChakraLink display='flex' alignItems='center' color='teal.500' fontSize='3xl' as={ReactRouterLink} to="/">
+            <ChakraLink display='flex' alignItems='center' color='teal.500' fontSize={linkFontSize} as={ReactRouterLink} to="/">
               Map
             </ChakraLink>
-            <ChakraLink display='flex' alignItems='center' color='teal.500' fontSize='3xl' as={ReactRouterLink} to="/about">
+            <ChakraLink display='flex' alignItems='center' color='teal.500' fontSize={linkFontSize} to="/about">
               About
             </ChakraLink>
           </HeaderNav>
         </HeaderSide>
         <HeaderSide>
-          <Button marginTop='3' marginRight='10' colorScheme="teal" onClick={toggleColorMode}>
+            <Button marginTop='5' marginRight='10' colorScheme="teal" onClick={toggleColorMode}>
             {colorMode === 'light' ? <FaSun /> : <FaMoon />}
           </Button>
           <HeaderNav >
             <ChakraLink
-              as={ReactRouterLink}
-              to="/registration"                          
-            display='flex' alignItems='center' color='teal.500' fontSize='2xl'>
+                as={ReactRouterLink}
+                to="/registration"
+                display='flex' alignItems='center' color='teal.500' fontSize={authFontSize}>
               Register
             </ChakraLink>
               <ChakraLink as={ReactRouterLink} to="/login"
-              display='flex' alignItems='center' color='teal.500' fontSize='2xl'>
+              display='flex' alignItems='center' color='teal.500' fontSize={authFontSize}>
               Log In
             </ChakraLink>
           </HeaderNav>
