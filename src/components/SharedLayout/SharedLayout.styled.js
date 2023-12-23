@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import styled from "styled-components"
 
 export const Container = styled.div`
@@ -12,38 +11,32 @@ export const Container = styled.div`
 export const Header = styled.header`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     height: 10vh;
-    
+    border-bottom: 1px solid #000000;
 
 `
 export const InnerHeader = styled.div`
-
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 `
 export const HeaderSide = styled.div`
-
+display: flex;
 `
 
 export const HeaderNav = styled.div`
     display: flex;
     gap: 20px;
-    padding: 20px;
-    border-bottom: 1px solid;
+    padding: 10px;    
 `
 
-export const Link = styled(NavLink)`
-    font-size: 20px;
-    font-weight: 700;
-    text-decoration: none;
-    :hover{
-        color: blue;
-    }
-`;
-
 export const Footer = styled.footer`
-
 height: 5vh;
 bottom: 0px;
 display: flex;
 gap: 20px;
-flex-direction: column;
+
 `
