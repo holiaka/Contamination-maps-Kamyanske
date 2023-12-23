@@ -138,9 +138,9 @@ export const Maps = () => {
           </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>
-      {/* {isLoading && <Loader></Loader>}
+      {isLoading && <Loader></Loader>}
         {!isLoading && !error && <MapContainer></MapContainer>}
-        {!isLoading && error && <Error></Error>} */}
+        {!isLoading && error && <Error></Error>}
     </div>
   );
 };
