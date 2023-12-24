@@ -20,9 +20,10 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 /* import { GiRadioactive } from "react-icons/gi"; */
 import { Icon } from 'leaflet';
 
-import buildings from './../../data/fixBuildings.json';
+import buildings from './../../layers/fixBuildings.json';
 import boundary from './../../layers/boundary.json';
-import geoData from './../../data/obsPointsGammaOld.json';
+import geoData from './../../layers/obsPointsGammaOld.json';
+import newObs from './../../layers/experement.json';
 
 export const Maps = () => {
   const isLoading = useSelector(selectIsLoading);
@@ -136,11 +137,27 @@ export const Maps = () => {
               ))}
             </MarkerClusterGroup>
           </LayersControl.Overlay>
+          <LayersControl.Overlay chacked name="New obsarvation">
+            <MarkerClusterGroup maxClusterRadius={40}>
+              {newObs.features.map((point, index) => (
+                <Marker
+                  key={index}
+                  position={[point.geometry.coordinates[0], point.geometry.coordinates[1]]}
+                  icon={customIcon}
+                >
+                  <Popup>
+                    <b>ID: </b>
+                    {roundFn(point.properties.ID)}
+                  </Popup>
+                </Marker>
+              ))}
+            </MarkerClusterGroup>
+          </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>
       {isLoading && <Loader></Loader>}
-        {!isLoading && !error && <MapContainer></MapContainer>}
-        {!isLoading && error && <Error></Error>}
+      {!isLoading && !error && <MapContainer></MapContainer>}
+      {!isLoading && error && <Error></Error>}
     </div>
   );
 };

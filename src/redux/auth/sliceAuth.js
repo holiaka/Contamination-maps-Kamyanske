@@ -4,28 +4,30 @@ import { registration, logIn, logOut, refreshUser } from "./operations";
 export const authSlice = createSlice({
   name: 'auth',
     initialState: {
-        user: { email: null, name: null },
+        email: null,
         token: null,
-        isRefreshing: false,},
+        isRefreshing: false,
+    },
 
     extraReducers: {
         [registration.fulfilled](state, action) {
-            state.user = action.payload.user;
+            console.dir(action.payload);
+            state.email = action.payload.email;
             state.token = action.payload.token;           
         },
         [logIn.fulfilled](state, action) {
-            state.user = action.payload.user; 
+            state.email = action.payload.email; 
             state.token = action.payload.token;
         },
         [logOut.fulfilled](state) {
-            state.user = { email: null, name: null };
+            state.email =  null;
             state.token = null;
         },
         [refreshUser.pending](state) {
             state.isRefreshing = true; 
         },
         [refreshUser.fulfilled](state, action) {
-            state.user = action.payload.user; 
+            state.email = action.payload.email; 
             state.isRefreshing = false; 
         },
         [refreshUser.rejected](state, actions) {

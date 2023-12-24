@@ -1,4 +1,4 @@
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 // import { selectContacts } from 'redux/selector';
@@ -12,21 +12,13 @@ import {
 } from '../components/ContactForm/ContactForms';
 import { registration } from '../redux/auth/operations';
 
-
 const initialValues = {
-  name: '',
   email: '',
   password: '',
 };
 
 const validationSchema = Yup.object({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  email: Yup.string()
-    .min(3, 'Too Short!')
-        .required('Required'),
+  email: Yup.string().min(3, 'Too Short!').required('Required'),
   password: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
@@ -45,10 +37,9 @@ const FormError = ({ name }) => {
 export const RegisterForm = () => {
   const dispatch = useDispatch();
 
-//   const oldContacts = useSelector(selectContacts);
-
-  const onSubmit = ({ name, email, password }) => { 
-      dispatch(registration({ name, email, password }));    
+  const onSubmit = ({ email, password }) => {
+    dispatch(registration({ email, password }));
+    console.log(email, password)
   };
 
   const onSubmitInner = (value, { resetForm }) => {
@@ -63,12 +54,7 @@ export const RegisterForm = () => {
       validationSchema={validationSchema}
     >
       <SubmitForm>
-        <InputName>Name: </InputName>
-        <InputBox>
-          <Input type="text" name="name" required></Input>
-          <FormError name="name" />
-        </InputBox>
-        <InputName>Email: </InputName>
+        <InputName>E-mail: </InputName>
         <InputBox>
           <Input
             type="email"
@@ -77,13 +63,13 @@ export const RegisterForm = () => {
             required
           ></Input>
           <FormError name="email" />
-              </InputBox>
-              <InputName>Email: </InputName>
+        </InputBox>
+        <InputName>Password: </InputName>
         <InputBox>
           <Input
             type="password"
             name="password"
-            placeholder="Your password"
+            placeholder="Your password!"
             required
           ></Input>
           <FormError name="password" />
