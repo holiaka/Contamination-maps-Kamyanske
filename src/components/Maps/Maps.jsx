@@ -18,12 +18,14 @@ import {
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 /* import { GiRadioactive } from "react-icons/gi"; */
-import { Icon } from 'leaflet';
+import  L, { Icon } from 'leaflet';
+
 
 import buildings from './../../layers/fixBuildings.json';
 import boundary from './../../layers/boundary.json';
 import geoData from './../../layers/obsPointsGammaOld.json';
 import newObs from './../../layers/experement.json';
+import newObs2 from './../../layers/Regular_points_experement_2.json';
 
 export const Maps = () => {
   const isLoading = useSelector(selectIsLoading);
@@ -46,6 +48,26 @@ export const Maps = () => {
       num = num.toFixed(2);
     }
     return num;
+  };
+
+  // const markerOptions = {
+  //     radius: 4,
+  //     fillColor: "#FF0000",
+  //     color: "#FFFFFF",
+  //     weight: 1,
+  //     opacity: 1,
+  //     fillOpacity: 0.8
+  // };
+
+  const setIcon = (_, latlng) => {
+    return L.circleMarker(latlng, {
+      radius: 4,
+      fillColor: "#FF0000",
+      color: "#FFFFFF",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+  });
   };
 
   // const bounds = new LatLngBounds([48.492, 34.6585], [48.5075, 34.694])
@@ -137,20 +159,27 @@ export const Maps = () => {
               ))}
             </MarkerClusterGroup>
           </LayersControl.Overlay>
-          <LayersControl.Overlay chacked name="New obsarvation">
+          <LayersControl.Overlay name="Radoaction obsarvation 2023-2024">
             <MarkerClusterGroup maxClusterRadius={40}>
-              {newObs.features.map((point, index) => (
+              <GeoJSON data={newObs} pointToLayer={setIcon}></ GeoJSON>
+             
+            </MarkerClusterGroup>
+            </LayersControl.Overlay>
+
+            <LayersControl.Overlay name="Radoaction obsarvation 2 ver">
+            <MarkerClusterGroup maxClusterRadius={40}>
+              {newObs2.map((point, index) => (
                 <Marker
                   key={index}
-                  position={[point.geometry.coordinates[0], point.geometry.coordinates[1]]}
+                  position={[point.Y, point.X]}
                   icon={customIcon}
                 >
                   <Popup>
-                    <b>ID: </b>
-                    {roundFn(point.properties.ID)}
+                    <b>Point ID: </b>
+                    {roundFn(point.ID)}
                   </Popup>
                 </Marker>
-              ))}
+              ))}             
             </MarkerClusterGroup>
           </LayersControl.Overlay>
         </LayersControl>
