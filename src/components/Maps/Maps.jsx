@@ -25,7 +25,7 @@ import buildings from './../../layers/fixBuildings.json';
 import boundary from './../../layers/boundary.json';
 import geoData from './../../layers/obsPointsGammaOld.json';
 import newObs from './../../layers/experement.json';
-import newObs2 from './../../layers/Regular_points_experement_2.json';
+// import newObs2 from './../../layers/Regular_points_experement_2.json';
 
 export const Maps = () => {
   const isLoading = useSelector(selectIsLoading);
@@ -71,6 +71,14 @@ export const Maps = () => {
   };
 
   // const bounds = new LatLngBounds([48.492, 34.6585], [48.5075, 34.694])
+
+  
+  const onEachFeature = (feature, layer) => {
+    let id = feature.properties.ID;
+    layer.bindPopup(`ID point: ${id}`);
+  };
+  
+
 
   return (
     <div
@@ -161,27 +169,9 @@ export const Maps = () => {
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Radoaction obsarvation 2023-2024">
             <MarkerClusterGroup maxClusterRadius={40}>
-              <GeoJSON data={newObs} pointToLayer={setIcon}></ GeoJSON>
-             
+              <GeoJSON data={newObs} pointToLayer={setIcon} onEachFeature={onEachFeature}></ GeoJSON>             
             </MarkerClusterGroup>
-            </LayersControl.Overlay>
-
-            <LayersControl.Overlay name="Radoaction obsarvation 2 ver">
-            <MarkerClusterGroup maxClusterRadius={40}>
-              {newObs2.map((point, index) => (
-                <Marker
-                  key={index}
-                  position={[point.Y, point.X]}
-                  icon={customIcon}
-                >
-                  <Popup>
-                    <b>Point ID: </b>
-                    {roundFn(point.ID)}
-                  </Popup>
-                </Marker>
-              ))}             
-            </MarkerClusterGroup>
-          </LayersControl.Overlay>
+            </LayersControl.Overlay>            
         </LayersControl>
       </MapContainer>
       {isLoading && <Loader></Loader>}
