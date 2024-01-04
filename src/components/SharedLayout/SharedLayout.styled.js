@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const Container = styled.div`
-    width: 100%;
+    width: 90%;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -33,8 +33,19 @@ export const HeaderNav = styled.div`
     padding: 10px;    
 `
 
+export const OutletContainer = styled.div`
+/* display: flex;
+justify-content: center;
+align-items: center; */
+
+height: 85vh;
+margin-left: 0;
+margin-right: 0;
+`
+
 export const Footer = styled.footer`
 height: 5vh;
+width: 80%;
 bottom: 0px;
 display: flex;
 gap: 20px;

@@ -8,6 +8,7 @@ import {
 import { FaSun, FaMoon } from 'react-icons/fa';
 import {
   Container,
+  OutletContainer,
   Footer,
   Header,
   HeaderNav,
@@ -15,8 +16,13 @@ import {
   InnerHeader, 
 } from './SharedLayout.styled';
 import { linkFontSize, authFontSize } from './SharedLayout.my-chakra-ui';
+import { useState } from 'react';
 
-export const SharedLayout = () => {
+export const SharedLayout = () => {  
+  const [email, setEmail] = useState(null);
+  const [tokеn, setToken] = useState(null);
+  const [complite, setComplite] = useState();
+
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -28,7 +34,7 @@ export const SharedLayout = () => {
             <ChakraLink display='flex' alignItems='center' color='teal.500' fontSize={linkFontSize} as={ReactRouterLink} to="/">
               Map
             </ChakraLink>
-            <ChakraLink display='flex' alignItems='center' color='teal.500' fontSize={linkFontSize} to="/about">
+            <ChakraLink display='flex' alignItems='center' color='teal.500' fontSize={linkFontSize} as={ReactRouterLink} to="/about">
               About
             </ChakraLink>
           </HeaderNav>
@@ -52,7 +58,9 @@ export const SharedLayout = () => {
           </HeaderSide>
           </InnerHeader>
       </Header>
-      <Outlet />
+      <OutletContainer>
+        <Outlet />
+      </OutletContainer>      
       <Footer>
         <p>
           E-mail: <Link href="mailto:golyaka.d@gmail.com">golyaka.d@gmail.com</Link>

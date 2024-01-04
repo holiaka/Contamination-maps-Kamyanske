@@ -1,11 +1,10 @@
 // import { Suspense, lazy } from "react";
 
-import { Loader } from '../Loader/Loader';
-import { Error } from '../Error/Error';
-import { useDispatch, useSelector } from 'react-redux';
+// import { Loader } from '../Loader/Loader';
+// import { Error } from '../Error/Error';
+// import { useSelector } from 'react-redux';
+// import { selectIsLoading } from 'redux/contacts/selector';
 import { useEffect } from 'react';
-import { fetchContacts } from 'redux/contacts/operations';
-import { selectError, selectIsLoading } from 'redux/contacts/selector';
 import {
   MapContainer,
   Marker,
@@ -28,14 +27,10 @@ import newObs from './../../layers/experement.json';
 // import newObs2 from './../../layers/Regular_points_experement_2.json';
 
 export const Maps = () => {
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
 
+  
   const customIcon = new Icon({
     iconUrl: require('./../../img/png/radiation-icon.png'),
     iconSize: [20, 20],
@@ -50,15 +45,6 @@ export const Maps = () => {
     return num;
   };
 
-  // const markerOptions = {
-  //     radius: 4,
-  //     fillColor: "#FF0000",
-  //     color: "#FFFFFF",
-  //     weight: 1,
-  //     opacity: 1,
-  //     fillOpacity: 0.8
-  // };
-
   const setIcon = (_, latlng) => {
     return L.circleMarker(latlng, {
       radius: 4,
@@ -70,26 +56,40 @@ export const Maps = () => {
   });
   };
 
-  // const bounds = new LatLngBounds([48.492, 34.6585], [48.5075, 34.694])
-
   
   const onEachFeature = (feature, layer) => {
     let id = feature.properties.ID;
     layer.bindPopup(`ID point: ${id}`);
   };
-  
 
+  // // This will run one time after the component mounts
+  // useEffect(() => {
+  //   // callback function to call when event triggers
+  //   const onPageLoad = () => {
+  //     console.log('page loaded');
+  //     // do something else
+  //   };
+
+  //   // Check if the page has already loaded
+  //   if (document.readyState === 'complete') {
+  //     onPageLoad();
+  //   } else {
+  //     window.addEventListener('load', onPageLoad, false);
+  //     // Remove the event listener when component unmounts
+  //     return () => window.removeEventListener('load', onPageLoad);
+  //   }
+  // }, []);
+  
 
   return (
     <div
       style={{
         height: '85vh',
-        width: '90%',
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
+        alignItems: 'center',        
         color: '#010101',
         marginLeft: 'auto',
         marginRight: 'auto',
@@ -173,10 +173,7 @@ export const Maps = () => {
             </MarkerClusterGroup>
             </LayersControl.Overlay>            
         </LayersControl>
-      </MapContainer>
-      {isLoading && <Loader></Loader>}
-      {!isLoading && !error && <MapContainer></MapContainer>}
-      {!isLoading && error && <Error></Error>}
+      </MapContainer>         
     </div>
   );
 };
