@@ -16,14 +16,53 @@ import {
   InnerHeader, 
 } from './SharedLayout.styled';
 import { linkFontSize, authFontSize } from './SharedLayout.my-chakra-ui';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Loader } from 'components/Loader/Loader';
 
 export const SharedLayout = () => {  
   const [email, setEmail] = useState(null);
   const [tokеn, setToken] = useState(null);
-  const [complite, setComplite] = useState();
+  const [complite, setComplite] = useState(false);
+  const [error, setError] = useState(null);
 
   const { colorMode, toggleColorMode } = useColorMode();
+
+  // This will run one time after the component mounts
+      // callback function to call when event triggers
+    const onPageLoaded = () => {
+      console.log('Page loaded', complite);
+      setComplite(true);
+      // do something else
+    };
+
+    const onPageLoading = () => {
+      console.log('Page loading', complite);
+      setComplite(false);
+    };
+
+  const pageLoading = (condition) => {
+    if (condition === true) {
+      onPageLoading();
+    }
+    else {
+      onPageLoaded();
+    }
+  };
+
+
+  useEffect(() => {
+
+
+    // Check if the page has already loaded
+    if (document.readyState === 'complete') {
+      pageLoading(false);
+    } else {
+      window.addEventListener('load', pageLoading, false);
+      pageLoading(true);
+      // Remove the event listener when component unmounts
+      return () => window.removeEventListener('load', pageLoading);
+    }
+  }, []);
 
   return (
     <Container>
@@ -59,7 +98,8 @@ export const SharedLayout = () => {
           </InnerHeader>
       </Header>
       <OutletContainer>
-        <Outlet />
+        {complite ? <Outlet setEmail={setEmail} setToken={setToken} setComplite={setComplite} setError={setError} /> : <Loader />}
+        
       </OutletContainer>      
       <Footer>
         <p>

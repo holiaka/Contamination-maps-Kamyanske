@@ -4,7 +4,6 @@
 // import { Error } from '../Error/Error';
 // import { useSelector } from 'react-redux';
 // import { selectIsLoading } from 'redux/contacts/selector';
-import { useEffect } from 'react';
 import {
   MapContainer,
   Marker,
@@ -27,9 +26,6 @@ import newObs from './../../layers/experement.json';
 // import newObs2 from './../../layers/Regular_points_experement_2.json';
 
 export const Maps = () => {
-  
-
-
   
   const customIcon = new Icon({
     iconUrl: require('./../../img/png/radiation-icon.png'),
@@ -62,23 +58,7 @@ export const Maps = () => {
     layer.bindPopup(`ID point: ${id}`);
   };
 
-  // // This will run one time after the component mounts
-  // useEffect(() => {
-  //   // callback function to call when event triggers
-  //   const onPageLoad = () => {
-  //     console.log('page loaded');
-  //     // do something else
-  //   };
 
-  //   // Check if the page has already loaded
-  //   if (document.readyState === 'complete') {
-  //     onPageLoad();
-  //   } else {
-  //     window.addEventListener('load', onPageLoad, false);
-  //     // Remove the event listener when component unmounts
-  //     return () => window.removeEventListener('load', onPageLoad);
-  //   }
-  // }, []);
   
 
   return (

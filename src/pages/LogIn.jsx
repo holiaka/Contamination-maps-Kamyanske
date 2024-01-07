@@ -1,4 +1,3 @@
-import { useDispatch} from 'react-redux';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 // import { selectContacts } from 'redux/selector';
@@ -10,7 +9,7 @@ import {
   InputName,
   SubmitBtn,
 } from '../components/ContactForm/ContactForms';
-import { logIn } from '../redux/auth/operations';
+
 
 
 const initialValues = {
@@ -39,12 +38,11 @@ const FormError = ({ name }) => {
 };
 
 export const LogIn = () => {
-  const dispatch = useDispatch();
 
 //   const oldContacts = useSelector(selectContacts);
 
   const onSubmit = ({ email, password }) => { 
-      dispatch(logIn({ email, password }));    
+         
   };
 
   const onSubmitInner = (value, { resetForm }) => {

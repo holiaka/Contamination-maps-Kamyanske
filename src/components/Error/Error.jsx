@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { selectError } from "redux/contacts/selector";
 import { ErrorText, ErrorBox } from "./Error.styled";
 
 export const Error = () => {
@@ -9,7 +7,7 @@ export const Error = () => {
                 The request ended with an error!!!
             </ErrorText>
             <ErrorText>
-                Type error: {useSelector(selectError)}
+                Type error: {}
             </ErrorText>
         </ErrorBox>
     )
