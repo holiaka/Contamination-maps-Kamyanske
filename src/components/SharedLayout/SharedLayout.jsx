@@ -20,23 +20,23 @@ import { useState, useEffect } from 'react';
 import { Loader } from 'components/Loader/Loader';
 
 export const SharedLayout = () => {  
-  const [email, setEmail] = useState(null);
-  const [tokеn, setToken] = useState(null);
+  const [userEmail, setUserEmail] = useState('holiaka');
+  const [token, setToken] = useState('holiakaToken');
   const [complite, setComplite] = useState(false);
   const [error, setError] = useState(null);
+
+  console.log(userEmail, token);
 
   const { colorMode, toggleColorMode } = useColorMode();
 
   // This will run one time after the component mounts
       // callback function to call when event triggers
     const onPageLoaded = () => {
-      console.log('Page loaded', complite);
       setComplite(true);
       // do something else
     };
 
-    const onPageLoading = () => {
-      console.log('Page loading', complite);
+    const onPageLoading = () => {      
       setComplite(false);
     };
 
@@ -51,8 +51,6 @@ export const SharedLayout = () => {
 
 
   useEffect(() => {
-
-
     // Check if the page has already loaded
     if (document.readyState === 'complete') {
       pageLoading(false);
@@ -98,7 +96,7 @@ export const SharedLayout = () => {
           </InnerHeader>
       </Header>
       <OutletContainer>
-        {complite ? <Outlet setEmail={setEmail} setToken={setToken} setComplite={setComplite} setError={setError} /> : <Loader />}
+        {complite ? <Outlet context={[userEmail, setUserEmail]} /> : <Loader />}
         
       </OutletContainer>      
       <Footer>

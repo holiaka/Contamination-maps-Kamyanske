@@ -1,6 +1,5 @@
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-// import { selectContacts } from 'redux/selector';
 import {
   ErrorText,
   SubmitForm,
@@ -77,7 +76,7 @@ export const LogIn = () => {
           ></Input>
           <FormError name="password" />
         </InputBox>
-        <SubmitBtn type="submit">Create account</SubmitBtn>
+        <SubmitBtn type="submit">Sign In</SubmitBtn>
       </SubmitForm>
     </Formik>
   );

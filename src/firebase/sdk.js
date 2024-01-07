@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -20,19 +20,26 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
+const analytics = getAnalytics(app);
 
-// const auth = getAuth();
-// export const registrationData = createUserWithEmailAndPassword(auth, email, password)
-//   .then((userCredential) => {
-//     // Signed up 
-//     const user = userCredential.user;    
-//     console.log(user)
-//     // ...
-//   })
-//   .catch((error) => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     console.log(errorCode, errorMessage)
-//     // ..
-//   });
+const auth = getAuth();
+
+// Define an asynchronous function
+export async function registrationFetch(email, password) {
+    try {
+        // Await the promise from createUserWithEmailAndPassword
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+        // Signed up
+        const user = userCredential.user;
+        console.log(user);
+      return user.accessToken;
+    } catch (error) {
+        // Catch and handle any errors
+
+      console.dir(error);
+      return error;
+        // ...additional error handling logic if needed
+    }
+}
+
