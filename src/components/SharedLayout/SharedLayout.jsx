@@ -1,13 +1,11 @@
 import { Link as ReactRouterLink, Outlet } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   useColorMode,
   Button,
   Link as ChakraLink,
   Link,
-  Alert,
-} from '@chakra-ui/react';
+  } from '@chakra-ui/react';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import {
   Container,
@@ -21,6 +19,7 @@ import {
 import { linkFontSize, authFontSize } from './SharedLayout.my-chakra-ui';
 import { useState, useEffect } from 'react';
 import { Loader } from 'components/Loader/Loader';
+import { NotifyAlert } from 'components/Notify/Notify';
 
 export const SharedLayout = () => {  
   const [userEmail, setUserEmail] = useState(null);
@@ -63,24 +62,21 @@ export const SharedLayout = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (token !== null) {
-      toast.success('You are successfully logged into the system!!!', {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      })
-    };
-  }, [token])
-
+  // useEffect(() => {
+  //   if (token !== null) {
+  //     toast.success('You are successfully logged into the system!!!', {
+  //       position: "top-center",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "colored",
+  //     })
+  //   };
+  // }, [token])
   
-
-
   return (
     <Container>
       <Header>
@@ -117,7 +113,7 @@ export const SharedLayout = () => {
       <OutletContainer>
 
         {complite ? <Outlet context={[setUserEmail, setToken, setError]} /> : <Loader />}
-        <ToastContainer />
+        <NotifyAlert />
     
         
       </OutletContainer>      

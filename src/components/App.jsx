@@ -5,6 +5,7 @@ import { Maps } from './Maps/Maps';
 import { About } from "./About/About";
 import { RegisterForm } from "../pages/Register";
 import { LogIn} from "../pages/LogIn"
+import { NotFound } from "./NotFound/NotFound";
 
 export const App = () => {  
   return (
@@ -25,7 +26,8 @@ export const App = () => {
             <Route index element={<Maps />}></Route>
             <Route path="/about" element={<About />}></Route>   
             <Route path="/registration" element={<RegisterForm />}></Route>
-            <Route path="/login" element={<LogIn /> }></Route>
+            <Route path="/login" element={<LogIn />}></Route>
+            <Route path="*" element={< NotFound/> }></Route>
           </Route>
         </Routes>
       </Suspense>       
