@@ -9,7 +9,9 @@ import {
   SubmitBtn,
 } from '../components/ContactForm/ContactForms';
 import { registrationFetch } from './../firebase/sdk';
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
+
+
 
 const initialValues = {
   email: '',
@@ -34,12 +36,20 @@ const FormError = ({ name }) => {
 };
 
 export const RegisterForm = () => {  
-  const [userEmail, setUserEmail] = useOutletContext();
-  console.log(userEmail);
+  const [setUserEmail, setToken, setError] = useOutletContext();
+  const navigate = useNavigate();
   
-  const onSubmit = async({ email, password }) => {
-    const fetchData = await registrationFetch(email, password);    
-    setUserEmail(fetchData);
+  const onSubmit = async ({ email, password }) => {
+    const fetchData = await registrationFetch(email, password);
+    console.log(fetchData.accessToken);
+    if (fetchData.accessToken !== undefined) {
+      setUserEmail(fetchData.email);
+      setToken(fetchData.accessToken);
+      setError(null);
+      navigate("/", { replace: true });      
+    } else {
+      setError(fetchData)
+    } 
   };
 
   const onSubmitInner = (value, { resetForm }) => {

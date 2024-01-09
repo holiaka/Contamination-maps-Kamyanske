@@ -1,9 +1,12 @@
 import { Link as ReactRouterLink, Outlet } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 import {
   useColorMode,
   Button,
   Link as ChakraLink,
   Link,
+  Alert,
 } from '@chakra-ui/react';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import {
@@ -20,12 +23,10 @@ import { useState, useEffect } from 'react';
 import { Loader } from 'components/Loader/Loader';
 
 export const SharedLayout = () => {  
-  const [userEmail, setUserEmail] = useState('holiaka');
-  const [token, setToken] = useState('holiakaToken');
+  const [userEmail, setUserEmail] = useState(null);
+  const [token, setToken] = useState(null);
   const [complite, setComplite] = useState(false);
   const [error, setError] = useState(null);
-
-  console.log(userEmail, token);
 
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -62,6 +63,24 @@ export const SharedLayout = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (token !== null) {
+      toast.success('You are successfully logged into the system!!!', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
+    };
+  }, [token])
+
+  
+
+
   return (
     <Container>
       <Header>
@@ -96,7 +115,10 @@ export const SharedLayout = () => {
           </InnerHeader>
       </Header>
       <OutletContainer>
-        {complite ? <Outlet context={[userEmail, setUserEmail]} /> : <Loader />}
+
+        {complite ? <Outlet context={[setUserEmail, setToken, setError]} /> : <Loader />}
+        <ToastContainer />
+    
         
       </OutletContainer>      
       <Footer>

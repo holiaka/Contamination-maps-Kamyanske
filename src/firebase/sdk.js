@@ -33,12 +33,12 @@ export async function registrationFetch(email, password) {
         // Signed up
         const user = userCredential.user;
         console.log(user);
-      return user.accessToken;
+      return user;
     } catch (error) {
         // Catch and handle any errors
 
-      console.dir(error);
-      return error;
+      console.dir(error.message);
+      return error.message;
         // ...additional error handling logic if needed
     }
 }
