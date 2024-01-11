@@ -5,7 +5,10 @@ display: flex;
 justify-content: center;
 align-items: center;
 
-background-image: url("img/jpg/bg_bushes.jpg");
+background-image: url("./../../img/png/bg_bushes.png");
+background-size: cover;
+background-repeat: no-repeat;
+
 height: 100%;
 width: 100%;
 
