@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const Container = styled.div`
     width: 90%;
@@ -34,9 +34,10 @@ export const HeaderNav = styled.div`
 `
 
 export const OutletContainer = styled.div`
-/* display: flex;
+display: flex;
+flex-direction: column;
 justify-content: center;
-align-items: center; */
+align-items: center;
 
 height: 85vh;
 margin-left: 0;

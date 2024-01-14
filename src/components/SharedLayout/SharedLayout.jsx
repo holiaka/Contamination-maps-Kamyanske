@@ -20,9 +20,11 @@ import { linkFontSize, authFontSize } from './SharedLayout.my-chakra-ui';
 import { useState, useEffect } from 'react';
 import { Loader } from 'components/Loader/Loader';
 import { NotifyAlert } from 'components/Notify/Notify';
+import { IfAuth } from './IfAuth/IfAuth';
+import { IfNoAuth } from './IfNoAuth/IfNoAuth';
 
 export const SharedLayout = () => {  
-  const [userEmail, setUserEmail] = useState(null);
+  const [userEmail, setUserEmail] = useState("Dima Holiaka");
   const [token, setToken] = useState(null);
   const [complite, setComplite] = useState(false);
   const [error, setError] = useState(null);
@@ -49,7 +51,6 @@ export const SharedLayout = () => {
     }
   };
 
-
   useEffect(() => {
     // Check if the page has already loaded
     if (document.readyState === 'complete') {
@@ -61,21 +62,6 @@ export const SharedLayout = () => {
       return () => window.removeEventListener('load', pageLoading);
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (token !== null) {
-  //     toast.success('You are successfully logged into the system!!!', {
-  //       position: "top-center",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "colored",
-  //     })
-  //   };
-  // }, [token])
   
   return (
     <Container>
@@ -94,19 +80,9 @@ export const SharedLayout = () => {
         <HeaderSide>
             <Button marginTop='5' marginRight='10' colorScheme="teal" onClick={toggleColorMode}>
             {colorMode === 'light' ? <FaSun /> : <FaMoon />}
-          </Button>
-          <HeaderNav >
-            <ChakraLink
-                as={ReactRouterLink}
-                to="/registration"
-                display='flex' alignItems='center' color='teal.500' fontSize={authFontSize}>
-              Register
-            </ChakraLink>
-              <ChakraLink as={ReactRouterLink} to="/login"
-              display='flex' alignItems='center' color='teal.500' fontSize={authFontSize}>
-              Log In
-            </ChakraLink>
-          </HeaderNav>
+          </Button>            
+              <IfAuth email={userEmail}/>
+            {/* {token===true ? <IfNoAuth /> : <IfAuth email={userEmail} />} */}           
           </HeaderSide>
           </InnerHeader>
       </Header>

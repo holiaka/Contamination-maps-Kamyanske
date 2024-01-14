@@ -1,5 +1,6 @@
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { Text } from '@chakra-ui/react';
 import {
   ErrorText,
   SubmitForm,
@@ -61,11 +62,13 @@ export const RegisterForm = () => {
   };
 
   return (
+    <>
+    <Text>Registration form</Text>
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmitInner}
       validationSchema={validationSchema}
-    >
+    >      
       <SubmitForm>
         <InputName>E-mail: </InputName>
         <InputBox>
@@ -89,6 +92,7 @@ export const RegisterForm = () => {
         </InputBox>
         <SubmitBtn type="submit">Create account</SubmitBtn>
       </SubmitForm>
-    </Formik>
+      </Formik>
+      </>
   );
 };
