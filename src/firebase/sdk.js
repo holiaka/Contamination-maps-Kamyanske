@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -20,7 +19,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 const auth = getAuth();
 
@@ -40,13 +38,25 @@ export async function registrationFetch(email, password) {
     }
 }
 
-export const signOutFeatch = async() => { 
+export const signInFetch = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    console.log(userCredential);
+    return user;
+  } catch (error) {
+    console.log(error.message);
+    return error.message;
+  }
+};
+
+export const signOutFeatch = async () => {
   try {
     const data = await signOut(auth);
     console.log('signOutFeatchSecsses', data);
     return data;
-  } catch (error){
+  } catch (error) {
     console.log('signOutFeatchError', error);
     return error;
   }
-}
+};

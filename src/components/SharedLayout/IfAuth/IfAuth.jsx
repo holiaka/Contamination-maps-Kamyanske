@@ -9,9 +9,10 @@ export const IfAuth = (props) => {
   const { email, setEmail, setToken, setError } = props;
   
   const createInitials = (name) => {
-    if (name > 0) {
+    if (name.length > 0) {
       const firstL = name[0].toUpperCase();
       const secondL = name[1].toUpperCase();
+      console.log(`${firstL} ${secondL}`)
       return `${firstL} ${secondL}`;
     } else {
       return;

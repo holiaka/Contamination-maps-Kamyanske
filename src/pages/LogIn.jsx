@@ -8,6 +8,9 @@ import {
   InputName,
   SubmitBtn,
 } from '../components/ContactForm/ContactForms';
+import { signInFetch } from './../firebase/sdk';
+import { useOutletContext, useNavigate } from "react-router-dom";
+import { notifyToast } from './../components/Notify/notifyPropertyCode';
 
 
 
@@ -37,11 +40,24 @@ const FormError = ({ name }) => {
 };
 
 export const LogIn = () => {
+  const [setUserEmail, setToken, setError] = useOutletContext();
+  const navigate = useNavigate();
 
-//   const oldContacts = useSelector(selectContacts);
-
-  const onSubmit = ({ email, password }) => { 
-         
+  const onSubmit = async({ email, password }) => { 
+    const fetchData = await signInFetch(email, password); 
+    
+    console.log('fetchData', fetchData);
+    
+    if (fetchData.accessToken !== undefined) {
+      setUserEmail(fetchData.email);
+      setToken(fetchData.accessToken);
+      setError(null);
+      navigate("/", { replace: true });  
+      notifyToast('success', 'You are successfully registered into the system!!!');
+    } else {
+      setError(fetchData);
+      notifyToast('error', 'You are not registered into the system!!!');
+    }   
   };
 
   const onSubmitInner = (value, { resetForm }) => {
