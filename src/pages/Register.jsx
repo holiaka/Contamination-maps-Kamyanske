@@ -42,8 +42,7 @@ export const RegisterForm = () => {
   const navigate = useNavigate();
   
   const onSubmit = async ({ email, password }) => {
-    const fetchData = await registrationFetch(email, password);
-    console.log(fetchData.accessToken);
+    const fetchData = await registrationFetch(email, password);    
     if (fetchData.accessToken !== undefined) {
       setUserEmail(fetchData.email);
       setToken(fetchData.accessToken);

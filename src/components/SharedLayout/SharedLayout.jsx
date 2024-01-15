@@ -24,10 +24,13 @@ import { IfAuth } from './IfAuth/IfAuth';
 import { IfNoAuth } from './IfNoAuth/IfNoAuth';
 
 export const SharedLayout = () => {  
-  const [userEmail, setUserEmail] = useState("Dima Holiaka");
-  const [token, setToken] = useState(null);
+  const [userEmail, setUserEmail] = useState('');
+  const [token, setToken] = useState('');
   const [complite, setComplite] = useState(false);
   const [error, setError] = useState(null);
+
+  console.log('token', token);
+  console.log('email', userEmail);
 
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -80,18 +83,14 @@ export const SharedLayout = () => {
         <HeaderSide>
             <Button marginTop='5' marginRight='10' colorScheme="teal" onClick={toggleColorMode}>
             {colorMode === 'light' ? <FaSun /> : <FaMoon />}
-          </Button>            
-              <IfAuth email={userEmail}/>
-            {/* {token===true ? <IfNoAuth /> : <IfAuth email={userEmail} />} */}           
+          </Button>
+            {token.length > 0 ? <IfAuth email={userEmail} setEmail={setUserEmail} setToken={setToken} setError={setError} /> : <IfNoAuth />}        
           </HeaderSide>
           </InnerHeader>
       </Header>
       <OutletContainer>
-
         {complite ? <Outlet context={[setUserEmail, setToken, setError]} /> : <Loader />}
-        <NotifyAlert />
-    
-        
+        <NotifyAlert />        
       </OutletContainer>      
       <Footer>
         <p>
