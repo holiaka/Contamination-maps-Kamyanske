@@ -23,9 +23,14 @@ import buildings from './../../layers/fixBuildings.json';
 import boundary from './../../layers/boundary.json';
 import geoData from './../../layers/obsPointsGammaOld.json';
 import newObs from './../../layers/experement.json';
+import { geoFetch } from './../../firebase/sdk';
 // import newObs2 from './../../layers/Regular_points_experement_2.json';
+import { useState, useEffect } from 'react';
+import { GeoDataBox } from './GeoDataBox/GeoDataBox';
 
 export const Maps = () => {
+
+  const [geoId, setGeoId] = useState(null);
   
   const customIcon = new Icon({
     iconUrl: require('./../../img/png/radiation-icon.png'),
@@ -51,10 +56,34 @@ export const Maps = () => {
       fillOpacity: 0.8
   });
   };
+  
+  let obtainData = function (e) {
+    const geoCoordinates = e.latlng;
+    const { lat, lng } = geoCoordinates
+    console.log(lat, lng);
 
+    // const x1 = x.toString().slice(7);
+    // console.log(x1);
+
+
+    // const X = e.containerPoint.x;
+    // const Y = e.containerPoint.y
+    // const evtID = e.target.fuature.propertis.ID;
+    // console.log(X, Y, evtID);
+  };
+
+  // useEffect(() => {
+  //   obtainData(100);
+  // }, [geoId]);
   
   const onEachFeature = (feature, layer) => {
     let id = feature.properties.ID;
+ 
+
+    // let viewData = geoFetch(id);
+    layer.on({
+        click: obtainData,
+    });
     layer.bindPopup(`ID point: ${id}`);
   };
 
@@ -62,6 +91,8 @@ export const Maps = () => {
   
 
   return (
+
+
     <div
       style={{
         height: '85vh',
@@ -153,7 +184,9 @@ export const Maps = () => {
             </MarkerClusterGroup>
             </LayersControl.Overlay>            
         </LayersControl>
-      </MapContainer>         
+       { geoId ? <GeoDataBox></GeoDataBox> : null  } 
+      </MapContainer>   
+      
     </div>
   );
 };

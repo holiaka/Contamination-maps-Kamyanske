@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getDatabase, ref, child, get } from "firebase/database";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -14,11 +15,13 @@ const firebaseConfig = {
   storageBucket: "phz-project.appspot.com",
   messagingSenderId: "252512082529",
   appId: "1:252512082529:web:92415c751e6f3e72d0e820",
-  measurementId: "G-720F61ZQSX"
+  measurementId: "G-720F61ZQSX",
+  databaseURL: "https://phz-project-default-rtdb.europe-west1.firebasedatabase.app/",
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
 const auth = getAuth();
 
@@ -60,3 +63,19 @@ export const signOutFeatch = async () => {
     return error;
   }
 };
+
+const dbRef = ref(db);
+export const geoFetch = async (id) => {
+  try {
+    const snapshot = await get(child(dbRef, `radiation-data/${id}`));  
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      console.log(data);
+      return data;
+    } else {
+      console.log("No data available");
+    }
+  } catch(error) {
+    console.error(error);
+  };
+}
