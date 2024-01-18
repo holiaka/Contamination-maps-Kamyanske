@@ -69,13 +69,12 @@ export const geoFetch = async (id) => {
   try {
     const snapshot = await get(child(dbRef, `radiation-data/${id}`));  
     if (snapshot.exists()) {
-      const data = snapshot.val();
-      console.log(data);
+      const data = snapshot.val();      
       return data;
     } else {
       console.log("No data available");
     }
   } catch(error) {
-    console.error(error);
+    return error;
   };
 }

@@ -6,12 +6,11 @@ export const DataBox = styled.div`
   background-color: white;
   border-radius: 10px;
 
-  z-index: 1000;
-
-  left: 100px;
-  top: 100px;
+  z-index: 1000000000;
 
   display: flex;
+  max-width: 30%;
+  max-height: 30vh;
 `;
 
 export const Box = styled.div`

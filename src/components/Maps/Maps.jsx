@@ -16,22 +16,21 @@ import {
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 /* import { GiRadioactive } from "react-icons/gi"; */
-import  L, { Icon } from 'leaflet';
-
+import L, { Icon } from 'leaflet';
 
 import buildings from './../../layers/fixBuildings.json';
 import boundary from './../../layers/boundary.json';
-import geoData from './../../layers/obsPointsGammaOld.json';
+import geoOldData from './../../layers/obsPointsGammaOld.json';
 import newObs from './../../layers/experement.json';
 import { geoFetch } from './../../firebase/sdk';
 // import newObs2 from './../../layers/Regular_points_experement_2.json';
 import { useState, useEffect } from 'react';
 import { GeoDataBox } from './GeoDataBox/GeoDataBox';
+import { notifyToast } from 'components/Notify/notifyPropertyCode';
 
 export const Maps = () => {
+  const [geoData, setGeoData] = useState(null);
 
-  const [geoId, setGeoId] = useState(null);
-  
   const customIcon = new Icon({
     iconUrl: require('./../../img/png/radiation-icon.png'),
     iconSize: [20, 20],
@@ -49,50 +48,59 @@ export const Maps = () => {
   const setIcon = (_, latlng) => {
     return L.circleMarker(latlng, {
       radius: 4,
-      fillColor: "#FF0000",
-      color: "#FFFFFF",
+      fillColor: '#FF0000',
+      color: '#FFFFFF',
       weight: 1,
       opacity: 1,
-      fillOpacity: 0.8
-  });
-  };
-  
-  let obtainData = function (e) {
-    const geoCoordinates = e.latlng;
-    const { lat, lng } = geoCoordinates
-    console.log(lat, lng);
-
-    // const x1 = x.toString().slice(7);
-    // console.log(x1);
-
-
-    // const X = e.containerPoint.x;
-    // const Y = e.containerPoint.y
-    // const evtID = e.target.fuature.propertis.ID;
-    // console.log(X, Y, evtID);
-  };
-
-  // useEffect(() => {
-  //   obtainData(100);
-  // }, [geoId]);
-  
-  const onEachFeature = (feature, layer) => {
-    let id = feature.properties.ID;
- 
-
-    // let viewData = geoFetch(id);
-    layer.on({
-        click: obtainData,
+      fillOpacity: 0.8,
     });
-    layer.bindPopup(`ID point: ${id}`);
   };
 
+  let obtainData = async function (e) {
+    const geoCoordinates = e.latlng;
+    const { lat, lng } = geoCoordinates;
 
-  
+    const sitePosition = e.originalEvent;
+    const { layerX, layerY, clientX, clientY } = sitePosition;
+    console.log('findPositionParameters', sitePosition);
+
+    const options = e.target;
+    const id = options.feature.properties.ID;
+
+    try {
+      const data = await geoFetch(id);
+      notifyToast('success', 'Successful request to the database!');
+      let obj = {
+        id: id,
+        lat: lat,
+        lng: lng,
+        positionX: layerX,
+        positionY: layerY,
+        clientX: clientX,
+        clientY: clientY,
+        AEDR01: data.AEDR_01,
+        AEDR1: data.AEDR_10,
+        alfaDF: data.Alfa_DF,
+        betaDF: data.Beta_DF,
+      };
+      setGeoData(() => obj);
+    } catch (error) {
+      notifyToast('error', 'Request error!');
+      return;
+    }
+  };
+
+  useEffect(() => {
+    console.log('useEffect', geoData);
+  }, [geoData]);
+
+  const onEachFeature = (feature, layer) => {
+    layer.on({
+      click: obtainData,
+    });
+  };
 
   return (
-
-
     <div
       style={{
         height: '85vh',
@@ -100,7 +108,7 @@ export const Maps = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',        
+        alignItems: 'center',
         color: '#010101',
         marginLeft: 'auto',
         marginRight: 'auto',
@@ -164,7 +172,7 @@ export const Maps = () => {
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Old observations (2016-2011)">
             <MarkerClusterGroup maxClusterRadius={40}>
-              {geoData.features.map((point, index) => (
+              {geoOldData.features.map((point, index) => (
                 <Marker
                   key={index}
                   position={[point.properties.lat, point.properties.lon]}
@@ -180,13 +188,16 @@ export const Maps = () => {
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Radoaction obsarvation 2023-2024">
             <MarkerClusterGroup maxClusterRadius={40}>
-              <GeoJSON data={newObs} pointToLayer={setIcon} onEachFeature={onEachFeature}></ GeoJSON>             
+              <GeoJSON
+                data={newObs}
+                pointToLayer={setIcon}
+                onEachFeature={onEachFeature}
+              ></GeoJSON>
             </MarkerClusterGroup>
-            </LayersControl.Overlay>            
+          </LayersControl.Overlay>
         </LayersControl>
-       { geoId ? <GeoDataBox></GeoDataBox> : null  } 
-      </MapContainer>   
-      
+        {geoData ? <GeoDataBox geoData={geoData} setGeoData={setGeoData}></GeoDataBox> : null}
+      </MapContainer>
     </div>
   );
 };
