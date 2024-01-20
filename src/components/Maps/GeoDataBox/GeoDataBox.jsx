@@ -10,7 +10,15 @@ export const GeoDataBox = (props) => {
       props.geoData;    
     const { setGeoData } = props;
 
-    console.log(props);
+    console.log(setGeoData);
+
+    const roundFn = function (num) {
+    
+      num = num.toFixed(7);
+    
+    return num;
+  };
+
 
   return (
     <DataBox
@@ -27,10 +35,10 @@ export const GeoDataBox = (props) => {
           <b>Point ID:</b> {id};
         </Text>
         <Text fontSize={fontSizeDiscrption}>
-          <b>Lat:</b> {lat};
+          <b>Lat:</b> {roundFn(lat)};
         </Text>
         <Text fontSize={fontSizeDiscrption}>
-          <b>Lng:</b> {lng};
+          <b>Lng:</b> {roundFn(lng)};
         </Text>
         <Text fontSize={fontSizeDiscrption}>
           <b>AEDR h=0.1 m:</b> {AEDR01} mkSv;
@@ -45,8 +53,8 @@ export const GeoDataBox = (props) => {
           <b>Alfa-particles flux density:</b> {alfaDF} pcs/(min sq.cm)
         </Text>
       </Box>
-          <Button colorScheme="teal" width={20} borderRadius={19}>
-              <IoMdCloseCircleOutline size={40}></IoMdCloseCircleOutline>
+          <Button colorScheme="teal" padding={1} borderRadius={25}>
+              <IoMdCloseCircleOutline size={25}></IoMdCloseCircleOutline>
       </Button>
     </DataBox>
   );

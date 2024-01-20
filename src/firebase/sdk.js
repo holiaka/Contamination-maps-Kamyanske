@@ -1,7 +1,15 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { getDatabase, ref, child, get } from "firebase/database";
+import { initializeApp } from 'firebase/app';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  sendEmailVerification,
+  updatePassword,
+  deleteUser,
+} from 'firebase/auth';
+import { getDatabase, ref, child, get } from 'firebase/database';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -9,14 +17,15 @@ import { getDatabase, ref, child, get } from "firebase/database";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyA8RFsBm5a5h94uLU90TLHrczpRd2TC8ls",
-  authDomain: "phz-project.firebaseapp.com",
-  projectId: "phz-project",
-  storageBucket: "phz-project.appspot.com",
-  messagingSenderId: "252512082529",
-  appId: "1:252512082529:web:92415c751e6f3e72d0e820",
-  measurementId: "G-720F61ZQSX",
-  databaseURL: "https://phz-project-default-rtdb.europe-west1.firebasedatabase.app/",
+  apiKey: 'AIzaSyA8RFsBm5a5h94uLU90TLHrczpRd2TC8ls',
+  authDomain: 'phz-project.firebaseapp.com',
+  projectId: 'phz-project',
+  storageBucket: 'phz-project.appspot.com',
+  messagingSenderId: '252512082529',
+  appId: '1:252512082529:web:92415c751e6f3e72d0e820',
+  measurementId: 'G-720F61ZQSX',
+  databaseURL:
+    'https://phz-project-default-rtdb.europe-west1.firebasedatabase.app/',
 };
 
 // Initialize Firebase
@@ -27,23 +36,31 @@ const auth = getAuth();
 
 // Define an asynchronous function
 export async function registrationFetch(email, password) {
-    try {
-        // Await the promise from createUserWithEmailAndPassword
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  try {
+    // Await the promise from createUserWithEmailAndPassword
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-        // Signed up
-        const user = userCredential.user;
-      return user;
-    } catch (error) {
-        // Catch and handle any errors
-      return error.message;
-        // ...additional error handling logic if needed
-    }
+    // Signed up
+    const user = userCredential.user;
+    return user;
+  } catch (error) {
+    // Catch and handle any errors
+    return error.message;
+    // ...additional error handling logic if needed
+  }
 }
 
 export const signInFetch = async (email, password) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     const user = userCredential.user;
     console.log(userCredential);
     return user;
@@ -64,17 +81,45 @@ export const signOutFeatch = async () => {
   }
 };
 
-const dbRef = ref(db);
-export const geoFetch = async (id) => {
+export const emailVerification = async () => {
+  await sendEmailVerification(auth.currentUser);
+};
+
+const user = auth.currentUser;
+
+export const changePassword = async newPassword => {
   try {
-    const snapshot = await get(child(dbRef, `radiation-data/${id}`));  
+    const changedPassword = await updatePassword(user, newPassword);
+    // Update successful.
+    return changedPassword;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const onRemoveAccouant = () => {
+  try {
+    const data = deleteUser(user);
+    // User deleted.
+    console.log(data);
+} catch (error){
+  // An error ocurred
+    // ...
+    console.log(error.message);
+};
+}
+
+const dbRef = ref(db);
+export const geoFetch = async id => {
+  try {
+    const snapshot = await get(child(dbRef, `radiation-data/${id}`));
     if (snapshot.exists()) {
-      const data = snapshot.val();      
+      const data = snapshot.val();
       return data;
     } else {
-      console.log("No data available");
+      console.log('No data available');
     }
-  } catch(error) {
+  } catch (error) {
     return error;
-  };
-}
+  }
+};

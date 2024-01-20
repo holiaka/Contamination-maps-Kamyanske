@@ -9,7 +9,7 @@ import {
   InputName,
   SubmitBtn,
 } from '../components/ContactForm/ContactForms';
-import { registrationFetch } from './../firebase/sdk';
+import { emailVerification, registrationFetch } from './../firebase/sdk';
 import { useOutletContext, useNavigate } from "react-router-dom";
 import { notifyToast } from './../components/Notify/notifyPropertyCode';
 
@@ -37,10 +37,11 @@ const FormError = ({ name }) => {
   );
 };
 
-export const RegisterForm = () => {  
+export const RegisterForm = () => {    
   const [setUserEmail, setToken, setError] = useOutletContext();
+  console.log(useOutletContext);
   const navigate = useNavigate();
-  
+   
   const onSubmit = async ({ email, password }) => {
     const fetchData = await registrationFetch(email, password);    
     if (fetchData.accessToken !== undefined) {
@@ -49,6 +50,8 @@ export const RegisterForm = () => {
       setError(null);
       navigate("/", { replace: true });  
       notifyToast('success', 'You are successfully registered into the system!!!');
+      emailVerification();
+      notifyToast('info', 'An address verification message has been sent to your email! Thank you!');
     } else {
       setError(fetchData);
       notifyToast('error', 'You are not registered into the system!!!');
