@@ -24,19 +24,17 @@ export const GeoDataBox = props => {
   } = props.geoData;
   const { setGeoData } = props;
 
-  console.log(setGeoData);
-
   const boxLocalisation = () => {
-    if (width - clientX < 0.5 * width && hight - clientY < 0.5 * hight) {
+    if (clientX > 0.5 * width && clientY > 0.5 * hight) {
       return '-105%, -105%';
     } else if (
-      width - clientX > 0.5 * width &&
-      hight - clientY < 0.5 * hight
+      clientX < 0.5 * width &&
+      clientY > 0.5 * hight
     ) {
       return '5%, -105%';
     } else if (
-      width - clientX < 0.5 * width &&
-      hight - clientY > 0.5 * hight
+      clientX > 0.5 * width &&
+      clientY < 0.5 * hight
     ) {
       return '-105%, 5%';
     } else {
@@ -49,7 +47,9 @@ export const GeoDataBox = props => {
     return num;
   };
 
-  console.log("position", boxLocalisation(), positionX, positionY, clientX, clientY);
+  function onClose(){
+    setGeoData(null);
+  };
 
   return (
     <DataBox
@@ -57,7 +57,7 @@ export const GeoDataBox = props => {
         left: `${positionX}px`,
         top: `${positionY}px`,
         transform: `translate(${boxLocalisation()})`,
-        // transition: 'transform 500ms ease',
+        transition: 'transform 500ms ease',
       }}
     >
       <Box>
@@ -86,7 +86,7 @@ export const GeoDataBox = props => {
           <b>Alfa-particles flux density:</b> {alfaDF} pcs/(min sq.cm)
         </Text>
       </Box>
-      <Button colorScheme="teal" padding={1} borderRadius={25}>
+      <Button type='button' colorScheme="teal" padding={1} borderRadius={25} onClick={onClose}>
         <IoMdCloseCircleOutline size={25}></IoMdCloseCircleOutline>
       </Button>
     </DataBox>

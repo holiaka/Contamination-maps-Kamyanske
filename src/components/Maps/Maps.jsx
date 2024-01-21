@@ -89,9 +89,17 @@ export const Maps = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('useEffect', geoData);
-  }, [geoData]);
+
+  const onEachFeatureBuldings = (feature, layer) => {
+    let number = feature.properties.Number;
+    let text;
+    if (number !== null) {
+      text = number;
+    } else {
+      text = 'No data';
+    }
+    layer.bindTooltip(text.toString(), { permanent: true, direction: 'center'} ).openTooltip();
+  };    
 
   const onEachFeature = (feature, layer) => {
     layer.on({
@@ -155,6 +163,7 @@ export const Maps = () => {
               style={{
                 capasity: 1.0,
               }}
+              onEachFeature={onEachFeatureBuldings}
             ></GeoJSON>
           </LayersControl.Overlay>
           <LayersControl.Overlay
