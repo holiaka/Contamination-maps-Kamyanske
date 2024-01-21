@@ -9,11 +9,10 @@ import {
   InputName,
   SubmitBtn,
 } from '../components/ContactForm/ContactForms';
-import { changePassword } from './../firebase/sdk';
-import { useNavigate } from "react-router-dom";
+import { changePassword, onRemoveAccouant } from './../firebase/sdk';
+import { useNavigate, useOutletContext  } from "react-router-dom";
 import { notifyToast } from './../components/Notify/notifyPropertyCode';
 import { Button } from '@chakra-ui/react';
-import { LiaUserAltSlashSolid } from "react-icons/lia";
 import { FaUserAltSlash } from "react-icons/fa";
 
 const initialValues = {  
@@ -42,7 +41,7 @@ const FormError = ({ name }) => {
 };
 
 export const ProfilManagment = () => {  
-  
+    const [setUserEmail, setToken, setError] = useOutletContext();
     const navigate = useNavigate();
   
     const onSubmit = async ({ password1, password2 }) => {
@@ -54,11 +53,12 @@ export const ProfilManagment = () => {
             notifyToast('success', 'The duplicate and previous passwords in the form are input correctly!');
             password = password1;
         };
-        const fetchData = await changePassword(password);    
+      const fetchData = await changePassword(password);   
+      console.log(fetchData);
         if (fetchData.accessToken !== undefined) {
             notifyToast('success', 'Your account password was successfully changed!');
         } else {
-            notifyToast('error', fetch);
+            notifyToast('error', fetchData);
         };
   };
 
@@ -67,7 +67,15 @@ export const ProfilManagment = () => {
     resetForm();
   };
     
-    const onDelete = () => {
+  const onDelete = async() => {
+    try {
+      const data = await onRemoveAccouant();
+      console.log('fuilfiled', data);
+      navigate('/', { replace: true })
+    } catch (error) {
+      console.log('reject', error.message);
+    }
+    
 
     }
 
@@ -106,7 +114,7 @@ export const ProfilManagment = () => {
           </Formik>
           
           <div style={{minHeight: '20px'}}>
-              <Text color='red'> Deleting your account now:   <Button onclick={onDelete} type='button' width='100px' colorScheme="red" leftIcon={< FaUserAltSlash /> }>Delete</Button></Text> 
+              <Text color='red'> Deleting your account now:   <Button onClick={onDelete} type='button' width='100px' colorScheme="red" leftIcon={< FaUserAltSlash /> }>Delete</Button></Text> 
           </div>
       </>
 

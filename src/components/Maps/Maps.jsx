@@ -61,8 +61,7 @@ export const Maps = () => {
     const { lat, lng } = geoCoordinates;
 
     const sitePosition = e.originalEvent;
-    const { layerX, layerY, clientX, clientY } = sitePosition;
-    console.log('findPositionParameters', sitePosition);
+    const { layerX, layerY, clientX, clientY } = sitePosition;    
 
     const options = e.target;
     const id = options.feature.properties.ID;

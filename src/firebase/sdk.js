@@ -62,10 +62,8 @@ export const signInFetch = async (email, password) => {
       password
     );
     const user = userCredential.user;
-    console.log(userCredential);
     return user;
   } catch (error) {
-    console.log(error.message);
     return error.message;
   }
 };
@@ -73,19 +71,19 @@ export const signInFetch = async (email, password) => {
 export const signOutFeatch = async () => {
   try {
     const data = await signOut(auth);
-    console.log('signOutFeatchSecsses', data);
     return data;
-  } catch (error) {
-    console.log('signOutFeatchError', error);
+  } catch (error) {    
     return error;
   }
 };
+
+let user = auth.currentUser;
 
 export const emailVerification = async () => {
   await sendEmailVerification(auth.currentUser);
 };
 
-const user = auth.currentUser;
+
 
 export const changePassword = async newPassword => {
   try {
@@ -100,12 +98,11 @@ export const changePassword = async newPassword => {
 export const onRemoveAccouant = () => {
   try {
     const data = deleteUser(user);
-    // User deleted.
-    console.log(data);
+    // User deleted
+    return data;
 } catch (error){
   // An error ocurred
-    // ...
-    console.log(error.message);
+    return error.message;
 };
 }
 
@@ -120,6 +117,6 @@ export const geoFetch = async id => {
       console.log('No data available');
     }
   } catch (error) {
-    return error;
+    return error.message;
   }
 };
