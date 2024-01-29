@@ -1,9 +1,3 @@
-// import { Suspense, lazy } from "react";
-
-// import { Loader } from '../Loader/Loader';
-// import { Error } from '../Error/Error';
-// import { useSelector } from 'react-redux';
-// import { selectIsLoading } from 'redux/contacts/selector';
 import {
   MapContainer,
   Marker,
@@ -12,10 +6,11 @@ import {
   GeoJSON,
   ImageOverlay,
   LayersControl,
+  Circle,
 } from 'react-leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-/* import { GiRadioactive } from "react-icons/gi"; */
+import { GiHumanTarget } from 'react-icons/gi';
 import L, { Icon } from 'leaflet';
 
 import buildings from './../../layers/fixBuildings.json';
@@ -27,13 +22,25 @@ import { geoFetch } from './../../firebase/sdk';
 import { useState, useEffect } from 'react';
 import { GeoDataBox } from './GeoDataBox/GeoDataBox';
 import { notifyToast } from 'components/Notify/notifyPropertyCode';
+import { GeoLocation } from './GeoLocation/GeoLocation';
+import iconSvg from "./../../img/SVG/human-target-svgrepo-com.svg";
 
 export const Maps = () => {
   const [geoData, setGeoData] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+  const [locationMarker, setLocationMarker] = useState(false);
+
+  useEffect(() => {console.log(userLocation)}, [userLocation])
 
   const customIcon = new Icon({
     iconUrl: require('./../../img/png/radiation-icon.png'),
     iconSize: [20, 20],
+  });
+
+  const locationIcon = L.icon({
+    iconUrl: iconSvg,
+    iconSize: [50, 50],
+    iconAnchor: [25, 25],
   });
 
   const roundFn = function (num) {
@@ -61,7 +68,7 @@ export const Maps = () => {
     const { lat, lng } = geoCoordinates;
 
     const sitePosition = e.originalEvent;
-    const { layerX, layerY, clientX, clientY } = sitePosition;    
+    const { layerX, layerY, clientX, clientY } = sitePosition;
 
     const options = e.target;
     const id = options.feature.properties.ID;
@@ -89,7 +96,6 @@ export const Maps = () => {
     }
   };
 
-
   const onEachFeatureBuldings = (feature, layer) => {
     let number = feature.properties.Number;
     let text;
@@ -98,8 +104,10 @@ export const Maps = () => {
     } else {
       text = 'No data';
     }
-    layer.bindTooltip(text.toString(), { permanent: true, direction: 'center'} ).openTooltip();
-  };    
+    layer
+      .bindTooltip(text.toString(), { permanent: true, direction: 'center' })
+      .openTooltip();
+  };
 
   const onEachFeature = (feature, layer) => {
     layer.on({
@@ -204,7 +212,17 @@ export const Maps = () => {
             </MarkerClusterGroup>
           </LayersControl.Overlay>
         </LayersControl>
-        {geoData ? <GeoDataBox geoData={geoData} setGeoData={setGeoData}></GeoDataBox> : null}
+        {geoData ? (
+          <GeoDataBox geoData={geoData} setGeoData={setGeoData}></GeoDataBox>
+        ) : null}
+        <Marker position={[48.5, 34.68]} icon={locationIcon} ></Marker>
+        <Circle center={[48.5, 34.68]} radius={200}>
+          <Popup>
+<b>Longitude: </b>
+                    {}
+        </Popup>
+        </Circle>
+        <GeoLocation location={userLocation} setLocation={setUserLocation} marker={locationMarker} setMarker={ setLocationMarker} />
       </MapContainer>
     </div>
   );
