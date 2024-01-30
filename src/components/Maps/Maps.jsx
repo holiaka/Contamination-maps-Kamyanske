@@ -6,11 +6,11 @@ import {
   GeoJSON,
   ImageOverlay,
   LayersControl,
-  Circle,
+  Circle, 
+  useMap,
 } from 'react-leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import { GiHumanTarget } from 'react-icons/gi';
 import L, { Icon } from 'leaflet';
 
 import buildings from './../../layers/fixBuildings.json';
@@ -18,19 +18,26 @@ import boundary from './../../layers/boundary.json';
 import geoOldData from './../../layers/obsPointsGammaOld.json';
 import newObs from './../../layers/experement.json';
 import { geoFetch } from './../../firebase/sdk';
-// import newObs2 from './../../layers/Regular_points_experement_2.json';
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import { GeoDataBox } from './GeoDataBox/GeoDataBox';
 import { notifyToast } from 'components/Notify/notifyPropertyCode';
 import { GeoLocation } from './GeoLocation/GeoLocation';
-import iconSvg from "./../../img/SVG/human-target-svgrepo-com.svg";
+import iconSvg from './../../img/SVG/human-target-svgrepo-com.svg';
 
 export const Maps = () => {
   const [geoData, setGeoData] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [locationMarker, setLocationMarker] = useState(false);
 
-  useEffect(() => {console.log(userLocation)}, [userLocation])
+  const RecenterAutomatically = ({ lat, lng }) => {
+    const map = useMap();
+    useEffect(() => {
+      map.setView([lat, lng]);
+    }, [lat, lng, map]);
+    return null;
+  };
+
+  useEffect(() => {console.log(userLocation, locationMarker)}, [userLocation, locationMarker])
 
   const customIcon = new Icon({
     iconUrl: require('./../../img/png/radiation-icon.png'),
@@ -214,15 +221,26 @@ export const Maps = () => {
         </LayersControl>
         {geoData ? (
           <GeoDataBox geoData={geoData} setGeoData={setGeoData}></GeoDataBox>
-        ) : null}
-        <Marker position={[48.5, 34.68]} icon={locationIcon} ></Marker>
-        <Circle center={[48.5, 34.68]} radius={200}>
-          <Popup>
-<b>Longitude: </b>
-                    {}
-        </Popup>
-        </Circle>
-        <GeoLocation location={userLocation} setLocation={setUserLocation} marker={locationMarker} setMarker={ setLocationMarker} />
+        ) : null}        
+        {locationMarker && userLocation ? <>
+          <Marker position={[userLocation.latitude, userLocation.longitude]} icon={locationIcon}>
+            <Popup>
+            <p><b>Latitude, &deg;: </b>
+              {userLocation.latitude}</p>
+              <p><b>Longitude, &deg;: </b>
+              {userLocation.longitude}</p>
+              <p><b>Accuracy, m: </b>
+            {userLocation.accuracy}</p>
+          </Popup>
+        </Marker>
+        <Circle center={[userLocation.latitude, userLocation.longitude]} radius={userLocation.accuracy}></Circle>
+          </> : null}
+        <GeoLocation           
+          setLocation={setUserLocation}
+          marker={locationMarker}
+          setMarker={setLocationMarker}
+        />
+        {locationMarker && userLocation ? <RecenterAutomatically lat={userLocation.latitude} lng={userLocation.longitude} /> : null}
       </MapContainer>
     </div>
   );
