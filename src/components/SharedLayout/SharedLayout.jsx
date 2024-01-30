@@ -16,7 +16,7 @@ import {
   HeaderSide,
   InnerHeader,
 } from './SharedLayout.styled';
-import { linkFontSize} from './SharedLayout.my-chakra-ui';
+import { linkFontSize } from './SharedLayout.my-chakra-ui';
 import { useState, useEffect } from 'react';
 import { Loader } from 'components/Loader/Loader';
 import { NotifyAlert } from 'components/Notify/Notify';
@@ -53,15 +53,15 @@ export const SharedLayout = () => {
     setComplite(false);
   };
 
-  const pageLoading = condition => {
-    if (condition === true) {
-      onPageLoading();
-    } else {
-      onPageLoaded();
-    }
-  };
-
   useEffect(() => {
+    const pageLoading = condition => {
+      if (condition === true) {
+        onPageLoading();
+      } else {
+        onPageLoaded();
+      }
+    };
+
     // Check if the page has already loaded
     if (document.readyState === 'complete') {
       pageLoading(false);
@@ -79,7 +79,7 @@ export const SharedLayout = () => {
   }, [userEmail, token]);
 
   useEffect(() => {
-    notifyToast("error", `Authorisation error: ${error}`)
+    notifyToast('error', `Authorisation error: ${error}`);
   }, [error]);
 
   return (

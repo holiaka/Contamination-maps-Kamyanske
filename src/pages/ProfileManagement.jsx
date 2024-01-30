@@ -41,8 +41,9 @@ const FormError = ({ name }) => {
 };
 
 export const ProfilManagment = () => {  
-    const [setUserEmail, setToken, setError] = useOutletContext();
-    const navigate = useNavigate();
+    const [error] = useOutletContext();
+  const navigate = useNavigate();
+  console.log(error);
   
     const onSubmit = async ({ password1, password2 }) => {
         let password = '';
@@ -58,7 +59,8 @@ export const ProfilManagment = () => {
         if (fetchData.accessToken !== undefined) {
             notifyToast('success', 'Your account password was successfully changed!');
         } else {
-            notifyToast('error', fetchData);
+          notifyToast('error', fetchData);
+          
         };
   };
 
