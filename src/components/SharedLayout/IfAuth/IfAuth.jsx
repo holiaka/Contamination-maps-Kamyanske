@@ -4,7 +4,6 @@ import { Avatar } from '@chakra-ui/react';
 import { ExitButton } from './IfAuth.styled';
 import { HeaderNav } from '../SharedLayout.styled';
 import { signOutFeatch } from './../../../firebase/sdk';
-import { FaUserPen } from "react-icons/fa6";
 
 export const IfAuth = (props) => {
   const { email, setEmail, setToken, setError } = props;

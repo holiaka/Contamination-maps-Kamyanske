@@ -16,12 +16,13 @@ import {
   HeaderSide,
   InnerHeader,
 } from './SharedLayout.styled';
-import { linkFontSize, authFontSize } from './SharedLayout.my-chakra-ui';
+import { linkFontSize} from './SharedLayout.my-chakra-ui';
 import { useState, useEffect } from 'react';
 import { Loader } from 'components/Loader/Loader';
 import { NotifyAlert } from 'components/Notify/Notify';
 import { IfAuth } from './IfAuth/IfAuth';
 import { IfNoAuth } from './IfNoAuth/IfNoAuth';
+import { notifyToast } from 'components/Notify/notifyPropertyCode';
 
 export const SharedLayout = () => {
   const [userEmail, setUserEmail] = useState(() =>
@@ -76,6 +77,10 @@ export const SharedLayout = () => {
     localStorage.setItem('Kamyanske-map-email', JSON.stringify(userEmail));
     localStorage.setItem('Kamyanske-map-token', JSON.stringify(token));
   }, [userEmail, token]);
+
+  useEffect(() => {
+    notifyToast("error", `Authorisation error: ${error}`)
+  }, [error]);
 
   return (
     <Container>
