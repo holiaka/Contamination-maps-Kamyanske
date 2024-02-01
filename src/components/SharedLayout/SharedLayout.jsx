@@ -142,7 +142,7 @@ export const SharedLayout = () => {
       </OutletContainer>
       <Footer>
         <p>
-          E-mail:{' '}
+          E-mail:
           <Link href="mailto:golyaka.d@gmail.com">golyaka.d@gmail.com</Link>
         </p>
         <p>

@@ -96,6 +96,7 @@ export const Maps = () => {
         alfaDF: data.Alfa_DF,
         betaDF: data.Beta_DF,
       };
+      console.log(obj);
       setGeoData(() => obj);
     } catch (error) {
       notifyToast('error', 'Request error!');
