@@ -40,23 +40,21 @@ const FormError = ({ name }) => {
 };
 
 export const LogIn = () => {
-  const [setUserEmail, setToken, setError] = useOutletContext();
+  const [setUserEmail, setToken ] = useOutletContext();
   const navigate = useNavigate();
 
   const onSubmit = async({ email, password }) => { 
     const fetchData = await signInFetch(email, password); 
     
-    console.log('fetchData', fetchData);
+    console.log('fetchData', fetchData, fetchData.accessToken);
     
     if (fetchData.accessToken !== undefined) {
       setUserEmail(fetchData.email);
-      setToken(fetchData.accessToken);
-      setError(null);
+      setToken(fetchData.accessToken);      
       navigate("/", { replace: true });  
-      notifyToast('success', 'You are successfully registered into the system!!!');
+      notifyToast('success', 'You have successfully logged in to your profile!');
     } else {
-      setError(fetchData);
-      notifyToast('error', 'You are not registered into the system!!!');
+      notifyToast('error', 'You are not logged in!', `${fetchData}`);
     }   
   };
 

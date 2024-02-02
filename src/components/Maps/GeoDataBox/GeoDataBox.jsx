@@ -1,6 +1,8 @@
 import { Button, Text } from '@chakra-ui/react';
 import { Box, DataBox } from './GeoDataBox.styled.js';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
+import { access } from 'components/SharedLayout/SharedLayout.jsx';
 
 const fontSizeLegend = '16px';
 const fontSizeDiscrption = '14px';
@@ -24,18 +26,14 @@ export const GeoDataBox = props => {
   } = props.geoData;
   const { setGeoData } = props;
 
+  const navigate = useNavigate();
+
   const boxLocalisation = () => {
     if (clientX > 0.5 * width && clientY > 0.5 * hight) {
       return '-105%, -105%';
-    } else if (
-      clientX < 0.5 * width &&
-      clientY > 0.5 * hight
-    ) {
+    } else if (clientX < 0.5 * width && clientY > 0.5 * hight) {
       return '5%, -105%';
-    } else if (
-      clientX > 0.5 * width &&
-      clientY < 0.5 * hight
-    ) {
+    } else if (clientX > 0.5 * width && clientY < 0.5 * hight) {
       return '-105%, 5%';
     } else {
       return '5%, 5%';
@@ -47,9 +45,9 @@ export const GeoDataBox = props => {
     return num;
   };
 
-  function onClose(){
+  function onClose() {
     setGeoData(null);
-  };
+  }
 
   return (
     <DataBox
@@ -60,33 +58,52 @@ export const GeoDataBox = props => {
         transition: 'transform 500ms ease',
       }}
     >
-      <Box>
-        <Text fontSize={fontSizeLegend} as="b">
-          Description:
-        </Text>
-        <Text fontSize={fontSizeDiscrption}>
-          <b>Point ID:</b> {id};
-        </Text>
-        <Text fontSize={fontSizeDiscrption}>
-          <b>Lat:</b> {roundFn(lat)};
-        </Text>
-        <Text fontSize={fontSizeDiscrption}>
-          <b>Lng:</b> {roundFn(lng)};
-        </Text>
-        <Text fontSize={fontSizeDiscrption}>
-          <b>AEDR h=0.1 m:</b> {AEDR01} mkSv;
-        </Text>
-        <Text fontSize={fontSizeDiscrption}>
-          <b>AEDR h=1.0 m:</b> {AEDR1} mkSv;
-        </Text>
-        <Text fontSize={fontSizeDiscrption}>
-          <b>Beta-particles flux density:</b> {betaDF} pcs/(min sq.cm);
-        </Text>
-        <Text fontSize={fontSizeDiscrption}>
-          <b>Alfa-particles flux density:</b> {alfaDF} pcs/(min sq.cm)
-        </Text>
-      </Box>
-      <Button type='button' colorScheme="teal" padding={1} borderRadius={25} onClick={onClose}>
+      {access ? (
+        <Box>
+          <Text fontSize={fontSizeLegend} as="b">
+            Description:
+          </Text>
+          <Text fontSize={fontSizeDiscrption}>
+            <b>Point ID:</b> {id};
+          </Text>
+          <Text fontSize={fontSizeDiscrption}>
+            <b>Lat:</b> {roundFn(lat)};
+          </Text>
+          <Text fontSize={fontSizeDiscrption}>
+            <b>Lng:</b> {roundFn(lng)};
+          </Text>
+          <Text fontSize={fontSizeDiscrption}>
+            <b>AEDR h=0.1 m:</b> {AEDR01} mkSv;
+          </Text>
+          <Text fontSize={fontSizeDiscrption}>
+            <b>AEDR h=1.0 m:</b> {AEDR1} mkSv;
+          </Text>
+          <Text fontSize={fontSizeDiscrption}>
+            <b>Beta-particles flux density:</b>
+            <br /> {betaDF} pcs/(min sq.cm);
+          </Text>
+          <Text fontSize={fontSizeDiscrption}>
+            <b>Alfa-particles flux density:</b>
+            <br /> {alfaDF} pcs/(min sq.cm)
+          </Text>
+        </Box>
+      ) : (
+        <Box>
+            <Text fontSize="20px" w="700">
+            Only a registered user can view the results of observations!
+          </Text>
+            <Text>
+              Do you want to go to the registration page?
+            </Text>
+        </Box>
+      )}
+      <Button
+        type="button"
+        colorScheme="teal"
+        padding={1}
+        borderRadius={25}
+        onClick={onClose}
+      >
         <IoMdCloseCircleOutline size={25}></IoMdCloseCircleOutline>
       </Button>
     </DataBox>

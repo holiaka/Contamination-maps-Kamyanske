@@ -4,8 +4,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut,
-  sendEmailVerification,
+  signOut, 
   updatePassword,
   deleteUser,
 } from 'firebase/auth';
@@ -31,7 +30,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-
 const auth = getAuth();
 
 // Define an asynchronous function
@@ -43,14 +41,12 @@ export async function registrationFetch(email, password) {
       email,
       password
     );
-
     // Signed up
     const user = userCredential.user;
     return user;
   } catch (error) {
     // Catch and handle any errors
-    return error.message;
-    // ...additional error handling logic if needed
+    return error.message;   
   }
 }
 
@@ -70,41 +66,34 @@ export const signInFetch = async (email, password) => {
 
 export const signOutFeatch = async () => {
   try {
-    const data = await signOut(auth);
-    return data;
-  } catch (error) {    
+    await signOut(auth);
+    return 'success';
+  } catch (error) {
     return error;
   }
 };
 
-let user = auth.currentUser;
-
-export const emailVerification = async () => {
-  await sendEmailVerification(auth.currentUser);
-};
-
-
-
-export const changePassword = async newPassword => {
+export const changePassword = async (newPassword) => {
   try {
-    const changedPassword = await updatePassword(user, newPassword);
-    // Update successful.
-    return changedPassword;
-  } catch (error) {
+    const user = auth.currentUser;    
+    await updatePassword(user, newPassword);    
+    return 'success';
+  } catch (error) {    
     return error.message;
   }
 };
 
 export const onRemoveAccouant = () => {
   try {
-    const data = deleteUser(user);
+    const user = auth.currentUser;
+    const data = deleteUser(user);    
     // User deleted
     return data;
-} catch (error){
-  // An error ocurred
+  } catch (error) {    
+    // An error ocurred
     return error.message;
+  }
 };
-}
 
 const dbRef = ref(db);
 export const geoFetch = async id => {

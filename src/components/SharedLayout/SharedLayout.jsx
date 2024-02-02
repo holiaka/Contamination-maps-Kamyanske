@@ -22,7 +22,8 @@ import { Loader } from 'components/Loader/Loader';
 import { NotifyAlert } from 'components/Notify/Notify';
 import { IfAuth } from './IfAuth/IfAuth';
 import { IfNoAuth } from './IfNoAuth/IfNoAuth';
-import { notifyToast } from 'components/Notify/notifyPropertyCode';
+
+export let access;
 
 export const SharedLayout = () => {
   const [userEmail, setUserEmail] = useState(() =>
@@ -30,7 +31,6 @@ export const SharedLayout = () => {
   );
   const [token, setToken] = useState(() => initialState('Kamyanske-map-token'));
   const [complite, setComplite] = useState(false);
-  const [error, setError] = useState(null);
 
   function initialState(source) {
     const store = JSON.parse(localStorage.getItem(source));
@@ -43,17 +43,16 @@ export const SharedLayout = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   // This will run one time after the component mounts
-  // callback function to call when event triggers
-  const onPageLoaded = () => {
-    setComplite(true);
-    // do something else
-  };
-
-  const onPageLoading = () => {
-    setComplite(false);
-  };
-
   useEffect(() => {
+    const onPageLoaded = () => {
+      setComplite(true);
+      // do something else
+    };
+
+    const onPageLoading = () => {
+      setComplite(false);
+    };
+
     const pageLoading = condition => {
       if (condition === true) {
         onPageLoading();
@@ -76,11 +75,8 @@ export const SharedLayout = () => {
   useEffect(() => {
     localStorage.setItem('Kamyanske-map-email', JSON.stringify(userEmail));
     localStorage.setItem('Kamyanske-map-token', JSON.stringify(token));
+    access = token;
   }, [userEmail, token]);
-
-  useEffect(() => {
-    notifyToast('error', `Authorisation error: ${error}`);
-  }, [error]);
 
   return (
     <Container>
@@ -124,7 +120,6 @@ export const SharedLayout = () => {
                 email={userEmail}
                 setEmail={setUserEmail}
                 setToken={setToken}
-                setError={setError}
               />
             ) : (
               <IfNoAuth />
@@ -134,7 +129,7 @@ export const SharedLayout = () => {
       </Header>
       <OutletContainer>
         {complite ? (
-          <Outlet context={[setUserEmail, setToken, setError]} />
+          <Outlet context={[setUserEmail, setToken]} />
         ) : (
           <Loader />
         )}

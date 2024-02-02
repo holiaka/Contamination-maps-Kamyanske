@@ -4,9 +4,10 @@ import { Avatar } from '@chakra-ui/react';
 import { ExitButton } from './IfAuth.styled';
 import { HeaderNav } from '../SharedLayout.styled';
 import { signOutFeatch } from './../../../firebase/sdk';
+import { notifyToast } from 'components/Notify/notifyPropertyCode';
 
 export const IfAuth = (props) => {
-  const { email, setEmail, setToken, setError } = props;
+  const { email, setEmail, setToken } = props;
   
   const createInitials = (name) => {
     if (name.length > 0) {
@@ -22,13 +23,15 @@ export const IfAuth = (props) => {
   const navigate = useNavigate();
 
   const onClick = async () => {
-    console.log(props);
-    const fetchData = await signOutFeatch();   
-    setEmail('');
-    setToken('');
-    setError('');
-    console.log('Output Data', fetchData);
-    navigate('/login', { replace: true });
+    const fetchData = await signOutFeatch();
+    if (fetchData === 'success') {
+      setEmail('');
+      setToken('');
+      notifyToast('info', 'Connection session ended!');
+      navigate('/login', { replace: true });
+    } else {
+      notifyToast('error', 'An error occurred!');
+    }
   };
 
   const onClickAvatar = async () => {
