@@ -12,6 +12,7 @@ import {
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import L, { Icon } from 'leaflet';
+import { access } from 'components/SharedLayout/SharedLayout.jsx';
 
 import buildings from './../../layers/fixBuildings.json';
 import boundary from './../../layers/boundary.json';
@@ -23,6 +24,7 @@ import { GeoDataBox } from './GeoDataBox/GeoDataBox';
 import { notifyToast } from 'components/Notify/notifyPropertyCode';
 import { GeoLocation } from './GeoLocation/GeoLocation';
 import iconSvg from './../../img/SVG/human-target-svgrepo-com.svg';
+import { Legend } from './Legend/Legend';
 
 export const Maps = () => {
   const [geoData, setGeoData] = useState(null);
@@ -71,36 +73,48 @@ export const Maps = () => {
   };
 
   let obtainData = async function (e) {
-    const geoCoordinates = e.latlng;
-    const { lat, lng } = geoCoordinates;
+    
+      const geoCoordinates = e.latlng;
+      const { lat, lng } = geoCoordinates;
 
-    const sitePosition = e.originalEvent;
-    const { layerX, layerY, clientX, clientY } = sitePosition;
+      const sitePosition = e.originalEvent;
+      const { layerX, layerY, clientX, clientY } = sitePosition;
 
-    const options = e.target;
-    const id = options.feature.properties.ID;
-
-    try {
-      const data = await geoFetch(id);
-      notifyToast('success', 'Successful request to the database!');
-      let obj = {
-        id: id,
-        lat: lat,
-        lng: lng,
-        positionX: layerX,
-        positionY: layerY,
-        clientX: clientX,
-        clientY: clientY,
-        AEDR01: data.AEDR_01,
-        AEDR1: data.AEDR_10,
-        alfaDF: data.Alfa_DF,
-        betaDF: data.Beta_DF,
-      };
-      console.log(obj);
+      const options = e.target;
+      const id = options.feature.properties.ID;
+      if (access) {
+      try {
+        const data = await geoFetch(id);
+        notifyToast('success', 'Successful request to the database!');
+        let obj = {
+          id: id,
+          lat: lat,
+          lng: lng,
+          positionX: layerX,
+          positionY: layerY,
+          clientX: clientX,
+          clientY: clientY,
+          AEDR01: data.AEDR_01,
+          AEDR1: data.AEDR_10,
+          alfaDF: data.Alfa_DF,
+          betaDF: data.Beta_DF,
+        };
+        setGeoData(() => obj);
+      } catch (error) {
+        notifyToast('error', 'Request error!');
+        return;
+      }
+      } else {
+        let obj = {
+          id: id,
+          lat: lat,
+          lng: lng,
+          positionX: layerX,
+          positionY: layerY,
+          clientX: clientX,
+          clientY: clientY,
+        }
       setGeoData(() => obj);
-    } catch (error) {
-      notifyToast('error', 'Request error!');
-      return;
     }
   };
 
@@ -242,6 +256,7 @@ export const Maps = () => {
           setMarker={setLocationMarker}
         />
         {locationMarker && userLocation ? <RecenterAutomatically lat={userLocation.latitude} lng={userLocation.longitude} /> : null}
+        <Legend></Legend>
       </MapContainer>
     </div>
   );

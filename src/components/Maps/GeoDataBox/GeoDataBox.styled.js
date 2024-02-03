@@ -9,8 +9,9 @@ export const DataBox = styled.div`
   z-index: 1000000000;
 
   display: flex;
-  width: 30%;
+  max-width: 30%;
   max-height: 30vh;
+  font-size: 18px;
 `;
 
 export const Box = styled.div`

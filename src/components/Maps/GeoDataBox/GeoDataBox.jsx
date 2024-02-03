@@ -47,7 +47,11 @@ export const GeoDataBox = props => {
 
   function onClose() {
     setGeoData(null);
-  }
+  };
+
+  function moveToRegistrationPage(){
+    navigate('registration');
+  };
 
   return (
     <DataBox
@@ -88,13 +92,16 @@ export const GeoDataBox = props => {
           </Text>
         </Box>
       ) : (
-        <Box>
-            <Text fontSize="20px" w="700">
+        <Box style={{ justifyContent: 'center', alignItems: 'center',  }}>
+          <Text fontSize="20px" fontWeight='700' mb='10px'>
             Only a registered user can view the results of observations!
           </Text>
-            <Text>
-              Do you want to go to the registration page?
-            </Text>
+          <Text fontWeight='500'>
+            Do you want to go to the registration page?
+          </Text>
+          <Button type="button" colorScheme="teal" padding={1} borderRadius={5} onClick={moveToRegistrationPage}>
+            Yes, I do!
+          </Button>
         </Box>
       )}
       <Button
