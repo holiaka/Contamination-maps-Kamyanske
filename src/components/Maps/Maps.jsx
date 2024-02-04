@@ -6,9 +6,10 @@ import {
   GeoJSON,
   ImageOverlay,
   LayersControl,
-  Circle, 
+  Circle,
   useMap,
 } from 'react-leaflet';
+import { useMapEvents } from 'react-leaflet/hooks';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import L, { Icon } from 'leaflet';
@@ -19,17 +20,24 @@ import boundary from './../../layers/boundary.json';
 import geoOldData from './../../layers/obsPointsGammaOld.json';
 import newObs from './../../layers/experement.json';
 import { geoFetch } from './../../firebase/sdk';
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { GeoDataBox } from './GeoDataBox/GeoDataBox';
 import { notifyToast } from 'components/Notify/notifyPropertyCode';
 import { GeoLocation } from './GeoLocation/GeoLocation';
 import iconSvg from './../../img/SVG/human-target-svgrepo-com.svg';
 import { Legend } from './Legend/Legend';
 
+const layersListForShowLegend = [
+  'Gamma dose rate, mkSv/h',
+  'Old observations (2016-2011)',
+  'Radoaction obsarvation 2023-2024',
+];
+
 export const Maps = () => {
   const [geoData, setGeoData] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [locationMarker, setLocationMarker] = useState(false);
+  const [viewLegend, setViewLegend] = useState([]);
 
   const RecenterAutomatically = ({ lat, lng }) => {
     const map = useMap();
@@ -39,7 +47,34 @@ export const Maps = () => {
     return null;
   };
 
-  useEffect(() => {console.log(userLocation, locationMarker)}, [userLocation, locationMarker])
+  const MapEvents = () => {
+    const layerFilter = layerName => {
+      console.log('filter func', viewLegend, viewLegend.length);
+      const arr = layersListForShowLegend.filter(item =>
+        item.includes(layerName)
+      );
+      const [el] = arr;
+      return el;
+    };
+
+    useMapEvents({
+      overlayadd: e => {
+        const result = layerFilter(e.name);
+        if (result) {
+          setViewLegend(prev => [...prev, result.toString()]);
+        }
+      },
+      overlayremove: e => {
+        const result = layerFilter(e.name);
+        if (result) {
+          setViewLegend(prev =>
+            prev.filter(item => item !== result.toString())
+          );
+        }
+      },
+    });
+    return null;
+  };
 
   const customIcon = new Icon({
     iconUrl: require('./../../img/png/radiation-icon.png'),
@@ -73,16 +108,15 @@ export const Maps = () => {
   };
 
   let obtainData = async function (e) {
-    
-      const geoCoordinates = e.latlng;
-      const { lat, lng } = geoCoordinates;
+    const geoCoordinates = e.latlng;
+    const { lat, lng } = geoCoordinates;
 
-      const sitePosition = e.originalEvent;
-      const { layerX, layerY, clientX, clientY } = sitePosition;
+    const sitePosition = e.originalEvent;
+    const { layerX, layerY, clientX, clientY } = sitePosition;
 
-      const options = e.target;
-      const id = options.feature.properties.ID;
-      if (access) {
+    const options = e.target;
+    const id = options.feature.properties.ID;
+    if (access) {
       try {
         const data = await geoFetch(id);
         notifyToast('success', 'Successful request to the database!');
@@ -104,16 +138,16 @@ export const Maps = () => {
         notifyToast('error', 'Request error!');
         return;
       }
-      } else {
-        let obj = {
-          id: id,
-          lat: lat,
-          lng: lng,
-          positionX: layerX,
-          positionY: layerY,
-          clientX: clientX,
-          clientY: clientY,
-        }
+    } else {
+      let obj = {
+        id: id,
+        lat: lat,
+        lng: lng,
+        positionX: layerX,
+        positionY: layerY,
+        clientX: clientX,
+        clientY: clientY,
+      };
       setGeoData(() => obj);
     }
   };
@@ -236,27 +270,47 @@ export const Maps = () => {
         </LayersControl>
         {geoData ? (
           <GeoDataBox geoData={geoData} setGeoData={setGeoData}></GeoDataBox>
-        ) : null}        
-        {locationMarker && userLocation ? <>
-          <Marker position={[userLocation.latitude, userLocation.longitude]} icon={locationIcon}>
-            <Popup>
-            <p><b>Latitude, &deg;: </b>
-              {userLocation.latitude}</p>
-              <p><b>Longitude, &deg;: </b>
-              {userLocation.longitude}</p>
-              <p><b>Accuracy, m: </b>
-            {userLocation.accuracy}</p>
-          </Popup>
-        </Marker>
-        <Circle center={[userLocation.latitude, userLocation.longitude]} radius={userLocation.accuracy}></Circle>
-          </> : null}
-        <GeoLocation           
+        ) : null}
+        {locationMarker && userLocation ? (
+          <>
+            <Marker
+              position={[userLocation.latitude, userLocation.longitude]}
+              icon={locationIcon}
+            >
+              <Popup>
+                <p>
+                  <b>Latitude, &deg;: </b>
+                  {userLocation.latitude}
+                </p>
+                <p>
+                  <b>Longitude, &deg;: </b>
+                  {userLocation.longitude}
+                </p>
+                <p>
+                  <b>Accuracy, m: </b>
+                  {userLocation.accuracy}
+                </p>
+              </Popup>
+            </Marker>
+            <Circle
+              center={[userLocation.latitude, userLocation.longitude]}
+              radius={userLocation.accuracy}
+            ></Circle>
+          </>
+        ) : null}
+        <GeoLocation
           setLocation={setUserLocation}
           marker={locationMarker}
           setMarker={setLocationMarker}
         />
-        {locationMarker && userLocation ? <RecenterAutomatically lat={userLocation.latitude} lng={userLocation.longitude} /> : null}
-        <Legend></Legend>
+        {locationMarker && userLocation ? (
+          <RecenterAutomatically
+            lat={userLocation.latitude}
+            lng={userLocation.longitude}
+          />
+        ) : null}
+        {viewLegend.length > 0 ? <Legend /> : null}
+        <MapEvents />
       </MapContainer>
     </div>
   );

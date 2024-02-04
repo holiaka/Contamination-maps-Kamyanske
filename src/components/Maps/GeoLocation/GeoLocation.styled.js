@@ -16,6 +16,7 @@ export const SwitchGeolocation = styled.button`
     background-color: #fff;
     border-radius: 50%;
     z-index: 1000;
+    /* pointer-events: none; */
 `;
 
 export const Follow = styled(TbCurrentLocation)`

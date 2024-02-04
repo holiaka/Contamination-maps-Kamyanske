@@ -5,8 +5,9 @@ export const DataBox = styled.div`
   padding: 10px;
   background-color: white;
   border-radius: 10px;
+  /* pointer-events: none; */
 
-  z-index: 1000000000;
+  z-index: 1000000;
 
   display: flex;
   max-width: 30%;

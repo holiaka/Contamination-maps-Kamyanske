@@ -7,7 +7,7 @@ export const Legend = () => {
     
     return (
         <LegendBox>
-            <LegendTitle>AEDR, mkSv: </LegendTitle>
+            <LegendTitle>Ambien dose equivalent rate in air, &mu;Sv: </LegendTitle>
             {attributeSchema.map((item) => <Item key={item.color}><ColorAttribute color={item.color} /><TextAttribute>{item.value}</TextAttribute></Item>)}
 
         </LegendBox>        
