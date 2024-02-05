@@ -8,11 +8,12 @@ import {
   LayersControl,
   Circle,
   useMap,
+  CircleMarker,
 } from 'react-leaflet';
 import { useMapEvents } from 'react-leaflet/hooks';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import L, { Icon } from 'leaflet';
+import L from 'leaflet';
 import { access } from 'components/SharedLayout/SharedLayout.jsx';
 
 import buildings from './../../layers/fixBuildings.json';
@@ -49,7 +50,6 @@ export const Maps = () => {
 
   const MapEvents = () => {
     const layerFilter = layerName => {
-      console.log('filter func', viewLegend, viewLegend.length);
       const arr = layersListForShowLegend.filter(item =>
         item.includes(layerName)
       );
@@ -76,16 +76,29 @@ export const Maps = () => {
     return null;
   };
 
-  const customIcon = new Icon({
-    iconUrl: require('./../../img/png/radiation-icon.png'),
-    iconSize: [20, 20],
-  });
-
   const locationIcon = L.icon({
     iconUrl: iconSvg,
     iconSize: [50, 50],
     iconAnchor: [25, 25],
   });
+
+  const createColor = (val) => {    
+      if (val < 0.2) {
+        return '#006420';
+      } else if (val < 0.5) {
+        return '#b1bd40';
+      } else if (val < 1.0) {
+        return '#fdec00';
+      } else if (val < 10) {
+        return '#ff0415';
+      } else if (val < 100) {
+        return '#8f384c';
+      } else if (val < 1000) {
+        return '#800085';
+      } else {
+        return '#45024b';
+      }   
+  }
 
   const roundFn = function (num) {
     if (num >= 2.1) {
@@ -244,17 +257,19 @@ export const Maps = () => {
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Old observations (2016-2011)">
             <MarkerClusterGroup maxClusterRadius={40}>
+              { console.log(geoOldData) }
               {geoOldData.features.map((point, index) => (
-                <Marker
+                <CircleMarker
                   key={index}
-                  position={[point.properties.lat, point.properties.lon]}
-                  icon={customIcon}
+                  center={[point.properties.lat, point.properties.lon]}
+                  radius={3}
+                  color={createColor(point.properties.gamma)}
                 >
                   <Popup>
                     <b>Equvivalent dose rate: </b>
                     {roundFn(point.properties.gamma)}
                   </Popup>
-                </Marker>
+                </ CircleMarker>
               ))}
             </MarkerClusterGroup>
           </LayersControl.Overlay>
