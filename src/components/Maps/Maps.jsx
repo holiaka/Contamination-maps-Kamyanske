@@ -209,12 +209,6 @@ export const Maps = () => {
         maxZoom={22}
       >
         <LayersControl position="topright">
-          <LayersControl.BaseLayer name="Open Street Maps (OSM)">
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-          </LayersControl.BaseLayer>
           <LayersControl.BaseLayer checked name="Mapbox Satellite" children="">
             <TileLayer
               attribution='&copy; <a href="https://www.mapbox.com">Mapbox</a> '
@@ -223,7 +217,36 @@ export const Maps = () => {
                 'pk.eyJ1IjoiMDAwMC0wMDAxLTgwMjUtODg4NSIsImEiOiJjbHFhdjNqY2ExZHZyMnJueHJmeXc1ZHduIn0.WsmLYujm4HrDa-K-VjJ2xA'
               }
             />
+            </LayersControl.BaseLayer> 
+          <LayersControl.BaseLayer name="Open Street Maps (OSM)">
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+        
           </LayersControl.BaseLayer>
+                    <LayersControl.Overlay
+            chacked
+            name="Boundary of Prydniprovsky Chemical Plant"
+          >
+            <GeoJSON
+              data={boundary}
+              style={{
+                color: '#f70101',
+                capasity: 1.0,
+              }}
+            ></GeoJSON>
+          </LayersControl.Overlay>
+           <LayersControl.Overlay name="DEM (0-132m)">
+            <ImageOverlay
+              url="./../../img/webp/DEM.webp"
+              bounds={[
+                [48.492114, 34.658991],
+                [48.5071325, 34.694015],
+              ]}
+              opacity={0.5}
+            ></ImageOverlay>
+          </LayersControl.Overlay>
           <LayersControl.Overlay name="Gamma dose rate, mkSv/h">
             <ImageOverlay
               url="https://github.com/holiaka/Contamination-maps-Kamyanske/blob/main/src/layers/png-gamma-modified.png?raw=true"
@@ -241,18 +264,6 @@ export const Maps = () => {
                 capasity: 1.0,
               }}
               onEachFeature={onEachFeatureBuldings}
-            ></GeoJSON>
-          </LayersControl.Overlay>
-          <LayersControl.Overlay
-            chacked
-            name="Boundary of Prydniprovsky Chemical Plant"
-          >
-            <GeoJSON
-              data={boundary}
-              style={{
-                color: '#f70101',
-                capasity: 1.0,
-              }}
             ></GeoJSON>
           </LayersControl.Overlay>
           <LayersControl.Overlay name="Old observations (2016-2011)">
