@@ -239,10 +239,10 @@ export const Maps = () => {
           </LayersControl.Overlay>
            <LayersControl.Overlay name="DEM (0-132m)">
             <ImageOverlay
-              url="./../../img/webp/DEM.webp"
+              url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/layers/DEM.webp"
               bounds={[
-                [48.492114, 34.658991],
-                [48.5071325, 34.694015],
+                [48.49095, 34.6558],
+                [48.508, 34.69675],
               ]}
               opacity={0.5}
             ></ImageOverlay>
