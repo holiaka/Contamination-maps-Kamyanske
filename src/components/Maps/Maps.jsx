@@ -175,8 +175,8 @@ export const Maps = () => {
       text = 'No data';
     }
     layer
-      .bindTooltip(text.toString(), { permanent: true, direction: 'center' })
-      .openTooltip();
+      .bindPopup(`<b>Buildings No:</b> ${text.toString()} </br> Next Row`)
+    
   };
 
   const onEachFeature = (feature, layer) => {
@@ -251,6 +251,7 @@ export const Maps = () => {
             <GeoJSON
               data={buildings.features}
               style={{
+                color: "#ff09b5",
                 capasity: 1.0,
               }}
               onEachFeature={onEachFeatureBuldings}

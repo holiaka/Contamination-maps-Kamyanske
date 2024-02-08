@@ -2,11 +2,14 @@ import { Link as ReactRouterLink, Outlet } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   useColorMode,
+  useColorModeValue,
   Button,
   Link as ChakraLink,
   Link,
 } from '@chakra-ui/react';
 import { FaSun, FaMoon } from 'react-icons/fa';
+import { BsTelephone } from 'react-icons/bs';
+import { MdOutlineEmail } from 'react-icons/md';
 import {
   Container,
   OutletContainer,
@@ -15,8 +18,9 @@ import {
   HeaderNav,
   HeaderSide,
   InnerHeader,
+  FooterText,
 } from './SharedLayout.styled';
-import { linkFontSize } from './SharedLayout.my-chakra-ui';
+import { linkFontSize, noteFontSize } from './SharedLayout.my-chakra-ui';
 import { useState, useEffect } from 'react';
 import { Loader } from 'components/Loader/Loader';
 import { NotifyAlert } from 'components/Notify/Notify';
@@ -25,14 +29,14 @@ import { IfNoAuth } from './IfNoAuth/IfNoAuth';
 import { notifyToast } from 'components/Notify/notifyPropertyCode';
 
 export let access;
- 
-window.addEventListener('offline', (e) => {  
-  notifyToast("error", "The browser is in offline mode!")
+
+window.addEventListener('offline', e => {
+  notifyToast('error', 'The browser is in offline mode!');
 });
 
-window.addEventListener('online', (e) =>{  
-  notifyToast("info", "The browser is in online mode!")
-})
+window.addEventListener('online', e => {
+  notifyToast('info', 'The browser is in online mode!');
+});
 
 export const SharedLayout = () => {
   const [userEmail, setUserEmail] = useState(() =>
@@ -50,6 +54,10 @@ export const SharedLayout = () => {
   }
 
   const { colorMode, toggleColorMode } = useColorMode();
+
+  const option = {
+    textColor: useColorModeValue('gray.800', 'white'),
+  };
 
   // This will run one time after the component mounts
   useEffect(() => {
@@ -137,21 +145,23 @@ export const SharedLayout = () => {
         </InnerHeader>
       </Header>
       <OutletContainer>
-        {complite ? (
-          <Outlet context={[setUserEmail, setToken]} />
-        ) : (
-          <Loader />
-        )}
+        {complite ? <Outlet context={[setUserEmail, setToken]} /> : <Loader />}
         <NotifyAlert />
       </OutletContainer>
       <Footer>
-        <p>
-          E-mail:
+        <FooterText fontSize={noteFontSize}
+          color={option.textColor}>The website was created by Dmytrii Holiaka: </ FooterText>
+        <FooterText
+          fontSize={noteFontSize}
+          color={option.textColor}          
+        >
+          <MdOutlineEmail />: 
           <Link href="mailto:golyaka.d@gmail.com">golyaka.d@gmail.com</Link>
-        </p>
-        <p>
-          Mobile: <Link href="tel:+380974239084">+38 (097) 423-90-84</Link>
-        </p>
+        </FooterText>
+        <FooterText fontSize={noteFontSize} color={option.textColor} >
+          <BsTelephone />: 
+          <Link href="tel:+380974239084">+38 (097) 423-90-84</Link>
+        </FooterText>
       </Footer>
     </Container>
   );

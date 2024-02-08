@@ -1,11 +1,14 @@
 import { Button, Heading, Text, useColorModeValue } from '@chakra-ui/react';
 import { Box } from './About.styled';
 
+
+
 export const About = () => {
 
   const option = {
     textColor: useColorModeValue('gray.800', 'white'),
   };
+  
   return (
     <Box>
       <Heading color={option.textColor} fontSize='50px'> Hello everybody!</Heading>
