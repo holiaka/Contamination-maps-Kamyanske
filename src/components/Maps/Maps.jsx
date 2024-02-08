@@ -29,9 +29,10 @@ import iconSvg from './../../img/SVG/human-target-svgrepo-com.svg';
 import { Legend } from './Legend/Legend';
 
 const layersListForShowLegend = [
-  'Gamma dose rate, mkSv/h',
-  'Old observations (2016-2011)',
-  'Radoaction obsarvation 2023-2024',
+  'Gamma dose rate for 2016, μSv/h',
+  'Old observations (2011-2016)',
+  'Gamma dose rate for 2024, μSv/h',
+  'New observation 2023-2024',
 ];
 
 export const Maps = () => {
@@ -222,8 +223,7 @@ export const Maps = () => {
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-        
+            />        
           </LayersControl.BaseLayer>
                     <LayersControl.Overlay
             chacked
@@ -241,23 +241,13 @@ export const Maps = () => {
             <ImageOverlay
               url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/layers/DEM.webp"
               bounds={[
-                [48.49095, 34.6558],
-                [48.508, 34.69675],
+                [48.4905, 34.6541],
+                [48.50866, 34.6994],
               ]}
               opacity={0.5}
             ></ImageOverlay>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Gamma dose rate, mkSv/h">
-            <ImageOverlay
-              url="https://github.com/holiaka/Contamination-maps-Kamyanske/blob/main/src/layers/png-gamma-modified.png?raw=true"
-              bounds={[
-                [48.492114, 34.658991],
-                [48.5071325, 34.694015],
-              ]}
-              opacity={0.5}
-            ></ImageOverlay>
-          </LayersControl.Overlay>
-          <LayersControl.Overlay name="Buldings">
+<LayersControl.Overlay name="Buldings">
             <GeoJSON
               data={buildings.features}
               style={{
@@ -266,9 +256,18 @@ export const Maps = () => {
               onEachFeature={onEachFeatureBuldings}
             ></GeoJSON>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Old observations (2016-2011)">
-            <MarkerClusterGroup maxClusterRadius={40}>
-              { console.log(geoOldData) }
+          <LayersControl.Overlay name="Gamma dose rate for 2016, &mu;Sv/h">
+            <ImageOverlay
+              url="https://github.com/holiaka/Contamination-maps-Kamyanske/blob/main/src/layers/png-gamma-modified.png?raw=true"
+              bounds={[
+                [48.492114, 34.658991],
+                [48.5071325, 34.694015],
+              ]}
+              opacity={0.5}
+            ></ImageOverlay>
+          </LayersControl.Overlay>          
+          <LayersControl.Overlay name="Old observations (2011-2016)">
+            <MarkerClusterGroup maxClusterRadius={40}>              
               {geoOldData.features.map((point, index) => (
                 <CircleMarker
                   key={index}
@@ -284,7 +283,17 @@ export const Maps = () => {
               ))}
             </MarkerClusterGroup>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Radoaction obsarvation 2023-2024">
+          <LayersControl.Overlay name="Gamma dose rate for 2024, &mu;Sv/h">
+            <ImageOverlay
+              url="https://github.com/holiaka/Contamination-maps-Kamyanske/blob/main/src/layers/png-gamma-modified.png?raw=true"
+              bounds={[
+                [48.492114, 34.658991],
+                [48.5071325, 34.694015],
+              ]}
+              opacity={0.5}
+            ></ImageOverlay>
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name="New observation 2023-2024">
             <MarkerClusterGroup maxClusterRadius={40}>
               <GeoJSON
                 data={newObs}
@@ -314,13 +323,22 @@ export const Maps = () => {
                 </p>
                 <p>
                   <b>Accuracy, m: </b>
-                  {userLocation.accuracy}
+                  {roundFn(userLocation.accuracy)}
+                </p>
+                <p>
+                  <b>Date: </b>
+                  {userLocation.date}
+                </p>
+                <p>
+                  <b>Time: </b>
+                  {userLocation.time}
                 </p>
               </Popup>
             </Marker>
             <Circle
               center={[userLocation.latitude, userLocation.longitude]}
               radius={userLocation.accuracy}
+              color="#fc0edc"
             ></Circle>
           </>
         ) : null}

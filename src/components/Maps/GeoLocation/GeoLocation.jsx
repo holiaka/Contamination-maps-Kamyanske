@@ -7,13 +7,13 @@ export const GeoLocation = props => {
   const success = (pos) => {
     let { coords, timestamp } = pos;
     let dataTime = new Date(timestamp);
-    let data = dataTime.toLocaleDateString();
+    let date = dataTime.toLocaleDateString();
     let time = dataTime.toLocaleTimeString();
     let obj = {
       longitude: coords.longitude,
         latitude: coords.latitude,
         accuracy: coords.accuracy,
-        data: data,
+        date: date,
         time: time,
     }
     setLocation(obj);

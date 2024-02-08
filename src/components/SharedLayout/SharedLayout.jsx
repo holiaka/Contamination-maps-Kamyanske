@@ -22,8 +22,17 @@ import { Loader } from 'components/Loader/Loader';
 import { NotifyAlert } from 'components/Notify/Notify';
 import { IfAuth } from './IfAuth/IfAuth';
 import { IfNoAuth } from './IfNoAuth/IfNoAuth';
+import { notifyToast } from 'components/Notify/notifyPropertyCode';
 
 export let access;
+ 
+window.addEventListener('offline', (e) => {  
+  notifyToast("error", "The browser is in offline mode!")
+});
+
+window.addEventListener('online', (e) =>{  
+  notifyToast("info", "The browser is in online mode!")
+})
 
 export const SharedLayout = () => {
   const [userEmail, setUserEmail] = useState(() =>
