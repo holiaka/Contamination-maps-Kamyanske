@@ -19,7 +19,7 @@ import { access } from 'components/SharedLayout/SharedLayout.jsx';
 import buildings from './../../layers/fixBuildings.json';
 import boundary from './../../layers/boundary.json';
 import geoOldData from './../../layers/obsPointsGammaOld.json';
-import newObs from './../../layers/experement.json';
+import newObs from './../../layers/front-end-colection-2024.json';
 import { geoFetch } from './../../firebase/sdk';
 import { useState, useEffect } from 'react';
 import { GeoDataBox } from './GeoDataBox/GeoDataBox';
@@ -84,17 +84,17 @@ export const Maps = () => {
   });
 
   const createColor = (val) => {    
-      if (val < 0.2) {
+      if (val === 1) {
         return '#006420';
-      } else if (val < 0.5) {
+      } else if (val === 2) {
         return '#b1bd40';
-      } else if (val < 1.0) {
+      } else if (val === 3) {
         return '#fdec00';
-      } else if (val < 10) {
+      } else if (val === 4) {
         return '#ff0415';
-      } else if (val < 100) {
+      } else if (val === 5) {
         return '#8f384c';
-      } else if (val < 1000) {
+      } else if (val === 6) {
         return '#800085';
       } else {
         return '#45024b';
@@ -110,10 +110,10 @@ export const Maps = () => {
     return num;
   };
 
-  const setIcon = (_, latlng) => {
+  const setIcon = (feature, latlng) => {    
     return L.circleMarker(latlng, {
       radius: 4,
-      fillColor: '#FF0000',
+      fillColor: createColor(feature.properties.colorID),
       color: '#FFFFFF',
       weight: 1,
       opacity: 1,
@@ -168,14 +168,22 @@ export const Maps = () => {
 
   const onEachFeatureBuldings = (feature, layer) => {
     let number = feature.properties.Number;
+    let enterprise = feature.properties.Enterprise_;
     let text;
+    let text2
     if (number !== null) {
       text = number;
     } else {
       text = 'No data';
     }
+    if (enterprise !== null) {
+      text2 = enterprise;
+    } else {
+      text2 = 'No data';
+    }
     layer
-      .bindPopup(`<b>Buildings No:</b> ${text.toString()} </br> Next Row`)
+      .bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
+       <b>Enterprise:</b> ${text2}`)
     
   };
 
@@ -269,16 +277,16 @@ export const Maps = () => {
           </LayersControl.Overlay>          
           <LayersControl.Overlay name="Old observations (2011-2016)">
             <MarkerClusterGroup maxClusterRadius={40}>              
-              {geoOldData.features.map((point, index) => (
+              {geoOldData.map((point, index) => (
                 <CircleMarker
                   key={index}
-                  center={[point.properties.lat, point.properties.lon]}
+                  center={[point.lat, point.lon]}
                   radius={3}
-                  color={createColor(point.properties.gamma)}
+                  color={createColor(point.colorID)}
                 >
                   <Popup>
                     <b>Equvivalent dose rate: </b>
-                    {roundFn(point.properties.gamma)}
+                    {roundFn(point.gamma)}
                   </Popup>
                 </ CircleMarker>
               ))}

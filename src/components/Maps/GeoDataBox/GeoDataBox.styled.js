@@ -10,8 +10,8 @@ export const DataBox = styled.div`
   z-index: 1000000;
 
   display: flex;
-  max-width: 30%;
-  max-height: 30vh;
+  max-width: 45%;
+  max-height: 45vh;
   font-size: 18px;
 `;
 

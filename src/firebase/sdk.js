@@ -24,7 +24,7 @@ const firebaseConfig = {
   appId: '1:252512082529:web:92415c751e6f3e72d0e820',
   measurementId: 'G-720F61ZQSX',
   databaseURL:
-    'https://phz-project-default-rtdb.europe-west1.firebasedatabase.app/',
+    'https://phz-project.europe-west1.firebasedatabase.app/',
 };
 
 // Initialize Firebase
