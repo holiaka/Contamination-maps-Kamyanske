@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/Contamination-maps-Kamyanske/static/css/main.7495cf58.css",
-    "main.js": "/Contamination-maps-Kamyanske/static/js/main.da27f20c.js",
+    "main.js": "/Contamination-maps-Kamyanske/static/js/main.916ab9ea.js",
     "index.html": "/Contamination-maps-Kamyanske/index.html",
     "static/media/human-target-svgrepo-com.svg": "/Contamination-maps-Kamyanske/static/media/human-target-svgrepo-com.0aa6c9e667816531c5340f0c73520730.svg",
     "main.7495cf58.css.map": "/Contamination-maps-Kamyanske/static/css/main.7495cf58.css.map",
-    "main.da27f20c.js.map": "/Contamination-maps-Kamyanske/static/js/main.da27f20c.js.map"
+    "main.916ab9ea.js.map": "/Contamination-maps-Kamyanske/static/js/main.916ab9ea.js.map"
   },
   "entrypoints": [
     "static/css/main.7495cf58.css",
-    "static/js/main.da27f20c.js"
+    "static/js/main.916ab9ea.js"
   ]
 }
