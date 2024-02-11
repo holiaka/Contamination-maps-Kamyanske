@@ -6,6 +6,8 @@ import {
   Button,
   Link as ChakraLink,
   Link,
+  Hide,
+  Show,
 } from '@chakra-ui/react';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { BsTelephone } from 'react-icons/bs';
@@ -148,21 +150,25 @@ export const SharedLayout = () => {
         {complite ? <Outlet context={[setUserEmail, setToken]} /> : <Loader />}
         <NotifyAlert />
       </OutletContainer>
+      <Hide breakpoint='(max-width: 420px)'>
       <Footer>
         <FooterText fontSize={noteFontSize}
-          color={option.textColor}>The website was created by Dmytrii Holiaka: </ FooterText>
+          color={option.textColor}>The website was created by Dmytrii Holiaka </ FooterText>
+        <Hide breakpoint='(max-width: 700px)'>
         <FooterText
           fontSize={noteFontSize}
           color={option.textColor}          
         >
-          <MdOutlineEmail />: 
+          : <MdOutlineEmail />: 
           <Link href="mailto:golyaka.d@gmail.com">golyaka.d@gmail.com</Link>
         </FooterText>
         <FooterText fontSize={noteFontSize} color={option.textColor} >
           <BsTelephone />: 
           <Link href="tel:+380974239084">+38 (097) 423-90-84</Link>
-        </FooterText>
+          </FooterText>
+          </Hide>
       </Footer>
+      </Hide>
     </Container>
   );
 };
