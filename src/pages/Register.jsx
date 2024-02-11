@@ -8,7 +8,7 @@ import {
   Input,
   InputName,
   SubmitBtn,
-} from '../components/ContactForm/ContactForms';
+} from './AuthForms.styled';
 import { registrationFetch } from './../firebase/sdk';
 import { useOutletContext, useNavigate } from "react-router-dom";
 import { notifyToast } from './../components/Notify/notifyPropertyCode';

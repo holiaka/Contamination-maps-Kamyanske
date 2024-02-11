@@ -8,7 +8,7 @@ import {
   Input,
   InputName,
   SubmitBtn,
-} from '../components/ContactForm/ContactForms';
+} from './AuthForms.styled';
 import { changePassword, onRemoveAccouant } from './../firebase/sdk';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { notifyToast } from './../components/Notify/notifyPropertyCode';
@@ -106,7 +106,7 @@ export const ProfilManagment = () => {
             <FormError name="password1" />
           </InputBox>
 
-          <InputName>Password: </InputName>
+          <InputName>Confirm the new password: </InputName>
           <InputBox>
             <Input
               type="password"
@@ -114,16 +114,15 @@ export const ProfilManagment = () => {
               placeholder="Your new password!"
               required
             ></Input>
-            <FormError name="password" />
+            <FormError name="password2" />
           </InputBox>
-          <SubmitBtn type="submit">Create account</SubmitBtn>
+          <SubmitBtn type="submit">Change password</SubmitBtn>
         </SubmitForm>
       </Formik>
 
       <div style={{ minHeight: '20px' }}>
-        <Text color="red">
-          {' '}
-          Deleting your account now:{' '}
+        <Text color="red">          
+          Deleting your account now:
           <Button
             onClick={onDelete}
             type="button"

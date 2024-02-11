@@ -7,7 +7,6 @@ import {
   Link as ChakraLink,
   Link,
   Hide,
-  Show,
 } from '@chakra-ui/react';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { BsTelephone } from 'react-icons/bs';
@@ -126,6 +125,7 @@ export const SharedLayout = () => {
             </HeaderNav>
           </HeaderSide>
           <HeaderSide>
+           <Hide breakpoint='(max-width: 540px)'>
             <Button
               marginTop="5"
               marginRight="10"
@@ -134,6 +134,7 @@ export const SharedLayout = () => {
             >
               {colorMode === 'light' ? <FaSun /> : <FaMoon />}
             </Button>
+            </Hide>
             {token.length > 0 ? (
               <IfAuth
                 email={userEmail}

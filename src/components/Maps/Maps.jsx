@@ -196,7 +196,7 @@ export const Maps = () => {
   return (
     <div
       style={{
-        height: '85vh',
+        height: '100%',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',

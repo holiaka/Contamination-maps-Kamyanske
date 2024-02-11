@@ -14,7 +14,7 @@ export const Container = styled.div`
     rgba(134, 135, 136, 0.2) 90%,
     rgba(134, 135, 136, 0) 100%
   );
-    @media (max-width: 700px) {
+  @media (max-width: 700px) {
     width: 100%;
   }
 `;
@@ -53,8 +53,9 @@ export const OutletContainer = styled.div`
   margin-left: 0;
   margin-right: 0;
 
-  
-}
+  @media (max-width: 420px) {
+    height: 90vh;
+  }
 `;
 
 export const Footer = styled.footer`
@@ -72,7 +73,7 @@ export const Footer = styled.footer`
   padding: 5px;
 `;
 
-export const FooterText = styled(Text)`  
+export const FooterText = styled(Text)`
   display: flex;
   justify-content: center;
   align-items: center;

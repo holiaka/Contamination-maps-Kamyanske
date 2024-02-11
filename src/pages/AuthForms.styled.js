@@ -6,7 +6,8 @@ export const SubmitForm = styled(Form)`
     margin-bottom: 20px;    
     border-radius: 20px;
     background-color: lightgray;
-    width: 600px; 
+    width: 50%; 
+    min-width: 300px;
     margin-left: auto;
     margin-right: auto;
 `;
@@ -16,6 +17,7 @@ export const InputBox = styled.div`
     line-height: 0.6;
 
     display: flex;
+    flex-direction: column;
     gap: 10px;
 `
 
