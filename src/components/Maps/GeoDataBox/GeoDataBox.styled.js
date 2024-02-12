@@ -7,9 +7,10 @@ export const DataBox = styled.div`
   border-radius: 10px;
   /* pointer-events: none; */
 
-  z-index: 1000000;
+  z-index: 10000;
 
   display: flex;
+  justify-content: space-between;
   max-width: 45%;
   min-width: 320px;
   max-height: 45vh;
