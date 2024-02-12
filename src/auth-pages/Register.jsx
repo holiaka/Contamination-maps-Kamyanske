@@ -9,9 +9,9 @@ import {
   InputName,
   SubmitBtn,
 } from './AuthForms.styled';
-import { registrationFetch } from './../firebase/sdk';
+import { registrationFetch } from '../firebase/sdk';
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { notifyToast } from './../components/Notify/notifyPropertyCode';
+import { notifyToast } from '../components/Notify/notifyPropertyCode';
 
 
 

@@ -11,6 +11,7 @@ export const DataBox = styled.div`
 
   display: flex;
   max-width: 45%;
+  min-width: 320px;
   max-height: 45vh;
   font-size: 18px;
 `;

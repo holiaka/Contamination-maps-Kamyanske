@@ -1,6 +1,6 @@
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Text } from '@chakra-ui/react';
+import { useColorModeValue, Text } from '@chakra-ui/react';
 import {
   ErrorText,
   SubmitForm,
@@ -8,10 +8,11 @@ import {
   Input,
   InputName,
   SubmitBtn,
+  ErrorContainer,
 } from './AuthForms.styled';
-import { changePassword, onRemoveAccouant } from './../firebase/sdk';
+import { changePassword, onRemoveAccouant } from '../firebase/sdk';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { notifyToast } from './../components/Notify/notifyPropertyCode';
+import { notifyToast } from '../components/Notify/notifyPropertyCode';
 import { Button } from '@chakra-ui/react';
 import { FaUserAltSlash } from 'react-icons/fa';
 
@@ -44,6 +45,11 @@ export const ProfilManagment = () => {
   const [setUserEmail, setToken] = useOutletContext();
   console.log()
   const navigate = useNavigate();
+
+    const option = {
+    textColor: useColorModeValue('gray.800', 'white'),
+  };
+
 
   const onSubmit = async ({ password1, password2 }) => {
     let password = '';
@@ -88,7 +94,7 @@ export const ProfilManagment = () => {
 
   return (
     <>
-      <Text>Change password</Text>
+      <Text color={option.textColor}>Change password</Text>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmitInner}
@@ -103,7 +109,7 @@ export const ProfilManagment = () => {
               placeholder="Your new password!"
               required
             ></Input>
-            <FormError name="password1" />
+            <ErrorContainer><FormError name="password1" /></ ErrorContainer>
           </InputBox>
 
           <InputName>Confirm the new password: </InputName>
@@ -114,15 +120,15 @@ export const ProfilManagment = () => {
               placeholder="Your new password!"
               required
             ></Input>
-            <FormError name="password2" />
+            <ErrorContainer><FormError name="password2" /></ ErrorContainer>
           </InputBox>
           <SubmitBtn type="submit">Change password</SubmitBtn>
         </SubmitForm>
       </Formik>
 
-      <div style={{ minHeight: '20px' }}>
-        <Text color="red">          
-          Deleting your account now:
+      <div style={{ minHeight: '20px'}}>
+        <Text color="red" fontSize="24px">          
+          Deleting your account now: &nbsp;
           <Button
             onClick={onDelete}
             type="button"

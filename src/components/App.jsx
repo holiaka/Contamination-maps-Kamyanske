@@ -3,10 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import { SharedLayout } from './SharedLayout/SharedLayout';
 import { Maps } from './Maps/Maps';
 import { About } from "./About/About";
-import { RegisterForm } from "../pages/Register";
-import { LogIn} from "../pages/LogIn"
+import { RegisterForm } from "../auth-pages/Register";
+import { LogIn} from "../auth-pages/LogIn"
 import { NotFound } from "./NotFound/NotFound";
-import { ProfilManagment } from "pages/ProfileManagement";
+import { ProfilManagment } from "auth-pages/ProfileManagement";
 
 export const App = () => {  
   return (

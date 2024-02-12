@@ -1,5 +1,6 @@
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useColorModeValue, Text } from '@chakra-ui/react';
 import {
   ErrorText,
   SubmitForm,
@@ -8,9 +9,9 @@ import {
   InputName,
   SubmitBtn,
 } from './AuthForms.styled';
-import { signInFetch } from './../firebase/sdk';
+import { signInFetch } from '../firebase/sdk';
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { notifyToast } from './../components/Notify/notifyPropertyCode';
+import { notifyToast } from '../components/Notify/notifyPropertyCode';
 
 
 
@@ -43,10 +44,12 @@ export const LogIn = () => {
   const [setUserEmail, setToken ] = useOutletContext();
   const navigate = useNavigate();
 
+      const option = {
+    textColor: useColorModeValue('gray.800', 'white'),
+  };
+
   const onSubmit = async({ email, password }) => { 
     const fetchData = await signInFetch(email, password); 
-    
-    console.log('fetchData', fetchData, fetchData.accessToken);
     
     if (fetchData.accessToken !== undefined) {
       setUserEmail(fetchData.email);
@@ -64,6 +67,8 @@ export const LogIn = () => {
   };
 
   return (
+    <>
+      <Text color={option.textColor}>Account login form</Text>
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmitInner}
@@ -80,7 +85,7 @@ export const LogIn = () => {
           ></Input>
           <FormError name="email" />
               </InputBox>
-              <InputName>Email: </InputName>
+              <InputName>Password: </InputName>
         <InputBox>
           <Input
             type="password"
@@ -90,8 +95,9 @@ export const LogIn = () => {
           ></Input>
           <FormError name="password" />
         </InputBox>
-        <SubmitBtn type="submit">Sign In</SubmitBtn>
+        <SubmitBtn type="submit">Log In</SubmitBtn>
       </SubmitForm>
-    </Formik>
+      </Formik>
+      </>
   );
 };

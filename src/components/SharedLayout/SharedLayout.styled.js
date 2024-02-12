@@ -14,7 +14,7 @@ export const Container = styled.div`
     rgba(134, 135, 136, 0.2) 90%,
     rgba(134, 135, 136, 0) 100%
   );
-  @media (max-width: 700px) {
+  @media (max-width: 780px) {
     width: 100%;
   }
 `;
@@ -28,6 +28,7 @@ export const Header = styled.header`
 `;
 export const InnerHeader = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 80%;
   margin-left: auto;
@@ -35,12 +36,15 @@ export const InnerHeader = styled.div`
 `;
 export const HeaderSide = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 export const HeaderNav = styled.div`
   display: flex;
   gap: 20px;
   padding: 10px;
+  justify-content: baseline;
+  align-items: center;
 `;
 
 export const OutletContainer = styled.div`

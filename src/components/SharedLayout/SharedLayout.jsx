@@ -125,15 +125,14 @@ export const SharedLayout = () => {
             </HeaderNav>
           </HeaderSide>
           <HeaderSide>
-           <Hide breakpoint='(max-width: 540px)'>
-            <Button
-              marginTop="5"
-              marginRight="10"
-              colorScheme="teal"
-              onClick={toggleColorMode}
-            >
-              {colorMode === 'light' ? <FaSun /> : <FaMoon />}
-            </Button>
+            <Hide breakpoint="(max-width: 540px)">
+              <Button
+                marginRight="10"
+                colorScheme="teal"
+                onClick={toggleColorMode}
+              >
+                {colorMode === 'light' ? <FaSun /> : <FaMoon />}
+              </Button>
             </Hide>
             {token.length > 0 ? (
               <IfAuth
@@ -151,24 +150,24 @@ export const SharedLayout = () => {
         {complite ? <Outlet context={[setUserEmail, setToken]} /> : <Loader />}
         <NotifyAlert />
       </OutletContainer>
-      <Hide breakpoint='(max-width: 420px)'>
-      <Footer>
-        <FooterText fontSize={noteFontSize}
-          color={option.textColor}>The website was created by Dmytrii Holiaka </ FooterText>
-        <Hide breakpoint='(max-width: 700px)'>
-        <FooterText
-          fontSize={noteFontSize}
-          color={option.textColor}          
-        >
-          : <MdOutlineEmail />: 
-          <Link href="mailto:golyaka.d@gmail.com">golyaka.d@gmail.com</Link>
-        </FooterText>
-        <FooterText fontSize={noteFontSize} color={option.textColor} >
-          <BsTelephone />: 
-          <Link href="tel:+380974239084">+38 (097) 423-90-84</Link>
+      <Hide breakpoint="(max-width: 420px)">
+        <Footer>
+          <FooterText fontSize={noteFontSize} color={option.textColor}>
+            The website was created by Dmytrii Holiaka
           </FooterText>
+          <Hide breakpoint="(max-width: 700px)">
+            <FooterText fontSize={noteFontSize} color={option.textColor}>
+              &nbsp; <MdOutlineEmail />
+              :&nbsp;
+              <Link href="mailto:golyaka.d@gmail.com">golyaka.d@gmail.com</Link>
+            </FooterText>
+            <FooterText fontSize={noteFontSize} color={option.textColor}>
+              <BsTelephone />
+              :&nbsp;
+              <Link href="tel:+380974239084">+38 (097) 423-90-84</Link>
+            </FooterText>
           </Hide>
-      </Footer>
+        </Footer>
       </Hide>
     </Container>
   );

@@ -42,7 +42,7 @@ export const IfAuth = (props) => {
     <HeaderNav>
       <Avatar name = {createInitials(email)} as="button" _hover={{ bg: "teal.600"} }
     _focus={{ boxShadow: "outline" }} onClick={onClickAvatar}></Avatar>
-      <ExitButton marginTop='5' marginRight='10' colorScheme="teal" onClick={onClick}>
+      <ExitButton colorScheme="teal" onClick={onClick}>
         <ImExit></ImExit>
       </ExitButton>
     </HeaderNav>
