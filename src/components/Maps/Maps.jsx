@@ -4,7 +4,6 @@ import {
   Popup,
   TileLayer,
   GeoJSON,
-  ImageOverlay,
   LayersControl,
   Circle,
   useMap,
@@ -16,7 +15,9 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
 import { access } from 'components/SharedLayout/SharedLayout.jsx';
 
-import buildings from './../../layers/fixBuildings.json';
+import buildings from './../../layers/building.json';
+import controlledZones from './../../layers/controled-zones.json';
+import tailing from './../../layers/tailing.json';
 import boundary from './../../layers/boundary.json';
 import geoOldData from './../../layers/obsPointsGammaOld.json';
 import newObs from './../../layers/front-end-colection-2024.json';
@@ -28,11 +29,12 @@ import { GeoLocation } from './GeoLocation/GeoLocation';
 import iconSvg from './../../img/SVG/human-target-svgrepo-com.svg';
 import { Legend } from './Legend/Legend';
 
-const layersListForShowLegend = [
-  'Gamma dose rate for 2016, μSv/h',
+const layersListForShowLegend = [  
   'Old observations (2011-2016)',
-  'Gamma dose rate for 2024, μSv/h',
-  'New observation 2023-2024',
+  'Gamma dose rate at a height of 1.0 m for 2016, μSv/h',
+  'Gamma dose rate at a height of 0.1 m for 2024, μSv/h',
+  'Gamma dose rate at a height of 1.0 m for 2024, μSv/h',
+  'New observation 2023-2024'  
 ];
 
 export const Maps = () => {
@@ -83,23 +85,23 @@ export const Maps = () => {
     iconAnchor: [25, 25],
   });
 
-  const createColor = (val) => {    
-      if (val === 1) {
-        return '#006420';
-      } else if (val === 2) {
-        return '#b1bd40';
-      } else if (val === 3) {
-        return '#fdec00';
-      } else if (val === 4) {
-        return '#ff0415';
-      } else if (val === 5) {
-        return '#8f384c';
-      } else if (val === 6) {
-        return '#800085';
-      } else {
-        return '#45024b';
-      }   
-  }
+  const createColor = val => {
+    if (val === 1) {
+      return '#006420';
+    } else if (val === 2) {
+      return '#b1bd40';
+    } else if (val === 3) {
+      return '#fdec00';
+    } else if (val === 4) {
+      return '#ff0415';
+    } else if (val === 5) {
+      return '#8f384c';
+    } else if (val === 6) {
+      return '#800085';
+    } else {
+      return '#45024b';
+    }
+  };
 
   const roundFn = function (num) {
     if (num >= 2.1) {
@@ -110,7 +112,7 @@ export const Maps = () => {
     return num;
   };
 
-  const setIcon = (feature, latlng) => {    
+  const setIcon = (feature, latlng) => {
     return L.circleMarker(latlng, {
       radius: 4,
       fillColor: createColor(feature.properties.colorID),
@@ -144,7 +146,6 @@ export const Maps = () => {
           clientY: clientY,
           AEDR01: data.AEDR_01,
           AEDR1: data.AEDR_10,
-          alfaDF: data.Alfa_DF,
           betaDF: data.Beta_DF,
         };
         setGeoData(() => obj);
@@ -166,11 +167,41 @@ export const Maps = () => {
     }
   };
 
+  const buildingStyle = feature => {
+    if (feature.properties.Obs) {
+      return {
+        color: '#eb0ac6',
+        capasity: 1.0,
+      };
+    } else {
+      return {
+        color: '#0acaca',
+        capasity: 0.6,
+      };
+    }
+  };
+
+  const onEachFeatureZones = (feature, layer) => {
+    let name = feature.properties.Name;
+    layer.bindTooltip(`<b>Controlled zone: ${name.toString()}<b/>`, {
+      permanent: true,
+      opacity: 0.7,
+    });
+  };
+
+  const onEachFeatureTailing = (feature, layer) => {
+    let name = feature.properties.Name;
+    layer.bindTooltip(`<b style="color:white; background:black; display:inline-block;">Tailing: ${name.toString()}<b/>`, {
+
+      opacity: 1.0,
+    });
+  };
+
   const onEachFeatureBuldings = (feature, layer) => {
     let number = feature.properties.Number;
-    let enterprise = feature.properties.Enterprise_;
+    let enterprise = feature.properties.Enterprise;
     let text;
-    let text2
+    let text2;
     if (number !== null) {
       text = number;
     } else {
@@ -181,10 +212,8 @@ export const Maps = () => {
     } else {
       text2 = 'No data';
     }
-    layer
-      .bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
-       <b>Enterprise:</b> ${text2}`)
-    
+    layer.bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
+       <b>Enterprise:</b> ${text2}`);
   };
 
   const onEachFeature = (feature, layer) => {
@@ -226,15 +255,15 @@ export const Maps = () => {
                 'pk.eyJ1IjoiMDAwMC0wMDAxLTgwMjUtODg4NSIsImEiOiJjbHFhdjNqY2ExZHZyMnJueHJmeXc1ZHduIn0.WsmLYujm4HrDa-K-VjJ2xA'
               }
             />
-            </LayersControl.BaseLayer> 
+          </LayersControl.BaseLayer>
           <LayersControl.BaseLayer name="Open Street Maps (OSM)">
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />        
+            />
           </LayersControl.BaseLayer>
-                    <LayersControl.Overlay
-            chacked
+          <LayersControl.Overlay
+            checked
             name="Boundary of Prydniprovsky Chemical Plant"
           >
             <GeoJSON
@@ -245,38 +274,62 @@ export const Maps = () => {
               }}
             ></GeoJSON>
           </LayersControl.Overlay>
-           <LayersControl.Overlay name="DEM (0-132m)">
-            <ImageOverlay
-              url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/layers/DEM.webp"
-              bounds={[
-                [48.4905, 34.6541],
-                [48.50866, 34.6994],
-              ]}
-              opacity={0.5}
-            ></ImageOverlay>
-          </LayersControl.Overlay>
-<LayersControl.Overlay name="Buldings">
+          <LayersControl.Overlay checked name="Controlled zones">
             <GeoJSON
-              data={buildings.features}
+              data={controlledZones}
               style={{
-                color: "#ff09b5",
+                fillColor: '#fbff00',
+                color: '#eede05',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.2,
+              }}
+              onEachFeature={onEachFeatureZones}
+            ></GeoJSON>
+          </LayersControl.Overlay>
+          <LayersControl.Overlay
+            checked
+            name="Tailings"
+          >
+            <GeoJSON
+              data={tailing}
+              style={{
+                color: '#000000',
+                colorFill:"#000000",
                 capasity: 1.0,
               }}
+              onEachFeature={onEachFeatureTailing}
+            ></GeoJSON>
+          </LayersControl.Overlay>
+          <LayersControl.Overlay checked name="Buldings">
+            <GeoJSON
+              data={buildings.features}
+              style={buildingStyle}
               onEachFeature={onEachFeatureBuldings}
             ></GeoJSON>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Gamma dose rate for 2016, &mu;Sv/h">
-            <ImageOverlay
-              url="https://github.com/holiaka/Contamination-maps-Kamyanske/blob/main/src/layers/png-gamma-modified.png?raw=true"
-              bounds={[
-                [48.492114, 34.658991],
-                [48.5071325, 34.694015],
-              ]}
-              opacity={0.5}
-            ></ImageOverlay>
-          </LayersControl.Overlay>          
+          <LayersControl.Overlay name="DEM (0-112m)">
+            <TileLayer
+              attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+              url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/DEM/{z}/{x}/{y}.webp"
+              tms="true"
+              opacity={0.6}
+              minZoom={4}
+              maxZoom={22}
+            />
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name="Gamma dose rate at a height of 1.0 m for 2016, &mu;Sv/h">
+            <TileLayer
+              attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+              url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/old-gamma-100cm/{z}/{x}/{y}.webp"
+              tms="true"
+              opacity={0.6}
+              minZoom={4}
+              maxZoom={22}
+            />
+          </LayersControl.Overlay>
           <LayersControl.Overlay name="Old observations (2011-2016)">
-            <MarkerClusterGroup maxClusterRadius={40}>              
+            <MarkerClusterGroup maxClusterRadius={40}>
               {geoOldData.map((point, index) => (
                 <CircleMarker
                   key={index}
@@ -288,19 +341,29 @@ export const Maps = () => {
                     <b>Equvivalent dose rate: </b>
                     {roundFn(point.gamma)}
                   </Popup>
-                </ CircleMarker>
+                </CircleMarker>
               ))}
             </MarkerClusterGroup>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Gamma dose rate for 2024, &mu;Sv/h">
-            <ImageOverlay
-              url="https://github.com/holiaka/Contamination-maps-Kamyanske/blob/main/src/layers/png-gamma-modified.png?raw=true"
-              bounds={[
-                [48.492114, 34.658991],
-                [48.5071325, 34.694015],
-              ]}
-              opacity={0.5}
-            ></ImageOverlay>
+          <LayersControl.Overlay name="Gamma dose rate at a height of 0.1 m for 2024, &mu;Sv/h">
+            <TileLayer
+              attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+              url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/new-gamma-10cm/{z}/{x}/{y}.webp"
+              tms="true"
+              opacity={0.6}
+              minZoom={4}
+              maxZoom={22}
+            />
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name="Gamma dose rate at a height of 1.0 m for 2024, &mu;Sv/h">
+            <TileLayer
+              attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+              url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/new-gamma-100cm/{z}/{x}/{y}.webp"
+              tms="true"
+              opacity={0.6}
+              minZoom={4}
+              maxZoom={22}
+            />
           </LayersControl.Overlay>
           <LayersControl.Overlay name="New observation 2023-2024">
             <MarkerClusterGroup maxClusterRadius={40}>

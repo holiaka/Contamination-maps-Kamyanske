@@ -3,14 +3,15 @@ import { Text, useColorModeValue } from "@chakra-ui/react";
 
 export const NotFound = () => {
     
-const option = {
-    textColor: useColorModeValue('gray.800', 'white'),
+    const option = {
+        oopsColor: "#ff0000",
+    textColor: useColorModeValue('red.500', 'red.300'),
   };
 
     return (
-        <NotFoundBackgraund>
-            <Text >Oops!!!</Text>
-            <Text color={option.textColor}>Not existing page for this address!</Text>
+        <NotFoundBackgraund >            
+            <Text color={option.oopsColor}>Oops!!!</Text>
+            <Text color={option.textColor} textAlign={"center"}> Not existing page for<br/> this address!</Text>    
         </NotFoundBackgraund>
 
 

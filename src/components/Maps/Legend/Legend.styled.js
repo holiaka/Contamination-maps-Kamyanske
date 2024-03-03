@@ -19,7 +19,7 @@ border-radius: 5px;
 `;
 
 export const LegendTitle = styled.h2`
-font-size: 20px;
+font-size: 18px;
 font-weight: 700;
 `;
 
@@ -32,8 +32,6 @@ gap: 10px;
 export const ColorAttribute = styled.div`
 background-color: ${(props) => props.color};
 width: 40px;
-
-
 `;
 
 export const TextAttribute = styled.p`

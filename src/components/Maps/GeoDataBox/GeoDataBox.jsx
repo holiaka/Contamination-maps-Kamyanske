@@ -21,7 +21,6 @@ export const GeoDataBox = props => {
     clientY,
     AEDR01,
     AEDR1,
-    alfaDF,
     betaDF,
   } = props.geoData;
   const { setGeoData } = props;
@@ -85,10 +84,6 @@ export const GeoDataBox = props => {
           <Text fontSize={fontSizeDiscrption}>
             <b>Beta-particles flux density:</b>
             <br /> {betaDF} pcs/(min sq.cm);
-          </Text>
-          <Text fontSize={fontSizeDiscrption}>
-            <b>Alfa-particles flux density:</b>
-            <br /> {alfaDF} pcs/(min sq.cm)
           </Text>
         </Box>
       ) : (

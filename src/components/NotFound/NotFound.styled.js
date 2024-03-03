@@ -8,12 +8,11 @@ align-items: center;
 
 font-weight: 900;
 
-background-image: url("./../../img/webp/bg_bushes.webp");
+background-image: url("https://raw.githubusercontent.com/holiaka/chornobyl-forest-data/main/src/img/webp/bg_bushes.webp");
 background-size: cover;
 background-repeat: no-repeat;
+background-position: 50% 75%;
 
 height: 100%;
 width: 100%;
-
-
 `
