@@ -184,7 +184,7 @@ export const Maps = () => {
   const onEachFeatureZones = (feature, layer) => {
     let name = feature.properties.Name;
     layer.bindTooltip(`<b>Controlled zone: ${name.toString()}<b/>`, {
-      permanent: true,
+      permanent: false,
       opacity: 0.7,
     });
   };
