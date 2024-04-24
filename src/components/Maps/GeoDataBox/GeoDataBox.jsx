@@ -70,16 +70,16 @@ export const GeoDataBox = props => {
             <b>Point ID:</b> {id};
           </Text>
           <Text fontSize={fontSizeDiscrption}>
-            <b>Lat:</b> {roundFn(lat)};
+            <b>Lat:</b> {roundFn(lat)}&deg;;
           </Text>
           <Text fontSize={fontSizeDiscrption}>
-            <b>Lng:</b> {roundFn(lng)};
+            <b>Lng:</b> {roundFn(lng)}&deg;;
           </Text>
           <Text fontSize={fontSizeDiscrption}>
-            <b>AEDR h=0.1 m:</b> {AEDR01} mkSv;
+            <b>AEDR h=0.1 m:</b> {AEDR01} &mu;Sv/h;
           </Text>
           <Text fontSize={fontSizeDiscrption}>
-            <b>AEDR h=1.0 m:</b> {AEDR1} mkSv;
+            <b>AEDR h=1.0 m:</b> {AEDR1} &mu;Sv/h;
           </Text>
           <Text fontSize={fontSizeDiscrption}>
             <b>Beta-particles flux density:</b>
