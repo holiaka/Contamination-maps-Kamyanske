@@ -25,7 +25,7 @@ font-weight: 700;
 
 export const Item = styled.div`
 display: flex;
-gap: 10px;
+gap: 5px;
 /* pointer-events: none; */
 `;
 
