@@ -112,7 +112,7 @@ export const Maps = () => {
     return num;
   };
 
-  const setIcon = (feature, latlng) => {
+  const setIcon = (feature, latlng) => {    
     return L.circleMarker(latlng, {
       radius: 4,
       fillColor: createColor(feature.properties.colorID),
@@ -237,7 +237,7 @@ export const Maps = () => {
       }}
     >
       <MapContainer
-        center={[48.5, 34.68]}
+        center={[48.495, 34.68]}
         zoom={15}
         style={{
           height: '100vh',

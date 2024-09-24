@@ -5,5 +5,5 @@ export const attributeSchema = [
     { no: 4, color: '#ff0415', value: '1.28-5.12', lowerLevel: 1.28, upperLevel: 5.12,},
     { no: 5, color: '#8f384c', value: '5.12-13.8', lowerLevel: 5.12, upperLevel: 13.8,},
     { no: 6, color: '#800085', value: '13.8-138', lowerLevel: 13.8, upperLevel: 138,},
-    { no: 7, color: '#45024b', value: '>1000', lowerLevel: 138, upperLevel: 10000},
+    { no: 7, color: '#45024b', value: '>138', lowerLevel: 138, upperLevel: 10000},
 ]
