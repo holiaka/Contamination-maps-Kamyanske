@@ -31,9 +31,10 @@ import { Legend } from './Legend/Legend';
 
 const layersListForShowLegend = [  
   'Old observations (2011-2016)',
-  'Gamma dose rate at a height of 1.0 m for 2016, μSv/h',
-  'Gamma dose rate at a height of 0.1 m for 2024, μSv/h',
-  'Gamma dose rate at a height of 1.0 m for 2024, μSv/h',
+  'Gamma dose rate at a height (H) of 1.0 m in 2016, μSv/h',
+  'Gamma dose rate at H of 0.1 m in 2024, μSv/h',
+  'Gamma dose rate at H of 1.0 m in 2024, μSv/h',
+  'Beta-particles flex at H of 0.1 m in 2024, pcs/sq.m/min',
   'New observation 2023-2024'  
 ];
 
@@ -318,7 +319,7 @@ export const Maps = () => {
               maxZoom={22}
             />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Gamma dose rate at a height of 1.0 m for 2016, &mu;Sv/h">
+          <LayersControl.Overlay name="Gamma dose rate at a height (H) of 1.0 m in 2016, &mu;Sv/h">
             <TileLayer
               attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
               url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/old-gamma-100cm/{z}/{x}/{y}.webp"
@@ -345,7 +346,7 @@ export const Maps = () => {
               ))}
             </MarkerClusterGroup>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Gamma dose rate at a height of 0.1 m for 2024, &mu;Sv/h">
+          <LayersControl.Overlay name="Gamma dose rate at H of 0.1 m in 2024, &mu;Sv/h">
             <TileLayer
               attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
               url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/new-gamma-10cm/{z}/{x}/{y}.webp"
@@ -355,7 +356,7 @@ export const Maps = () => {
               maxZoom={22}
             />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Gamma dose rate at a height of 1.0 m for 2024, &mu;Sv/h">
+          <LayersControl.Overlay name="Gamma dose rate at H of 1.0 m in 2024, &mu;Sv/h">
             <TileLayer
               attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
               url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/new-gamma-100cm/{z}/{x}/{y}.webp"
