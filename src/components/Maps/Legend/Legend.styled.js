@@ -18,6 +18,12 @@ background-color: #cccccc;
 border-radius: 5px;
 `;
 
+export const LegendTop = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+`;
+
 export const LegendTitle = styled.h2`
 font-size: 14px;
 font-weight: 700;

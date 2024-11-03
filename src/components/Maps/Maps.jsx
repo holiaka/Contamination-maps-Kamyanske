@@ -366,6 +366,16 @@ export const Maps = () => {
               maxZoom={22}
             />
           </LayersControl.Overlay>
+          <LayersControl.Overlay name="Beta-particles flex at H of 0.1 m in 2024, pcs/sq.m/min">
+            <TileLayer
+              attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+              url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/beta-10cm/{z}/{x}/{y}.webp"
+              tms="true"
+              opacity={0.6}
+              minZoom={4}
+              maxZoom={22}
+            />
+          </LayersControl.Overlay>
           <LayersControl.Overlay name="New observation 2023-2024">
             <MarkerClusterGroup maxClusterRadius={40}>
               <GeoJSON
