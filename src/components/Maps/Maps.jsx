@@ -275,7 +275,7 @@ export const Maps = () => {
               }}
             ></GeoJSON>
           </LayersControl.Overlay>
-          <LayersControl.Overlay checked name="Controlled zones">
+          <LayersControl.Overlay name="Controlled zones">
             <GeoJSON
               data={controlledZones}
               style={{
@@ -289,7 +289,6 @@ export const Maps = () => {
             ></GeoJSON>
           </LayersControl.Overlay>
           <LayersControl.Overlay
-            checked
             name="Tailings"
           >
             <GeoJSON
