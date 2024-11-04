@@ -4,7 +4,8 @@ import { SharedLayout } from './SharedLayout/SharedLayout';
 import { Maps } from './Maps/Maps';
 import { About } from "./About/About";
 import { RegisterForm } from "../auth-pages/Register";
-import { LogIn} from "../auth-pages/LogIn"
+import { LogIn } from "../auth-pages/LogIn";
+import { Buildings } from "./Buildings/Buildings";
 import { NotFound } from "./NotFound/NotFound";
 import { ProfilManagment } from "auth-pages/ProfileManagement";
 
@@ -28,7 +29,8 @@ export const App = () => {
             <Route path="/about" element={<About />}></Route>   
             <Route path="/registration" element={<RegisterForm />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
-            <Route path="/profil" element={<ProfilManagment /> }></Route>
+            <Route path="/profil" element={<ProfilManagment />}></Route>
+            <Route path="/buildings" element={<Buildings />}></Route>
             <Route path="*" element={< NotFound/> }></Route>
           </Route>
         </Routes>

@@ -14,6 +14,7 @@ import '../../../node_modules/leaflet/dist/leaflet.css';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
 import { access } from 'components/SharedLayout/SharedLayout.jsx';
+// import { Link } from 'react-router-dom';
 
 import buildings from './../../layers/building.json';
 import controlledZones from './../../layers/controled-zones.json';
@@ -214,7 +215,9 @@ export const Maps = () => {
       text2 = 'No data';
     }
     layer.bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
-       <b>Enterprise:</b> ${text2}`);
+       <b>Enterprise:</b> ${text2} </br>
+       <h1> BUILD </h1>
+       <a href="http://localhost:3000/Contamination-maps-Kamyanske/buildings" >Go to Building Info</a>`);
   };
 
   const onEachFeature = (feature, layer) => {
