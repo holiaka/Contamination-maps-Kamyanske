@@ -51,23 +51,18 @@ const buildingData =
      { no: "120", h: [-6.0, 0.0, 6.0, 12.0], address: ["b120__-6-0", "b120___0-0", "b120___6-0", "b120__12-0"], center: [[48.495, 34.68], [48.495, 34.68], [48.495, 34.68], [48.495, 34.68]], zoom: [18, 18, 18, 18] },
   ];
    
-const createButton = (buildingData, search) => {
-  let selectBuilding = null;
-
-  buildingData.forEach((iter) => {
+const selectBuild = (buildingData, search) => {
+  for (const iter of buildingData) {
     let result = iter.address.find((item) => item.includes(search.substring(5, 15)));
     if (result !== undefined) {
-      selectBuilding = iter;
-      console.log(iter);
-    } else {
-      console.log("Building absent");
+      return iter;
     }
-  });
-
-  return selectBuilding;
+  }
+  return null; //  null
 };
 
-createButton(buildingData, search);
+const data = selectBuild(buildingData, search);
+console.log(data)
 
 export const Buildings = () => {
   const [pagePath, setPagePath] = useState();
