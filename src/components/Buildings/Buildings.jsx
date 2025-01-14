@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MapContainer,
   // Marker,
@@ -11,9 +11,9 @@ import {
   // CircleMarker,
 } from 'react-leaflet';
 import * as L from 'leaflet';
-import "leaflet/dist/leaflet.css";
-import GeoRasterLayer from "georaster-layer-for-leaflet";
-import georaster from "georaster";
+import 'leaflet/dist/leaflet.css';
+import GeoRasterLayer from 'georaster-layer-for-leaflet';
+import georaster from 'georaster';
 import {
   IconButton,
   Menu,
@@ -279,22 +279,22 @@ const points = require(`./data/b__1___0-0/points.json`);
 const schemaURL = './data/b__1___0-0/beta.tif';
 
 const createColor = val => {
-    if (val < 0.24) {
-      return '#006420';
-    } else if (val < 0.56) {
-      return '#b1bd40';
-    } else if (val <1.28) {
-      return '#fdec00';
-    } else if (val < 5.12) {
-      return '#ff0415';
-    } else if (val < 13.8) {
-      return '#8f384c';
-    } else if (val < 138) {
-      return '#800085';
-    } else {
-      return '#45024b';
-    }
-  };
+  if (val < 0.24) {
+    return '#006420';
+  } else if (val < 0.56) {
+    return '#b1bd40';
+  } else if (val < 1.28) {
+    return '#fdec00';
+  } else if (val < 5.12) {
+    return '#ff0415';
+  } else if (val < 13.8) {
+    return '#8f384c';
+  } else if (val < 138) {
+    return '#800085';
+  } else {
+    return '#45024b';
+  }
+};
 
 const setIcon = (feature, latlng) => {
   return L.circleMarker(latlng, {
@@ -307,49 +307,56 @@ const setIcon = (feature, latlng) => {
   });
 };
 
-  // const onEachFeatureBuldings = (feature, layer) => {
-  //   let number = feature.properties.Number;
-  //   let enterprise = feature.properties.Enterprise;
-  //   let text;
-  //   let text2;
-  //   if (number !== null) {
-  //     text = number;
-  //   } else {
-  //     text = 'No data';
-  //   }
-  //   if (enterprise !== null) {
-  //     text2 = enterprise;
-  //   } else {
-  //     text2 = 'No data';
-  //   }
-  //   layer.bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
-  //      <b>Enterprise:</b> ${text2} </br>
-  //      <h1> BUILD </h1>
-  //      <a href="http://localhost:3000/Contamination-maps-Kamyanske/buildings" >Go to Building Info</a>`);
-  // };
+// const onEachFeatureBuldings = (feature, layer) => {
+//   let number = feature.properties.Number;
+//   let enterprise = feature.properties.Enterprise;
+//   let text;
+//   let text2;
+//   if (number !== null) {
+//     text = number;
+//   } else {
+//     text = 'No data';
+//   }
+//   if (enterprise !== null) {
+//     text2 = enterprise;
+//   } else {
+//     text2 = 'No data';
+//   }
+//   layer.bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
+//      <b>Enterprise:</b> ${text2} </br>
+//      <h1> BUILD </h1>
+//      <a href="http://localhost:3000/Contamination-maps-Kamyanske/buildings" >Go to Building Info</a>`);
+// };
 
+const GeoTiffLayer = ({ geoTiffUrl }) => {
+  const map = useMap();
 
-  const GeoTiffLayer = ({ geoTiffUrl }) => {
-    const map = useMap();
-
-    React.useEffect(() => {
-        fetch(geoTiffUrl)
-            .then(response => response.arrayBuffer())
-            .then(arrayBuffer => georaster(arrayBuffer))
+  React.useEffect(() => {
+    fetch(geoTiffUrl)
+      .then(response => {
+        console.log(response)
+        return response.arrayBuffer();
+        
+       })
+      .then(arrayBuffer => { 
+        console.log(georaster(arrayBuffer))
+        return georaster(arrayBuffer)
+      })
             .then(georasterData => {
-                const layer = new GeoRasterLayer({
+              console.log(georasterData)
+              const layer = new GeoRasterLayer({
                     georaster: georasterData,
-                    opacity: 0.5, // Adjust opacity
+                    opacity: 0.7, // Adjust opacity
                     resolution: 256 // Higher values for better resolution
                 });
                 layer.addTo(map);
 
-                // Adjust the map view to fit the GeoTIFF layer bounds
-                map.fitBounds(layer.getBounds());
-            });
-    }, [geoTiffUrl, map]);
+        // Adjust the map view to fit the GeoTIFF layer bounds
+        map.fitBounds(layer.getBounds());
+      });
+  }, [geoTiffUrl, map]);
 
-    return null;
+  return null;
 };
 
 export const Buildings = () => {
@@ -458,15 +465,16 @@ export const Buildings = () => {
                       accessToken={
                         'pk.eyJ1IjoiMDAwMC0wMDAxLTgwMjUtODg4NSIsImEiOiJjbHFhdjNqY2ExZHZyMnJueHJmeXc1ZHduIn0.WsmLYujm4HrDa-K-VjJ2xA'
                       }
-                    /> </LayersControl.BaseLayer>
-                    <LayersControl.Overlay name="New observation 2023-2024">
-                      <GeoJSON
-                        data={points}
-                        pointToLayer={setIcon}
-                        // onEachFeature={onEachFeature}
-                      ></GeoJSON>
-                    </LayersControl.Overlay>
-                 
+                    />{' '}
+                  </LayersControl.BaseLayer>
+                  <LayersControl.Overlay name="New observation 2023-2024">
+                    <GeoJSON
+                      data={points}
+                      pointToLayer={setIcon}
+                      // onEachFeature={onEachFeature}
+                    ></GeoJSON>
+                  </LayersControl.Overlay>
+
                   <LayersControl.Overlay
                     checked
                     name="Approximation border for radiation parameters"
@@ -479,11 +487,8 @@ export const Buildings = () => {
                       }}
                     ></GeoJSON>
                   </LayersControl.Overlay>
-                  <LayersControl.Overlay
-                    
-                    name="Building layout"
-                  >
-                  <GeoTiffLayer geoTiffUrl={schemaURL} />
+                  <LayersControl.Overlay name="Beta">
+                    <GeoTiffLayer geoTiffUrl={schemaURL} />
                   </LayersControl.Overlay>
                 </LayersControl>
               </MapContainer>
