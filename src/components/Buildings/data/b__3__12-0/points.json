@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"name": "points",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 2631, "_Point": "А2", "_Build": "3", "_H": 12.0, "_Room": 1, "_Type": "F", "_Order": 135, "_Measure": "ПЕД, ЩП", "_AEDR_01": 0.4, "_AEDR_10": 0.31, "_Alfa": 0.01, "_Beta": 15 }, "geometry": { "type": "Point", "coordinates": [ 34.6672528395, 48.4961229942 ] } },
+{ "type": "Feature", "properties": { "id": 2632, "_Point": "А3", "_Build": "3", "_H": 12.0, "_Room": 1, "_Type": "F", "_Order": 136, "_Measure": "ПЕД, ЩП", "_AEDR_01": 0.45, "_AEDR_10": 0.33, "_Alfa": 0.02, "_Beta": 18 }, "geometry": { "type": "Point", "coordinates": [ 34.6672887197, 48.4961201559 ] } },
+{ "type": "Feature", "properties": { "id": 2633, "_Point": "Б2", "_Build": "3", "_H": 12.0, "_Room": 1, "_Type": "F", "_Order": 137, "_Measure": "ПЕД, ЩП", "_AEDR_01": 0.5, "_AEDR_10": 0.42, "_Alfa": 0.02, "_Beta": 22 }, "geometry": { "type": "Point", "coordinates": [ 34.66722873, 48.4960825533 ] } },
+{ "type": "Feature", "properties": { "id": 2634, "_Point": "Б3", "_Build": "3", "_H": 12.0, "_Room": 1, "_Type": "F", "_Order": 138, "_Measure": "ПЕД, ЩП", "_AEDR_01": 0.48, "_AEDR_10": 0.41, "_Alfa": 0.03, "_Beta": 25 }, "geometry": { "type": "Point", "coordinates": [ 34.6672801532, 48.4960783306 ] } },
+{ "type": "Feature", "properties": { "id": 2635, "_Point": "В2", "_Build": "3", "_H": 12.0, "_Room": 1, "_Type": "F", "_Order": 139, "_Measure": "ПЕД, ЩП", "_AEDR_01": 0.43, "_AEDR_10": 0.37, "_Alfa": 0.02, "_Beta": 27 }, "geometry": { "type": "Point", "coordinates": [ 34.6672202559, 48.4960402195 ] } },
+{ "type": "Feature", "properties": { "id": 2636, "_Point": "В3", "_Build": "3", "_H": 12.0, "_Room": 1, "_Type": "F", "_Order": 140, "_Measure": "ПЕД, ЩП", "_AEDR_01": 0.46, "_AEDR_10": 0.39, "_Alfa": 0.01, "_Beta": 30 }, "geometry": { "type": "Point", "coordinates": [ 34.6672722049, 48.4960354095 ] } }
+]
+}
