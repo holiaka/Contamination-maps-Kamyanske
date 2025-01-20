@@ -7,13 +7,12 @@ import {
   GeoJSON,
   LayersControl,
   // Circle,
-  useMap,
+  // useMap,
   // CircleMarker,
 } from 'react-leaflet';
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import GeoRasterLayer from 'georaster-layer-for-leaflet';
-import georaster from 'georaster';
+
 import {
   IconButton,
   Menu,
@@ -276,7 +275,7 @@ console.log(data);
 
 const border = require(`./data/b__1___0-0/pol.json`);
 const points = require(`./data/b__1___0-0/points.json`);
-const schemaURL = './data/b__1___0-0/beta.tif';
+// const schemaURL = './data/b__1___0-0/beta.tif';
 
 const createColor = val => {
   if (val < 0.24) {
@@ -328,36 +327,6 @@ const setIcon = (feature, latlng) => {
 //      <a href="http://localhost:3000/Contamination-maps-Kamyanske/buildings" >Go to Building Info</a>`);
 // };
 
-const GeoTiffLayer = ({ geoTiffUrl }) => {
-  const map = useMap();
-
-  React.useEffect(() => {
-    fetch(geoTiffUrl)
-      .then(response => {
-        console.log(response)
-        return response.arrayBuffer();
-        
-       })
-      .then(arrayBuffer => { 
-        console.log(georaster(arrayBuffer))
-        return georaster(arrayBuffer)
-      })
-            .then(georasterData => {
-              console.log(georasterData)
-              const layer = new GeoRasterLayer({
-                    georaster: georasterData,
-                    opacity: 0.7, // Adjust opacity
-                    resolution: 256 // Higher values for better resolution
-                });
-                layer.addTo(map);
-
-        // Adjust the map view to fit the GeoTIFF layer bounds
-        map.fitBounds(layer.getBounds());
-      });
-  }, [geoTiffUrl, map]);
-
-  return null;
-};
 
 export const Buildings = () => {
   const [pagePath, setPagePath] = useState();
@@ -450,7 +419,7 @@ export const Buildings = () => {
                   height: 'auto',
                   width: '70%',
                 }}
-                minZoom={17}
+                minZoom={18}
                 maxZoom={22}
               >
                 <LayersControl position="topright">
@@ -488,9 +457,16 @@ export const Buildings = () => {
                     ></GeoJSON>
                   </LayersControl.Overlay>
                   <LayersControl.Overlay name="Beta">
-                    <GeoTiffLayer geoTiffUrl={schemaURL} />
-                  </LayersControl.Overlay>
-                </LayersControl>
+                    <TileLayer
+              attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+              url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/DEM/{z}/{x}/{y}.webp"
+              tms="true"
+              opacity={0.6}
+              minZoom={18}
+              maxZoom={22}
+            />
+                </LayersControl.Overlay>
+              </LayersControl>
               </MapContainer>
               <MapInfo>
                 <MapTitle>Building No ${}</MapTitle>
