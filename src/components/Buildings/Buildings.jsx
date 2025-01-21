@@ -13,6 +13,8 @@ import {
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
+import { useNavigate, useLocation } from 'react-router-dom';
+
 import {
   IconButton,
   Menu,
@@ -36,11 +38,8 @@ import {
   MapTitle,
   MapLegend,
 } from './Buildings.styled';
-import {buildingData} from './buildingList'
-
-let { origin, pathname, search } = window.location;
-let address = `${origin}${pathname}`;
-console.log(`ADDRESS: - origin: ${origin}, - pathname ${pathname}`);
+import { buildingData } from './buildingList';
+// import { measures } from './data/db_f';
 
 const selectBuild = (buildingData, search) => {
   for (const iter of buildingData) {
@@ -54,11 +53,7 @@ const selectBuild = (buildingData, search) => {
   return null; //  null
 };
 
-const data = selectBuild(buildingData, search);
-console.log(data);
 
-const border = require(`./data/b__1___0-0/pol.json`);
-const points = require(`./data/b__1___0-0/points.json`);
 // const schemaURL = './data/b__1___0-0/beta.tif';
 
 const createColor = val => {
@@ -90,7 +85,7 @@ const setIcon = (feature, latlng) => {
   });
 };
 
-// const onEachFeatureBuldings = (feature, layer) => {
+// const onEaachFeatureBuldings = (feature, layer) => {
 //   let number = feature.properties.Number;
 //   let enterprise = feature.properties.Enterprise;
 //   let text;
@@ -111,14 +106,46 @@ const setIcon = (feature, latlng) => {
 //      <a href="http://localhost:3000/Contamination-maps-Kamyanske/buildings" >Go to Building Info</a>`);
 // };
 
-
 export const Buildings = () => {
-  const [pagePath, setPagePath] = useState();
-  console.log(pagePath);
+  const [pagePath, setPagePath] = useState('');
+  const [selectedBuilding, setSelectedBuilding] = useState(null);
+  const [points, setPoints] = useState(null);
+  const [border, setBorder] = useState(null);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+ 
   useEffect(() => {
+    const search = location.search;
     setPagePath(search);
-  }, [setPagePath]);
+    const objectB = selectBuild(buildingData, search);
+    setSelectedBuilding(objectB);
+
+    const loadData = async () => {
+      try {
+        const pointsData = await import(`./data/${search.substring(5, 15)}/points.json`);
+        const borderData = await import(`./data/${search.substring(5, 15)}/pol.json`);
+
+        console.log(pointsData);
+        console.log(borderData);
+        setPoints(pointsData.default);
+        setBorder(borderData.default);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    };    
+      loadData();    
+  }, [location.search]);
+
+  const processing = () => {
+    const { h = [], address = [], no = '' } = selectedBuilding || {};
+    return address.map((item, i) => ({
+      h: h[i],
+      address: item,
+      name: no,
+    }));
+  };
+
 
   return (
     <BuildingSpace>
@@ -139,27 +166,106 @@ export const Buildings = () => {
               <MenuList fontSize="12px" padding="0">
                 <MenuItem
                   icon={<GiNuclearWaste />}
-                  as="a"
-                  href={`${address}?key=b__1___0-0`}
+                  onClick={() => navigate('/buildings?key=b__1___0-0')}
                 >
                   Building 1
                 </MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 1"А": </MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 1"Б"</MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 1"M"</MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 2: </MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 2"Б":</MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 2"В": </MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 2"Е"/1: </MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 2"Е"/2: </MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 3: </MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 4-5: </MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 6</MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 27</MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 28</MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 46</MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 112</MenuItem>
-                <MenuItem icon={<GiNuclearWaste />}>Building 120</MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__1a__0-0')}
+                >
+                  Building 1"А"
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__1b__0-0')}
+                >
+                  Building 1"Б"
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__1m__0-0')}
+                >
+                  Building 1"M"
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__2___0-0')}
+                >
+                  Building 2
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__2b__0-0')}
+                >
+                  Building 2"Б"
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__2v__0-0')}
+                >
+                  Building 2"В"
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__2e1_0-0')}
+                >
+                  Building 2"Е"/1
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__2e2_0-0')}
+                >
+                  Building 2"Е"/2
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__3___0-0')}
+                >
+                  Building 3:
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b4-5___0-0')}
+                >
+                  Building 4-5
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b__6___0-0')}
+                >
+                  Building 6
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b_27___0-0')}
+                >
+                  Building 27
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b_28___0-0')}
+                >
+                  Building 28
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b_46___0-0')}
+                >
+                  Building 46
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b112___0-0')}
+                >
+                  Building 112
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  onClick={() => navigate('/buildings?key=b120___0-0')}
+                >
+                  Building 120
+                </MenuItem>
               </MenuList>
             </Menu>
 
@@ -171,16 +277,15 @@ export const Buildings = () => {
                 variant="outline"
               />
               <MenuList fontSize="12px">
-                <MenuItem
-                  icon={<CiLineHeight />}
-                  as="a"
-                  href={`${address}?jgopfdjh`}
-                >
-                  Building 1
-                </MenuItem>
-                <MenuItem icon={<CiLineHeight />}>Building 1"А": </MenuItem>
-                <MenuItem icon={<CiLineHeight />}>Building 1"Б"</MenuItem>
-                <MenuItem icon={<CiLineHeight />}>Building 1"M"</MenuItem>
+                {processing().map((item, iter) => (
+                  <MenuItem
+                    key={iter}
+                    icon={<CiLineHeight />}
+                    onClick={() => navigate(`/buildings?key=${item.address}`)}
+                  >
+                    {`Floor hieght: ${item.h} m for building No${item.name}`}
+                  </MenuItem>
+                ))}
               </MenuList>
             </Menu>
           </MenuSpace>
@@ -218,14 +323,67 @@ export const Buildings = () => {
                       accessToken={
                         'pk.eyJ1IjoiMDAwMC0wMDAxLTgwMjUtODg4NSIsImEiOiJjbHFhdjNqY2ExZHZyMnJueHJmeXc1ZHduIn0.WsmLYujm4HrDa-K-VjJ2xA'
                       }
-                    />{' '}
+                    />
                   </LayersControl.BaseLayer>
-                  <LayersControl.Overlay name="New observation 2023-2024">
-                    <GeoJSON
-                      data={points}
-                      pointToLayer={setIcon}
-                      // onEachFeature={onEachFeature}
-                    ></GeoJSON>
+                  <LayersControl.BaseLayer name="Scheme of the building">
+                    <TileLayer
+                      attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/shema/{z}/{x}/{y}.webp`}
+                      tms={true}
+                      opacity={1.0}
+                      minZoom={18}
+                      maxZoom={22}
+                    />
+                  </LayersControl.BaseLayer>
+                  <LayersControl.Overlay name="Gamma dose rate at H of 0.1 m, &mu;Sv/h">
+                    <TileLayer
+                      attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/aedr_01/{z}/{x}/{y}.webp`}
+                      tms={true}
+                      opacity={1.0}
+                      minZoom={18}
+                      maxZoom={22}
+                    />
+                  </LayersControl.Overlay>
+                  <LayersControl.Overlay name="Gamma dose rate at H of 1.0 m, &mu;Sv/h">
+                    <TileLayer
+                      attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/aedr_10/{z}/{x}/{y}.webp`}
+                      tms={true}
+                      opacity={1.0}
+                      minZoom={18}
+                      maxZoom={22}
+                    />
+                  </LayersControl.Overlay>
+                  <LayersControl.Overlay name="Gamma dose rate at H of 1.0 m, &mu;Sv/h">
+                    <TileLayer
+                      attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/aedr_10/{z}/{x}/{y}.webp`}
+                      tms={true}
+                      opacity={1.0}
+                      minZoom={18}
+                      maxZoom={22}
+                    />
+                  </LayersControl.Overlay>
+                  <LayersControl.Overlay name="Density beta-particles flux, pcs/sq.m/min">
+                    <TileLayer
+                      attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/beta/{z}/{x}/{y}.webp`}
+                      tms={true}
+                      opacity={1.0}
+                      minZoom={18}
+                      maxZoom={22}
+                    />
+                  </LayersControl.Overlay>
+                  <LayersControl.Overlay name="Density alfa-particles flux, pcs/sq.m/min">
+                    <TileLayer
+                      attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/alfa/{z}/{x}/{y}.webp`}
+                      tms={true}
+                      opacity={1.0}
+                      minZoom={18}
+                      maxZoom={22}
+                    />
                   </LayersControl.Overlay>
 
                   <LayersControl.Overlay
@@ -233,24 +391,22 @@ export const Buildings = () => {
                     name="Approximation border for radiation parameters"
                   >
                     <GeoJSON
-                      data={border}
+                      data={points}
                       style={{
                         color: '#d40696',
                         capasity: 1.0,
                       }}
                     ></GeoJSON>
                   </LayersControl.Overlay>
-                  <LayersControl.Overlay name="Beta">
-                    <TileLayer
-              attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
-              url="https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/tiles/DEM/{z}/{x}/{y}.webp"
-              tms="true"
-              opacity={0.6}
-              minZoom={18}
-              maxZoom={22}
-            />
-                </LayersControl.Overlay>
-              </LayersControl>
+
+                  <LayersControl.Overlay checked name="Observations">
+                    <GeoJSON
+                      data={border}                      
+                      pointToLayer={setIcon}
+                    // onEachFeature={onEachFeature}
+                    ></GeoJSON>
+                  </LayersControl.Overlay>
+                </LayersControl>
               </MapContainer>
               <MapInfo>
                 <MapTitle>Building No ${}</MapTitle>
