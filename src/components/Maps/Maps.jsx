@@ -194,14 +194,17 @@ export const Maps = () => {
   const onEachFeatureTailing = (feature, layer) => {
     let name = feature.properties.Name;
     layer.bindTooltip(`<b style="color:white; background:black; display:inline-block;">Tailing: ${name.toString()}<b/>`, {
-
-      opacity: 1.0,
+    opacity: 1.0,
     });
   };
+
+  const { origin, pathname} = window.location;
+  const address = `${origin}${pathname}`;
 
   const onEachFeatureBuldings = (feature, layer) => {
     let number = feature.properties.Number;
     let enterprise = feature.properties.Enterprise;
+    let obs = feature.properties.Obs;
     let text;
     let text2;
     if (number !== null) {
@@ -217,7 +220,7 @@ export const Maps = () => {
     layer.bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
        <b>Enterprise:</b> ${text2} </br>
        <h1> BUILD </h1>
-       <a href="http://localhost:3000/Contamination-maps-Kamyanske/buildings" >Go to Building Info</a>`);
+       <a href="${address}/buildings?key=${obs}">Go to Building Info</a>`);
   };
 
   const onEachFeature = (feature, layer) => {

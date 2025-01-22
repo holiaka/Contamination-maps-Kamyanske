@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 import {
   MapContainer,
   // Marker,
@@ -13,7 +13,7 @@ import {
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { useNavigate, useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 
 import {
   IconButton,
@@ -40,11 +40,25 @@ import {
 } from './Buildings.styled';
 import { buildingData } from './buildingList';
 // import { measures } from './data/db_f';
+import { attributeSchema } from 'components/Maps/Legend/legendAttribute';
+import { FuatureTitle, LegendItem, Item, ColorAttribute, TextAttribute } from 'components/Maps/Legend/Legend.styled';
+
+const { origin, pathname, search="?key=b__1___0-0" } = window.location;
+const address = `${origin}${pathname}`;
+const subLink = `${search.substring(5, 15)}`;
+console.log("SubLINK", subLink)
+let pointsData;
+let polygonData;
+
+if (search.length === 15) {
+  pointsData = require(`./data/${subLink}/points.json`);
+  polygonData = require(`./data/${subLink}/pol.json`);
+}
 
 const selectBuild = (buildingData, search) => {
   for (const iter of buildingData) {
     let result = iter.address.find(item =>
-      item.includes(search.substring(5, 15))
+      item.includes(search)
     );
     if (result !== undefined) {
       return iter;
@@ -53,6 +67,7 @@ const selectBuild = (buildingData, search) => {
   return null; //  null
 };
 
+const selectedBuilding = selectBuild(buildingData, subLink);
 
 // const schemaURL = './data/b__1___0-0/beta.tif';
 
@@ -106,38 +121,9 @@ const setIcon = (feature, latlng) => {
 //      <a href="http://localhost:3000/Contamination-maps-Kamyanske/buildings" >Go to Building Info</a>`);
 // };
 
-export const Buildings = () => {
-  const [pagePath, setPagePath] = useState('');
-  const [selectedBuilding, setSelectedBuilding] = useState(null);
-  const [points, setPoints] = useState(null);
-  const [border, setBorder] = useState(null);
-
-  const navigate = useNavigate();
-  const location = useLocation();
- 
-  useEffect(() => {
-    const search = location.search;
-    setPagePath(search);
-    const objectB = selectBuild(buildingData, search);
-    setSelectedBuilding(objectB);
-
-    const loadData = async () => {
-      try {
-        const pointsData = await import(`./data/${search.substring(5, 15)}/points.json`);
-        const borderData = await import(`./data/${search.substring(5, 15)}/pol.json`);
-
-        console.log(pointsData);
-        console.log(borderData);
-        setPoints(pointsData.default);
-        setBorder(borderData.default);
-      } catch (error) {
-        console.error('Error loading data:', error);
-      }
-    };    
-      loadData();    
-  }, [location.search]);
-
-  const processing = () => {
+export const Buildings = () => {  
+  
+  const processingMenu = () => {  
     const { h = [], address = [], no = '' } = selectedBuilding || {};
     return address.map((item, i) => ({
       h: h[i],
@@ -145,6 +131,18 @@ export const Buildings = () => {
       name: no,
     }));
   };
+
+  const processingMap = (par) => {
+    const { address = [], zoom=[], center=[] } = selectedBuilding || {};
+    const index = address.indexOf(subLink);
+    if (par === "z") {
+      return zoom[index];
+    } else if (par === "c") {
+      return center[index];
+    } else {
+      return []
+    }
+  }
 
 
   return (
@@ -165,104 +163,87 @@ export const Buildings = () => {
               />
               <MenuList fontSize="12px" padding="0">
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__1___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__1___0-0`}             
                 >
                   Building 1
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__1a__0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__1a__0-0`}
                 >
                   Building 1"А"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__1b__0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__1b__0-0`}
                 >
                   Building 1"Б"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__1m__0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__1m__0-0`}
                 >
                   Building 1"M"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__2___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2___0-0`}                  
                 >
                   Building 2
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__2b__0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2b__0-0`}                  
                 >
                   Building 2"Б"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__2v__0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2v__0-0`}                  
                 >
                   Building 2"В"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__2e1_0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2e1_0-0`}                  
                 >
                   Building 2"Е"/1
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__2e2_0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2e2_0-0`}                  
                 >
                   Building 2"Е"/2
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__3___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__3___0-0`}                  
                 >
                   Building 3:
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b4-5___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b4-5___0-0`}                  
                 >
                   Building 4-5
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b__6___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__6___0-0`}                  
                 >
                   Building 6
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b_27___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b_27___0-0`}                  
                 >
                   Building 27
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b_28___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b_28___0-0`}
                 >
                   Building 28
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b_46___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b_46___0-0`}                  
                 >
                   Building 46
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b112___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b112___0-0`}
                 >
                   Building 112
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />}
-                  onClick={() => navigate('/buildings?key=b120___0-0')}
+                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b120___0-0`}
                 >
                   Building 120
                 </MenuItem>
@@ -277,11 +258,10 @@ export const Buildings = () => {
                 variant="outline"
               />
               <MenuList fontSize="12px">
-                {processing().map((item, iter) => (
+                {processingMenu().map((item, iter) => (
                   <MenuItem
                     key={iter}
-                    icon={<CiLineHeight />}
-                    onClick={() => navigate(`/buildings?key=${item.address}`)}
+                    icon={<CiLineHeight />} as="a" href={`${address}?key=${item.address}`}                    
                   >
                     {`Floor hieght: ${item.h} m for building No${item.name}`}
                   </MenuItem>
@@ -300,10 +280,11 @@ export const Buildings = () => {
 
         <TabPanels>
           <TabPanel height="100%" padding="0" margin="0">
+            {console.log(search.substring(5, 15))}
             <MapBox>
               <MapContainer
-                center={[48.49574, 34.66626]}
-                zoom={18}
+                center={processingMap("c")}
+                zoom={processingMap("z")}
                 style={{
                   height: 'auto',
                   width: '70%',
@@ -325,20 +306,20 @@ export const Buildings = () => {
                       }
                     />
                   </LayersControl.BaseLayer>
-                  <LayersControl.BaseLayer name="Scheme of the building">
+                  <LayersControl.Overlay checked name="Scheme of the building">
                     <TileLayer
                       attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
-                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/shema/{z}/{x}/{y}.webp`}
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${subLink}/shema/{z}/{x}/{y}.webp`}
                       tms={true}
                       opacity={1.0}
                       minZoom={18}
                       maxZoom={22}
                     />
-                  </LayersControl.BaseLayer>
+                  </LayersControl.Overlay>
                   <LayersControl.Overlay name="Gamma dose rate at H of 0.1 m, &mu;Sv/h">
                     <TileLayer
                       attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
-                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/aedr_01/{z}/{x}/{y}.webp`}
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${subLink}/aedr_01/{z}/{x}/{y}.webp`}
                       tms={true}
                       opacity={1.0}
                       minZoom={18}
@@ -348,27 +329,17 @@ export const Buildings = () => {
                   <LayersControl.Overlay name="Gamma dose rate at H of 1.0 m, &mu;Sv/h">
                     <TileLayer
                       attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
-                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/aedr_10/{z}/{x}/{y}.webp`}
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${subLink}/aedr_10/{z}/{x}/{y}.webp`}
                       tms={true}
                       opacity={1.0}
                       minZoom={18}
                       maxZoom={22}
                     />
-                  </LayersControl.Overlay>
-                  <LayersControl.Overlay name="Gamma dose rate at H of 1.0 m, &mu;Sv/h">
-                    <TileLayer
-                      attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
-                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/aedr_10/{z}/{x}/{y}.webp`}
-                      tms={true}
-                      opacity={1.0}
-                      minZoom={18}
-                      maxZoom={22}
-                    />
-                  </LayersControl.Overlay>
+                  </LayersControl.Overlay>                  
                   <LayersControl.Overlay name="Density beta-particles flux, pcs/sq.m/min">
                     <TileLayer
                       attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
-                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/beta/{z}/{x}/{y}.webp`}
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${subLink}/beta/{z}/{x}/{y}.webp`}
                       tms={true}
                       opacity={1.0}
                       minZoom={18}
@@ -378,20 +349,19 @@ export const Buildings = () => {
                   <LayersControl.Overlay name="Density alfa-particles flux, pcs/sq.m/min">
                     <TileLayer
                       attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
-                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${pagePath.substring(5, 15)}/alfa/{z}/{x}/{y}.webp`}
+                      url={`https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/main/src/components/Buildings/data/${subLink}/alfa/{z}/{x}/{y}.webp`}
                       tms={true}
                       opacity={1.0}
                       minZoom={18}
                       maxZoom={22}
                     />
                   </LayersControl.Overlay>
-
                   <LayersControl.Overlay
                     checked
                     name="Approximation border for radiation parameters"
                   >
                     <GeoJSON
-                      data={points}
+                      data={polygonData}
                       style={{
                         color: '#d40696',
                         capasity: 1.0,
@@ -401,7 +371,7 @@ export const Buildings = () => {
 
                   <LayersControl.Overlay checked name="Observations">
                     <GeoJSON
-                      data={border}                      
+                      data={pointsData}                      
                       pointToLayer={setIcon}
                     // onEachFeature={onEachFeature}
                     ></GeoJSON>
@@ -409,8 +379,18 @@ export const Buildings = () => {
                 </LayersControl>
               </MapContainer>
               <MapInfo>
-                <MapTitle>Building No ${}</MapTitle>
+                <MapTitle>{`Building No ${selectedBuilding.no}`}</MapTitle>
                 <MapLegend> LEGEND: </MapLegend>
+                <LegendItem>
+                            <FuatureTitle>Ambien dose equivalent rate in air, μSv/h </FuatureTitle>
+                            {attributeSchema.gamma.list.map(item => (
+                              <Item key={item.color}>
+                                <ColorAttribute color={item.color} />
+                                <TextAttribute>{item.value}</TextAttribute>
+                              </Item>
+                            ))}
+                          </LegendItem>
+
               </MapInfo>
             </MapBox>
           </TabPanel>

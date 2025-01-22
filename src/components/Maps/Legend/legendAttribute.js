@@ -57,11 +57,12 @@ export const attributeSchema = {
   beta: {
     title: 'Beta-particles flex, pcs/sq.m/min',
     list: [
-      { no: 1, color: '#006420', value: '<=800' },
-      { no: 2, color: '#b1bd40', value: '800-2000' },
-      { no: 3, color: '#fdec00', value: '2000-8000' },
-      { no: 4, color: '#ff0415', value: '8000-10000' },
-      { no: 4, color: '#45024b', value: '>10000' },
+      { no: 1, color: '#006420', value: '<=200' },
+      { no: 2, color: '#b1bd40', value: '200-800' },
+      { no: 3, color: '#fdec00', value: '800-2000' },
+      { no: 4, color: '#ff0415', value: '2000-8000' },
+      { no: 5, color: '#8f384c', value: '8000-10000' },
+      { no: 6, color: '#45024b', value: '>10000' },
     ],
   },
 };
