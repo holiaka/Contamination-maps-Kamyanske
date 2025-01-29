@@ -37,11 +37,14 @@ import {
   MapInfo,
   MapTitle,
   MapLegend,
+  ItemName,
+  LegendBox,
+  LegendConteiner,
 } from './Buildings.styled';
 import { buildingData } from './buildingList';
 // import { measures } from './data/db_f';
 import { attributeSchema } from 'components/Maps/Legend/legendAttribute';
-import { FuatureTitle, LegendItem, Item, ColorAttribute, TextAttribute } from 'components/Maps/Legend/Legend.styled';
+import {LegendItem, Item, ColorAttribute, TextAttribute } from 'components/Maps/Legend/Legend.styled';
 
 const { origin, pathname, search="?key=b__1___0-0" } = window.location;
 const address = `${origin}${pathname}`;
@@ -100,26 +103,33 @@ const setIcon = (feature, latlng) => {
   });
 };
 
-// const onEaachFeatureBuldings = (feature, layer) => {
-//   let number = feature.properties.Number;
-//   let enterprise = feature.properties.Enterprise;
-//   let text;
-//   let text2;
-//   if (number !== null) {
-//     text = number;
-//   } else {
-//     text = 'No data';
-//   }
-//   if (enterprise !== null) {
-//     text2 = enterprise;
-//   } else {
-//     text2 = 'No data';
-//   }
-//   layer.bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
-//      <b>Enterprise:</b> ${text2} </br>
-//      <h1> BUILD </h1>
-//      <a href="http://localhost:3000/Contamination-maps-Kamyanske/buildings" >Go to Building Info</a>`);
-// };
+const onEachFeature = (feature, layer) => {
+  let { _Point: point, _Build: build, _H: h, _Room: room, _Type: type, _Order: order, _Measure: measure, _AEDR_01: aedr01, _AEDR_10: aedr10, _Alfa: alfa, _Beta: beta } = feature.properties;
+
+  let pointText = point ?? 'No data';
+  let buildText = build ?? 'No data';
+  let hText = h ?? 'No data';
+  let roomText = room ?? 'No data';
+  let typeText = type ?? 'No data';
+  let orderText = order ?? 'No data';
+  let measureText = measure ?? 'No data';
+  let aedr01Text = aedr01 ?? 'No data';
+  let aedr10Text = aedr10 ?? 'No data';
+  let alfaText = alfa ?? 'No data';
+  let betaText = beta ?? 'No data';
+  
+  layer.bindPopup(`<b>Buildings No: ${buildText.toString()}, height: ${hText.toString()} m</b> ; </br>
+     <b>Point:</b> ${pointText.toString()} </br>
+     <b>Room:</b> ${roomText.toString()} </br>
+     <b>Type:</b> ${typeText.toString()} </br>
+     <b>Order No:</b> ${orderText.toString()} </br>
+     <b>Measure:</b> ${measureText.toString()} </br>
+     <b>AEDR at 0.1 m:</b> ${aedr01Text.toString()} μSv/h</br>
+     <b>AEDR at 1.0 m:</b> ${aedr10Text.toString()} μSv/h</br>
+     <b>Alfa:</b> ${alfaText.toString()} pcs/sq.m/min</br>
+     <b>Beta:</b> ${betaText.toString()} pcs/sq.m/min</br>
+     `);
+};
 
 export const Buildings = () => {  
   
@@ -263,7 +273,7 @@ export const Buildings = () => {
                     key={iter}
                     icon={<CiLineHeight />} as="a" href={`${address}?key=${item.address}`}                    
                   >
-                    {`Floor hieght: ${item.h} m for building No${item.name}`}
+                    {`Floor hieght: ${item.h} m for building No ${item.name}`}
                   </MenuItem>
                 ))}
               </MenuList>
@@ -363,17 +373,16 @@ export const Buildings = () => {
                     <GeoJSON
                       data={polygonData}
                       style={{
-                        color: '#d40696',
-                        capasity: 1.0,
+                        color: '#d40696',                        
+                        fillOpacity: 0.0,
                       }}
                     ></GeoJSON>
                   </LayersControl.Overlay>
-
                   <LayersControl.Overlay checked name="Observations">
                     <GeoJSON
                       data={pointsData}                      
                       pointToLayer={setIcon}
-                    // onEachFeature={onEachFeature}
+                    onEachFeature={onEachFeature}
                     ></GeoJSON>
                   </LayersControl.Overlay>
                 </LayersControl>
@@ -381,15 +390,28 @@ export const Buildings = () => {
               <MapInfo>
                 <MapTitle>{`Building No ${selectedBuilding.no}`}</MapTitle>
                 <MapLegend> LEGEND: </MapLegend>
+                <LegendConteiner>
+                <LegendBox>
                 <LegendItem>
-                            <FuatureTitle>Ambien dose equivalent rate in air, μSv/h </FuatureTitle>
+                            <ItemName>Ambien dose equivalent rate in air, μSv/h </ItemName>
                             {attributeSchema.gamma.list.map(item => (
                               <Item key={item.color}>
                                 <ColorAttribute color={item.color} />
                                 <TextAttribute>{item.value}</TextAttribute>
                               </Item>
                             ))}
-                          </LegendItem>
+                  </LegendItem>
+                  <LegendItem>
+                            <ItemName>Alfa-/beta-particles flex, pcs/sq.m/min </ItemName>
+                            {attributeSchema.beta.list.map(item => (
+                              <Item key={item.color}>
+                                <ColorAttribute color={item.color} />
+                                <TextAttribute>{item.value}</TextAttribute>
+                              </Item>
+                            ))}
+                </LegendItem>
+                  </LegendBox>
+                  </LegendConteiner>
 
               </MapInfo>
             </MapBox>

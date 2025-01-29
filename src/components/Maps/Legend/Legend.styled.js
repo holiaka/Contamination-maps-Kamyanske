@@ -33,11 +33,8 @@ font-weight: 700;
 export const LegendBottom = styled.div`
 display: flex;
 align-items: baseline;
-gap: 10px;
+gap: 10px;`
 
-
-
-`
 
 export const LegendItem = styled.div`
 display: flex;

@@ -199,12 +199,15 @@ export const Maps = () => {
   };
 
   const { origin, pathname} = window.location;
-  const address = `${origin}${pathname}`;
+  let address = `${origin}${pathname}`;
+  if (address[address.length] === "/") {
+    address = address.slice(0, -1);
+  }
 
   const onEachFeatureBuldings = (feature, layer) => {
     let number = feature.properties.Number;
     let enterprise = feature.properties.Enterprise;
-    let obs = feature.properties.Obs;
+    let obs = feature.properties.Obs;    
     let text;
     let text2;
     if (number !== null) {

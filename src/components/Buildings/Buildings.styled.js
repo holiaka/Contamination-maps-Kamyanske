@@ -24,7 +24,6 @@ export const MapBox = styled.div`
 display: flex;
 width: 100%;
 height: 78vh;
-
 `;
 
 export const MapInfo = styled.div`
@@ -48,3 +47,31 @@ text-align: center;
 font-weight: 500;
 
 `;
+
+export const ItemName = styled.h3`
+width: auto;
+font-size: 14px;
+text-align: center;
+font-weight: 500;
+`;
+
+export const LegendConteiner = styled.div`
+width: 100%;
+height: 60vh;
+overflow: hidden;
+position: relative;
+`
+
+export const LegendBox = styled.div`
+width: 100%;
+height:100%;
+overflow-y: scroll;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 20px;
+padding: 10px;
+
+margin-bottom: 100px;
+`;
+
