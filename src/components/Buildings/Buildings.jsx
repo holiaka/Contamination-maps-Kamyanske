@@ -1,4 +1,6 @@
 // import React, { useState, useEffect } from 'react';
+import 'react-image-gallery/styles/css/image-gallery.css';
+
 import {
   MapContainer,
   // Marker,
@@ -12,6 +14,9 @@ import {
 } from 'react-leaflet';
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import ImageGallery from 'react-image-gallery';
+// import stylesheet if you're not already using CSS @import
+import 'react-image-gallery/styles/css/image-gallery.css';
 
 // import { useLocation } from 'react-router-dom';
 
@@ -26,6 +31,15 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
 } from '@chakra-ui/react';
 import { GiNuclearWaste, GiHamburgerMenu } from 'react-icons/gi';
 import { CiLineHeight } from 'react-icons/ci';
@@ -42,14 +56,20 @@ import {
   LegendConteiner,
 } from './Buildings.styled';
 import { buildingData } from './buildingList';
-// import { measures } from './data/db_f';
+import { measures as measuresFloor } from './data/db_f';
 import { attributeSchema } from 'components/Maps/Legend/legendAttribute';
-import {LegendItem, Item, ColorAttribute, TextAttribute } from 'components/Maps/Legend/Legend.styled';
+import {
+  LegendItem,
+  Item,
+  ColorAttribute,
+  TextAttribute,
+} from 'components/Maps/Legend/Legend.styled';
 
-const { origin, pathname, search="?key=b__1___0-0" } = window.location;
+import { access } from 'components/SharedLayout/SharedLayout.jsx';
+
+const { origin, pathname, search = '?key=b__1___0-0' } = window.location;
 const address = `${origin}${pathname}`;
 const subLink = `${search.substring(5, 15)}`;
-console.log("SubLINK", subLink)
 let pointsData;
 let polygonData;
 
@@ -58,11 +78,14 @@ if (search.length === 15) {
   polygonData = require(`./data/${subLink}/pol.json`);
 }
 
+// For floor table
+let selectedBuild = subLink.substring(0, 5);
+let photosLink = `https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/refs/heads/main/src/components/Buildings/data/img/${selectedBuild}/`;
+let dataSet = measuresFloor[selectedBuild];
+
 const selectBuild = (buildingData, search) => {
   for (const iter of buildingData) {
-    let result = iter.address.find(item =>
-      item.includes(search)
-    );
+    let result = iter.address.find(item => item.includes(search));
     if (result !== undefined) {
       return iter;
     }
@@ -71,6 +94,24 @@ const selectBuild = (buildingData, search) => {
 };
 
 const selectedBuilding = selectBuild(buildingData, subLink);
+
+const listPhotos = () => {
+  let listObjPhoto = [];
+  let photosCount = selectedBuilding.photo; // Assuming this is a number
+
+  for (let photo = 1; photo <= photosCount; photo++) {
+    // Fix the condition
+    let obj = {
+      original: `${photosLink}${photo}.jpg`,
+      thumbnail: `${photosLink}${photo}.jpg`,
+    };
+    console.log('Iteration photos', obj);
+    listObjPhoto.push(obj);
+  }
+
+  console.log('Photos', listObjPhoto);
+  return listObjPhoto;
+};
 
 // const schemaURL = './data/b__1___0-0/beta.tif';
 
@@ -104,7 +145,19 @@ const setIcon = (feature, latlng) => {
 };
 
 const onEachFeature = (feature, layer) => {
-  let { _Point: point, _Build: build, _H: h, _Room: room, _Type: type, _Order: order, _Measure: measure, _AEDR_01: aedr01, _AEDR_10: aedr10, _Alfa: alfa, _Beta: beta } = feature.properties;
+  let {
+    _Point: point,
+    _Build: build,
+    _H: h,
+    _Room: room,
+    _Type: type,
+    _Order: order,
+    _Measure: measure,
+    _AEDR_01: aedr01,
+    _AEDR_10: aedr10,
+    _Alfa: alfa,
+    _Beta: beta,
+  } = feature.properties;
 
   let pointText = point ?? 'No data';
   let buildText = build ?? 'No data';
@@ -117,7 +170,7 @@ const onEachFeature = (feature, layer) => {
   let aedr10Text = aedr10 ?? 'No data';
   let alfaText = alfa ?? 'No data';
   let betaText = beta ?? 'No data';
-  
+
   layer.bindPopup(`<b>Buildings No: ${buildText.toString()}, height: ${hText.toString()} m</b> ; </br>
      <b>Point:</b> ${pointText.toString()} </br>
      <b>Room:</b> ${roomText.toString()} </br>
@@ -131,9 +184,8 @@ const onEachFeature = (feature, layer) => {
      `);
 };
 
-export const Buildings = () => {  
-  
-  const processingMenu = () => {  
+export const Buildings = () => {
+  const processingMenu = () => {
     const { h = [], address = [], no = '' } = selectedBuilding || {};
     return address.map((item, i) => ({
       h: h[i],
@@ -142,21 +194,28 @@ export const Buildings = () => {
     }));
   };
 
-  const processingMap = (par) => {
-    const { address = [], zoom=[], center=[] } = selectedBuilding || {};
+  const processingMap = par => {
+    const { address = [], zoom = [], center = [] } = selectedBuilding || {};
     const index = address.indexOf(subLink);
-    if (par === "z") {
+    if (par === 'z') {
       return zoom[index];
-    } else if (par === "c") {
+    } else if (par === 'c') {
       return center[index];
     } else {
-      return []
+      return [];
     }
-  }
+  };
 
+  const renderImage = (item) => (
+  <img 
+      src={item.original} 
+      alt={"Building view"}
+    style={{ height: "75vh", objectFit: "cover", margin: 'auto'}} 
+  />
+);
 
   return (
-    <BuildingSpace>
+    access ? (<BuildingSpace>
       <Tabs>
         <TabList
           display="flex"
@@ -171,89 +230,123 @@ export const Buildings = () => {
                 icon={<GiHamburgerMenu />}
                 variant="outline"
               />
-              <MenuList fontSize="12px" padding="0">
+              <MenuList fontSize="10px" padding="0">
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__1___0-0`}             
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__1___0-0`}
                 >
                   Building 1
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__1a__0-0`}
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__1a__0-0`}
                 >
                   Building 1"А"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__1b__0-0`}
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__1b__0-0`}
                 >
                   Building 1"Б"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__1m__0-0`}
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__1m__0-0`}
                 >
                   Building 1"M"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2___0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__2___0-0`}
                 >
                   Building 2
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2b__0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__2b__0-0`}
                 >
                   Building 2"Б"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2v__0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__2v__0-0`}
                 >
                   Building 2"В"
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2e1_0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__2e1_0-0`}
                 >
                   Building 2"Е"/1
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__2e2_0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__2e2_0-0`}
                 >
                   Building 2"Е"/2
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__3___0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__3___0-0`}
                 >
                   Building 3:
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b4-5___0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b4-5___0-0`}
                 >
                   Building 4-5
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b__6___0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b__6___0-0`}
                 >
                   Building 6
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b_27___0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b_27___0-0`}
                 >
                   Building 27
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b_28___0-0`}
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b_28___0-0`}
                 >
                   Building 28
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b_46___0-0`}                  
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b_46___0-0`}
                 >
                   Building 46
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b112___0-0`}
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b112___0-0`}
                 >
                   Building 112
                 </MenuItem>
                 <MenuItem
-                  icon={<GiNuclearWaste />} as="a" href={`${address}?key=b120___0-0`}
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b120___0-0`}
                 >
                   Building 120
                 </MenuItem>
@@ -267,11 +360,13 @@ export const Buildings = () => {
                 icon={<CiLineHeight />}
                 variant="outline"
               />
-              <MenuList fontSize="12px">
+              <MenuList fontSize="10px">
                 {processingMenu().map((item, iter) => (
                   <MenuItem
                     key={iter}
-                    icon={<CiLineHeight />} as="a" href={`${address}?key=${item.address}`}                    
+                    icon={<CiLineHeight />}
+                    as="a"
+                    href={`${address}?key=${item.address}`}
                   >
                     {`Floor hieght: ${item.h} m for building No ${item.name}`}
                   </MenuItem>
@@ -293,8 +388,8 @@ export const Buildings = () => {
             {console.log(search.substring(5, 15))}
             <MapBox>
               <MapContainer
-                center={processingMap("c")}
-                zoom={processingMap("z")}
+                center={processingMap('c')}
+                zoom={processingMap('z')}
                 style={{
                   height: 'auto',
                   width: '70%',
@@ -345,7 +440,7 @@ export const Buildings = () => {
                       minZoom={18}
                       maxZoom={22}
                     />
-                  </LayersControl.Overlay>                  
+                  </LayersControl.Overlay>
                   <LayersControl.Overlay name="Density beta-particles flux, pcs/sq.m/min">
                     <TileLayer
                       attribution='&copy; <a href="https://github.com/holiaka">GitHub</a> contributors'
@@ -373,16 +468,16 @@ export const Buildings = () => {
                     <GeoJSON
                       data={polygonData}
                       style={{
-                        color: '#d40696',                        
+                        color: '#d40696',
                         fillOpacity: 0.0,
                       }}
                     ></GeoJSON>
                   </LayersControl.Overlay>
                   <LayersControl.Overlay checked name="Observations">
                     <GeoJSON
-                      data={pointsData}                      
+                      data={pointsData}
                       pointToLayer={setIcon}
-                    onEachFeature={onEachFeature}
+                      onEachFeature={onEachFeature}
                     ></GeoJSON>
                   </LayersControl.Overlay>
                 </LayersControl>
@@ -391,39 +486,99 @@ export const Buildings = () => {
                 <MapTitle>{`Building No ${selectedBuilding.no}`}</MapTitle>
                 <MapLegend> LEGEND: </MapLegend>
                 <LegendConteiner>
-                <LegendBox>
-                <LegendItem>
-                            <ItemName>Ambien dose equivalent rate in air, μSv/h </ItemName>
-                            {attributeSchema.gamma.list.map(item => (
-                              <Item key={item.color}>
-                                <ColorAttribute color={item.color} />
-                                <TextAttribute>{item.value}</TextAttribute>
-                              </Item>
-                            ))}
-                  </LegendItem>
-                  <LegendItem>
-                            <ItemName>Alfa-/beta-particles flex, pcs/sq.m/min </ItemName>
-                            {attributeSchema.beta.list.map(item => (
-                              <Item key={item.color}>
-                                <ColorAttribute color={item.color} />
-                                <TextAttribute>{item.value}</TextAttribute>
-                              </Item>
-                            ))}
-                </LegendItem>
+                  <LegendBox>
+                    <LegendItem>
+                      <ItemName>
+                        Ambien dose equivalent rate in air, μSv/h{' '}
+                      </ItemName>
+                      {attributeSchema.gamma.list.map(item => (
+                        <Item key={item.color}>
+                          <ColorAttribute color={item.color} />
+                          <TextAttribute>{item.value}</TextAttribute>
+                        </Item>
+                      ))}
+                    </LegendItem>
+                    <LegendItem>
+                      <ItemName>
+                        Alfa-/beta-particles flex, pcs/sq.m/min{' '}
+                      </ItemName>
+                      {attributeSchema.beta.list.map(item => (
+                        <Item key={item.color}>
+                          <ColorAttribute color={item.color} />
+                          <TextAttribute>{item.value}</TextAttribute>
+                        </Item>
+                      ))}
+                    </LegendItem>
                   </LegendBox>
-                  </LegendConteiner>
-
+                </LegendConteiner>
               </MapInfo>
             </MapBox>
           </TabPanel>
-          <TabPanel>
-            <p>two!</p>
+          <TabPanel height="100%" padding="0" margin="0">
+            <TableContainer height="75vh" overflowY="auto">
+              <Table size="sm">
+                <TableCaption placement="top">
+                  {`Data about relative floor contamination in building No ${selectedBuilding.no}`}
+                </TableCaption>
+                <Thead>
+                  <Tr>
+                    <Th textTransform="none">H, m</Th>
+                    <Th textTransform="none">Point</Th>
+                    <Th textTransform="none">Room</Th>
+                    <Th textTransform="none">Type</Th>
+                    <Th textTransform="none">Order</Th>
+                    <Th textTransform="none">Measure</Th>
+                    <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
+                    <Th textTransform="none">AEDR at 1.0 m, μSv/h</Th>
+                    <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                    <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {dataSet.map((item, index) => (
+                    <Tr key={index}>
+                      <Td>{item.H.toFixed(1)}</Td>
+                      <Td>{item.Point}</Td>
+                      <Td>{item.Room}</Td>
+                      <Td>{item.Type}</Td>
+                      <Td>{item.Order}</Td>
+                      <Td>{item.Measure}</Td>
+                      <Td>{item.AEDR_01}</Td>
+                      <Td>{item.AEDR_10}</Td>
+                      <Td>{item.Alfa}</Td>
+                      <Td>{item.Beta}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+                <Tfoot>
+                  <Tr>
+                    <Th textTransform="none">H, m</Th>
+                    <Th textTransform="none">Point</Th>
+                    <Th textTransform="none">Room</Th>
+                    <Th textTransform="none">Type</Th>
+                    <Th textTransform="none">Order</Th>
+                    <Th textTransform="none">Measure</Th>
+                    <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
+                    <Th textTransform="none">AEDR at 1.0 m, μSv/h</Th>
+                    <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                    <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                  </Tr>
+                </Tfoot>
+              </Table>
+            </TableContainer>
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            
+            <ImageGallery
+              thumbnailPosition="right"
+              showBullets={true}
+              items={listPhotos()}
+              renderItem={renderImage}
+            />
+            
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </BuildingSpace>
+    </BuildingSpace>):(<p>Your don't have access her!</p>)
   );
 };

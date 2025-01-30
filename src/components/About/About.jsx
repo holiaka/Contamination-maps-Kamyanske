@@ -4,7 +4,7 @@ import { headerFontSize, mainFontSize } from './About.my-chakra-ui';
 import { Box } from './About.styled';
 
 export const About = () => {
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   const onClick = () => {
     navigate("/", { replace: false });
