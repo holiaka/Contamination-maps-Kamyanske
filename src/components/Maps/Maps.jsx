@@ -200,7 +200,8 @@ export const Maps = () => {
 
   const { origin, pathname} = window.location;
   let address = `${origin}${pathname}`;
-  if (address[address.length] === "/") {
+  console.log("address", address);
+  if (address[address.length-1] === "/") {
     address = address.slice(0, -1);
   }
 
@@ -220,10 +221,18 @@ export const Maps = () => {
     } else {
       text2 = 'No data';
     }
+
+    let buildingLink = "";
+    if (obs !== null) {
+      buildingLink =`<a href="${address}/buildings?key=${obs}">Go to Building Info</a>`
+    } else {
+      buildingLink =`There is no description!!!`
+    }
+
+
     layer.bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
-       <b>Enterprise:</b> ${text2} </br>
-       <h1> BUILD </h1>
-       <a href="${address}/buildings?key=${obs}">Go to Building Info</a>`);
+       <b>Enterprise:</b> ${text2} </br>       
+       ${buildingLink}`);
   };
 
   const onEachFeature = (feature, layer) => {
