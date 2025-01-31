@@ -22,6 +22,7 @@ import tailing from './../../layers/tailing.json';
 import boundary from './../../layers/boundary.json';
 import geoOldData from './../../layers/obsPointsGammaOld.json';
 import newObs from './../../layers/front-end-colection-2024.json';
+import samples from './../../layers/samplesOnTeritories.json';
 import { geoFetch } from './../../firebase/sdk';
 import { useState, useEffect } from 'react';
 import { GeoDataBox } from './GeoDataBox/GeoDataBox';
@@ -30,13 +31,13 @@ import { GeoLocation } from './GeoLocation/GeoLocation';
 import iconSvg from './../../img/SVG/human-target-svgrepo-com.svg';
 import { Legend } from './Legend/Legend';
 
-const layersListForShowLegend = [  
+const layersListForShowLegend = [
   'Old observations (2011-2016)',
   'Gamma dose rate at a height (H) of 1.0 m in 2016, μSv/h',
   'Gamma dose rate at H of 0.1 m in 2024, μSv/h',
   'Gamma dose rate at H of 1.0 m in 2024, μSv/h',
   'Beta-particles flex at H of 0.1 m in 2024, pcs/sq.m/min',
-  'New observation 2023-2024'  
+  'New observation 2023-2024',
 ];
 
 export const Maps = () => {
@@ -114,7 +115,7 @@ export const Maps = () => {
     return num;
   };
 
-  const setIcon = (feature, latlng) => {    
+  const setIcon = (feature, latlng) => {
     return L.circleMarker(latlng, {
       radius: 4,
       fillColor: createColor(feature.properties.colorID),
@@ -193,22 +194,24 @@ export const Maps = () => {
 
   const onEachFeatureTailing = (feature, layer) => {
     let name = feature.properties.Name;
-    layer.bindTooltip(`<b style="color:white; background:black; display:inline-block;">Tailing: ${name.toString()}<b/>`, {
-    opacity: 1.0,
-    });
+    layer.bindTooltip(
+      `<b style="color:white; background:black; display:inline-block;">Tailing: ${name.toString()}<b/>`,
+      {
+        opacity: 1.0,
+      }
+    );
   };
 
-  const { origin, pathname} = window.location;
+  const { origin, pathname } = window.location;
   let address = `${origin}${pathname}`;
-  console.log("address", address);
-  if (address[address.length-1] === "/") {
+  if (address[address.length - 1] === '/') {
     address = address.slice(0, -1);
   }
 
   const onEachFeatureBuldings = (feature, layer) => {
     let number = feature.properties.Number;
     let enterprise = feature.properties.Enterprise;
-    let obs = feature.properties.Obs;    
+    let obs = feature.properties.Obs;
     let text;
     let text2;
     if (number !== null) {
@@ -222,13 +225,12 @@ export const Maps = () => {
       text2 = 'No data';
     }
 
-    let buildingLink = "";
+    let buildingLink = '';
     if (obs !== null) {
-      buildingLink =`<a href="${address}/buildings?key=${obs}">Go to Building Info</a>`
+      buildingLink = `<a href="${address}/buildings?key=${obs}">Go to Building Info</a>`;
     } else {
-      buildingLink =`There is no description!!!`
+      buildingLink = `<b>There is no description!!!</b>`;
     }
-
 
     layer.bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
        <b>Enterprise:</b> ${text2} </br>       
@@ -239,6 +241,116 @@ export const Maps = () => {
     layer.on({
       click: obtainData,
     });
+  };
+
+  const onEachFeatureSampels = (feature, layer) => {
+    let { ID: id,
+      Aim: aim,
+      Material: material,
+      Depth: depth,
+      AEDR_10: aedr10,
+        Act: act,
+        Passport: passport,
+        Anomal: anomal,
+        AC_210Pb: ac_210Pb,
+        AC_238U: ac_238U,
+        AC_230Th: ac_230Th,
+        AC_235U: ac_235U,
+        AC_226Ra: ac_226Ra,
+        AC_228Th: ac_228Th,
+        AC_232Th: ac_232Th,
+        AC_40K: ac_40K,
+        AC_137Cs: ac_137Cs,
+        All_alfa_A: all_alfa_a,
+        All_beta_A: all_beta_a,
+        As_mg_kg: cAs_mg_kg,
+        Cd_mg_kg: cCd_mg_kg,
+        Co_mg_kg: cCo_mg_kg,
+        Cr_mg_kg: cCr_mg_kg,
+        Cu_mg_kg: cCu_mg_kg,
+        Fe_mg_kg: cFe_mg_kg,
+        Se_mg_kg: cSe_mg_kg,
+        Mn_mg_kg: cMn_mg_kg,
+        Ni_mg_kg: cNi_mg_kg,
+        Pb_mg_kg: cPb_mg_kg,
+        Ti_mg_kg: cTi_mg_kg,
+        V_mg_kg: cV_mg_kg,
+        Zn_mg_kg: cZn_mg_kg,
+        Hg_mg_kg: cHg_mg_kg,
+        Notes: notes,
+     } = feature.properties;
+
+    let idText = id ?? 'No data';
+    let aimText = aim ?? 'No data'
+     let materialText = material ?? 'No data';
+let depthText = depth ?? 'No data';
+let aedr10Text = aedr10 ?? 'No data';
+let actText = act ?? 'No data';
+let passportText = passport ?? 'No data';
+let anomalText = anomal ?? 'No data';
+let ac_210PbText = ac_210Pb ?? 'No data';
+let ac_238UText = ac_238U ?? 'No data';
+let ac_230ThText = ac_230Th ?? 'No data';
+let ac_235UText = ac_235U ?? 'No data';
+let ac_226RaText = ac_226Ra ?? 'No data';
+let ac_228ThText = ac_228Th ?? 'No data';
+let ac_232ThText = ac_232Th ?? 'No data';
+let ac_40KText = ac_40K ?? 'No data';
+let ac_137CsText = ac_137Cs ?? 'No data';
+let all_alfa_aText = all_alfa_a ?? 'No data';
+let all_beta_aText = all_beta_a ?? 'No data';
+let cAs_mg_kgText = cAs_mg_kg ?? 'No data';
+let cCd_mg_kgText = cCd_mg_kg ?? 'No data';
+let cCo_mg_kgText = cCo_mg_kg ?? 'No data';
+let cCr_mg_kgText = cCr_mg_kg ?? 'No data';
+let cCu_mg_kgText = cCu_mg_kg ?? 'No data';
+let cFe_mg_kgText = cFe_mg_kg ?? 'No data';
+let cSe_mg_kgText = cSe_mg_kg ?? 'No data';
+let cMn_mg_kgText = cMn_mg_kg ?? 'No data';
+let cNi_mg_kgText = cNi_mg_kg ?? 'No data';
+let cPb_mg_kgText = cPb_mg_kg ?? 'No data';
+let cTi_mg_kgText = cTi_mg_kg ?? 'No data';
+let cV_mg_kgText = cV_mg_kg ?? 'No data';
+let cZn_mg_kgText = cZn_mg_kg ?? 'No data';
+let cHg_mg_kgText = cHg_mg_kg ?? 'No data';
+let notesText = notes ?? 'No data'; 
+
+
+    layer.bindPopup(`<b>Point ID:</b> ${idText.toString()} </br>
+    <b>Aim:</b> ${aimText.toString()} </br>
+    <b>Material:</b> ${materialText.toString()} </br>
+    <b>Sample depth:</b> ${depthText.toString()} m</br>
+    <b>AEDR at h=0.1 m:</b> ${aedr10Text.toString()} mkSv/h</br>
+    <b>Act No</b> ${actText.toString()} </br>
+    <b>Passport No:</b> ${passportText.toString()} </br>
+    <b>Anomal area:</b> ${anomalText.toString()} </br>
+<b>Pu-210 activity concentration:</b> ${ac_210PbText.toString()} </br>
+<b>U-238 activity concentration:</b> ${ac_238UText.toString()} </br>
+<b>Th-230 activity concentration:</b> ${ac_230ThText.toString()} </br>
+<b>U-235 activity concentration:</b> ${ac_235UText.toString()} </br>
+<b>Ra-226 activity concentration:</b> ${ac_226RaText.toString()} </br>
+    <b>Th-228 activity concentration:</b> ${ac_228ThText.toString()} </br>
+    <b>Th-232 activity concentration:</b> ${ac_232ThText.toString()} </br>
+    <b>K-40 activity concentration:</b> ${ac_40KText.toString()} </br>
+<b>Cs-137 activity concentration:</b> ${ac_137CsText.toString()} </br>
+<b>Total alfa activity:</b> ${all_alfa_aText.toString()} mg/kg(1E-6)</br>
+<b>Total beta activity:</b> ${all_beta_aText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of As:</b> ${cAs_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Cd:</b> ${cCd_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Co:</b> ${cCo_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Cr:</b> ${cCr_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Cu:</b> ${cCu_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Fe:</b> ${cFe_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Se:</b> ${cSe_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Mn:</b> ${cMn_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Ni:</b> ${cNi_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Pb:</b> ${cPb_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Ti:</b> ${cTi_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of V:</b> ${cV_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Zn:</b> ${cZn_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Mass fraction of Hg:</b> ${cHg_mg_kgText.toString()} mg/kg(1E-6)</br>
+<b>Notes:</b> ${notesText.toString()} </br>
+    `);
   };
 
   return (
@@ -306,14 +418,12 @@ export const Maps = () => {
               onEachFeature={onEachFeatureZones}
             ></GeoJSON>
           </LayersControl.Overlay>
-          <LayersControl.Overlay
-            name="Tailings"
-          >
+          <LayersControl.Overlay name="Tailings">
             <GeoJSON
               data={tailing}
               style={{
                 color: '#000000',
-                colorFill:"#000000",
+                colorFill: '#000000',
                 capasity: 1.0,
               }}
               onEachFeature={onEachFeatureTailing}
@@ -402,6 +512,21 @@ export const Maps = () => {
               ></GeoJSON>
             </MarkerClusterGroup>
           </LayersControl.Overlay>
+          {access?(<LayersControl.Overlay checked name="Sample points">
+            <GeoJSON
+              data={samples}
+              pointToLayer={(feature, latlng) => {
+                return L.circleMarker(latlng, {
+                  radius: 3, // Set circle size
+                  fillColor: '#001aff',
+                  color: '#161500',
+                  opacity: 1,
+                  fillOpacity: 0.2,
+                });
+              }}
+              onEachFeature={onEachFeatureSampels}
+            />
+          </LayersControl.Overlay>):(<></>)}
         </LayersControl>
         {geoData ? (
           <GeoDataBox geoData={geoData} setGeoData={setGeoData}></GeoDataBox>

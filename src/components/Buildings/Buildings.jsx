@@ -105,11 +105,9 @@ const listPhotos = () => {
       original: `${photosLink}${photo}.jpg`,
       thumbnail: `${photosLink}${photo}.jpg`,
     };
-    console.log('Iteration photos', obj);
     listObjPhoto.push(obj);
   }
 
-  console.log('Photos', listObjPhoto);
   return listObjPhoto;
 };
 
@@ -385,7 +383,6 @@ export const Buildings = () => {
 
         <TabPanels>
           <TabPanel height="100%" padding="0" margin="0">
-            {console.log(search.substring(5, 15))}
             <MapBox>
               <MapContainer
                 center={processingMap('c')}
