@@ -204,16 +204,16 @@ export const Buildings = () => {
     }
   };
 
-  const renderImage = (item) => (
-  <img 
-      src={item.original} 
-      alt={"Building view"}
-    style={{ height: "75vh", objectFit: "cover", margin: 'auto'}} 
-  />
-);
+  const renderImage = item => (
+    <img
+      src={item.original}
+      alt={'Building view'}
+      style={{ height: '75vh', objectFit: 'cover', margin: 'auto' }}
+    />
+  );
 
-  return (
-    access ? (<BuildingSpace>
+  return access ? (
+    <BuildingSpace>
       <Tabs>
         <TabList
           display="flex"
@@ -512,70 +512,91 @@ export const Buildings = () => {
             </MapBox>
           </TabPanel>
           <TabPanel height="100%" padding="0" margin="0">
-            <TableContainer height="75vh" overflowY="auto">
-              <Table size="sm">
-                <TableCaption placement="top">
-                  {`Data about relative floor contamination in building No ${selectedBuilding.no}`}
-                </TableCaption>
-                <Thead>
-                  <Tr>
-                    <Th textTransform="none">H, m</Th>
-                    <Th textTransform="none">Point</Th>
-                    <Th textTransform="none">Room</Th>
-                    <Th textTransform="none">Type</Th>
-                    <Th textTransform="none">Order</Th>
-                    <Th textTransform="none">Measure</Th>
-                    <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
-                    <Th textTransform="none">AEDR at 1.0 m, μSv/h</Th>
-                    <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
-                    <Th textTransform="none">Beta, pcs/sq.m/min</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {dataSet.map((item, index) => (
-                    <Tr key={index}>
-                      <Td>{item.H.toFixed(1)}</Td>
-                      <Td>{item.Point}</Td>
-                      <Td>{item.Room}</Td>
-                      <Td>{item.Type}</Td>
-                      <Td>{item.Order}</Td>
-                      <Td>{item.Measure}</Td>
-                      <Td>{item.AEDR_01}</Td>
-                      <Td>{item.AEDR_10}</Td>
-                      <Td>{item.Alfa}</Td>
-                      <Td>{item.Beta}</Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-                <Tfoot>
-                  <Tr>
-                    <Th textTransform="none">H, m</Th>
-                    <Th textTransform="none">Point</Th>
-                    <Th textTransform="none">Room</Th>
-                    <Th textTransform="none">Type</Th>
-                    <Th textTransform="none">Order</Th>
-                    <Th textTransform="none">Measure</Th>
-                    <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
-                    <Th textTransform="none">AEDR at 1.0 m, μSv/h</Th>
-                    <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
-                    <Th textTransform="none">Beta, pcs/sq.m/min</Th>
-                  </Tr>
-                </Tfoot>
-              </Table>
-            </TableContainer>
+            <Tabs>
+              <TabList
+                display="flex"
+                alignItems="center"
+                justifyContent="space-around"
+              >
+                <SelectedTab>
+                  <Tab>Floor</Tab>
+                  <Tab>Wall</Tab>
+                  <Tab>Diveces, eqvipments and so on</Tab>
+                  <Tab>Samples </Tab>
+                </SelectedTab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <TableContainer height="75vh" overflowY="auto">
+                    <Table size="sm">
+                      <TableCaption placement="top">
+                        {`Data about relative floor contamination in building No ${selectedBuilding.no}`}
+                      </TableCaption>
+                      <Thead>
+                        <Tr>
+                          <Th textTransform="none">H, m</Th>
+                          <Th textTransform="none">Point</Th>
+                          <Th textTransform="none">Room</Th>
+                          <Th textTransform="none">Type</Th>
+                          <Th textTransform="none">Order</Th>
+                          <Th textTransform="none">Measure</Th>
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
+                          <Th textTransform="none">AEDR at 1.0 m, μSv/h</Th>
+                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {dataSet.map((item, index) => (
+                          <Tr key={index}>
+                            <Td>{item.H.toFixed(1)}</Td>
+                            <Td>{item.Point}</Td>
+                            <Td>{item.Room}</Td>
+                            <Td>{item.Type}</Td>
+                            <Td>{item.Order}</Td>
+                            <Td>{item.Measure}</Td>
+                            <Td>{item.AEDR_01}</Td>
+                            <Td>{item.AEDR_10}</Td>
+                            <Td>{item.Alfa}</Td>
+                            <Td>{item.Beta}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                      <Tfoot>
+                        <Tr>
+                          <Th textTransform="none">H, m</Th>
+                          <Th textTransform="none">Point</Th>
+                          <Th textTransform="none">Room</Th>
+                          <Th textTransform="none">Type</Th>
+                          <Th textTransform="none">Order</Th>
+                          <Th textTransform="none">Measure</Th>
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
+                          <Th textTransform="none">AEDR at 1.0 m, μSv/h</Th>
+                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                        </Tr>
+                      </Tfoot>
+                    </Table>
+                  </TableContainer>
+                </TabPanel>
+                <TabPanel></TabPanel>
+                <TabPanel></TabPanel>
+                <TabPanel></TabPanel>
+              </TabPanels>
+            </Tabs>
           </TabPanel>
           <TabPanel>
-            
             <ImageGallery
               thumbnailPosition="right"
               showBullets={true}
               items={listPhotos()}
               renderItem={renderImage}
             />
-            
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </BuildingSpace>):(<p>Your don't have access her!</p>)
+    </BuildingSpace>
+  ) : (
+    <p>Your don't have access her!</p>
   );
 };
