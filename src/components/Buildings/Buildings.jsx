@@ -40,6 +40,7 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Link,
 } from '@chakra-ui/react';
 import { GiNuclearWaste, GiHamburgerMenu } from 'react-icons/gi';
 import { CiLineHeight } from 'react-icons/ci';
@@ -57,6 +58,9 @@ import {
 } from './Buildings.styled';
 import { buildingData } from './buildingList';
 import { measures as measuresFloor } from './data/db_f';
+import { wall_data as measuresWall } from './data/db_w'; 
+import { samples_data as measuresSamples } from './data/db_samples';
+import { eq_data as measuresEq } from './data/db_eq';
 import { attributeSchema } from 'components/Maps/Legend/legendAttribute';
 import {
   LegendItem,
@@ -81,7 +85,10 @@ if (search.length === 15) {
 // For floor table
 let selectedBuild = subLink.substring(0, 5);
 let photosLink = `https://raw.githubusercontent.com/holiaka/Contamination-maps-Kamyanske/refs/heads/main/src/components/Buildings/data/img/${selectedBuild}/`;
-let dataSet = measuresFloor[selectedBuild];
+let dataSetFloor = measuresFloor[selectedBuild];
+let dataSetWall = measuresWall[selectedBuild];
+let dataSetSamples = measuresSamples[selectedBuild];
+let dataSetEq = measuresEq[selectedBuild];
 
 const selectBuild = (buildingData, search) => {
   for (const iter of buildingData) {
@@ -527,10 +534,11 @@ export const Buildings = () => {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <TableContainer height="75vh" overflowY="auto">
+                  <TableContainer height="60vh" overflowY="auto">
                     <Table size="sm">
                       <TableCaption placement="top">
-                        {`Data about relative floor contamination in building No ${selectedBuilding.no}`}
+                        {`Data about floor contamination in building No ${selectedBuilding.no}. `}
+                        Link on final buildings reports <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link"><b>HERE </b></Link>
                       </TableCaption>
                       <Thead>
                         <Tr>
@@ -547,7 +555,7 @@ export const Buildings = () => {
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {dataSet.map((item, index) => (
+                        {dataSetFloor.map((item, index) => (
                           <Tr key={index}>
                             <Td>{item.H.toFixed(1)}</Td>
                             <Td>{item.Point}</Td>
@@ -579,9 +587,171 @@ export const Buildings = () => {
                     </Table>
                   </TableContainer>
                 </TabPanel>
-                <TabPanel></TabPanel>
-                <TabPanel></TabPanel>
-                <TabPanel></TabPanel>
+                <TabPanel>
+                  <TableContainer height="60vh" overflowY="auto">
+                    <Table size="sm">
+                      <TableCaption placement="top">
+                        {`Data about wall contamination in building No ${selectedBuilding.no}. `}
+                        Link on final buildings reports <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link"><b>HERE </b></Link>
+                      </TableCaption>
+                      <Thead>                     
+                        <Tr>
+                          <Th textTransform="none">H, m</Th>
+                          <Th textTransform="none">Point</Th>
+                          <Th textTransform="none">Build</Th>
+                          <Th textTransform="none">Room</Th>
+                          <Th textTransform="none">Type</Th>
+                          <Th textTransform="none">Order</Th>
+                          <Th textTransform="none">Measure</Th>
+                          <Th textTransform="none">Measure H, m</Th>
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {dataSetWall.map((item, index) => (
+                          <Tr key={index}>
+                            <Td>{item.H.toFixed(1)}</Td>
+                            <Td>{item.Point}</Td>
+                            <Td>{item.Build}</Td>
+                            <Td>{item.Room}</Td>
+                            <Td>{item.Type}</Td>
+                            <Td>{item.Order}</Td>
+                            <Td>{item.Measure}</Td>
+                            <Td>{item.Sample_H_m}</Td>
+                            <Td>{item.AEDR_01.toFixed(2)}</Td>
+                            <Td>{item.Alfa}</Td>
+                            <Td>{item.Beta}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                      <Tfoot>
+                        <Tr>
+                          <Th textTransform="none">H, m</Th>
+                          <Th textTransform="none">Point</Th>
+                          <Th textTransform="none">Build</Th>
+                          <Th textTransform="none">Room</Th>
+                          <Th textTransform="none">Type</Th>
+                          <Th textTransform="none">Order</Th>
+                          <Th textTransform="none">Measure</Th>
+                          <Th textTransform="none">Measure H, m</Th>
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                        </Tr>
+                      </Tfoot>
+                    </Table>
+                  </TableContainer>
+                </TabPanel>
+                <TabPanel>
+                  <TableContainer height="60vh" overflowY="auto">
+                    <Table size="sm">
+                      <TableCaption placement="top">
+                        {`Data about equipment's contamination in building No ${selectedBuilding.no}. `}
+                        Link on final buildings reports <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link"><b>HERE </b></Link>
+                      </TableCaption>
+                      <Thead>                        
+                        <Tr>
+                          <Th textTransform="none">Equipment name, m</Th>
+                          <Th textTransform="none">Mark</Th>
+                          <Th textTransform="none">Material</Th>
+                          <Th textTransform="none">Width/Diameter, m</Th>
+                          <Th textTransform="none">Length, m</Th>
+                          <Th textTransform="none">Height, mr</Th>                          
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Contamination level</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {dataSetEq.map((item, index) => (
+                          <Tr key={index}>
+                            <Td>{item.eqName}</Td>
+                            <Td>{item.mark}</Td>
+                            <Td>{item.material}</Td>
+                            <Td>{item.d}</Td>
+                            <Td>{item.l}</Td>
+                            <Td>{item.h}</Td>
+                            <Td>{item.AEDR}</Td>
+                            <Td>{item.alfa}</Td>
+                            <Td>{item.beta}</Td>
+                            <Td>{item.level}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                      <Tfoot>
+                        <Tr>
+                          <Th textTransform="none">Equipment name, m</Th>
+                          <Th textTransform="none">Mark</Th>
+                          <Th textTransform="none">Material</Th>
+                          <Th textTransform="none">Width/Diameter, m</Th>
+                          <Th textTransform="none">Length, m</Th>
+                          <Th textTransform="none">Height, mr</Th>                          
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Contamination level</Th>
+                        </Tr>
+                      </Tfoot>
+                    </Table>
+                  </TableContainer>
+                </TabPanel>
+                <TabPanel>
+                                   <TableContainer height="60vh" overflowY="auto">
+                    <Table size="sm">
+                      <TableCaption placement="top">
+                        {`Data about samples in building No ${selectedBuilding.no}. `}
+                        Link on final buildings reports <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link"><b>HERE </b></Link>
+                      </TableCaption>
+                      <Thead>                        
+                        <Tr>
+                          <Th textTransform="none">Equipment name, m</Th>
+                          <Th textTransform="none">Mark</Th>
+                          <Th textTransform="none">Material</Th>
+                          <Th textTransform="none">Width/Diameter, m</Th>
+                          <Th textTransform="none">Length, m</Th>
+                          <Th textTransform="none">Height, mr</Th>                          
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Contamination level</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {dataSetEq.map((item, index) => (
+                          <Tr key={index}>
+                            <Td>{item.eqName}</Td>
+                            <Td>{item.mark}</Td>
+                            <Td>{item.material}</Td>
+                            <Td>{item.d}</Td>
+                            <Td>{item.l}</Td>
+                            <Td>{item.h}</Td>
+                            <Td>{item.AEDR}</Td>
+                            <Td>{item.alfa}</Td>
+                            <Td>{item.beta}</Td>
+                            <Td>{item.level}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                      <Tfoot>
+                        <Tr>
+                          <Th textTransform="none">Equipment name, m</Th>
+                          <Th textTransform="none">Mark</Th>
+                          <Th textTransform="none">Material</Th>
+                          <Th textTransform="none">Width/Diameter, m</Th>
+                          <Th textTransform="none">Length, m</Th>
+                          <Th textTransform="none">Height, mr</Th>                          
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
+                          <Th textTransform="none">Contamination level</Th>
+                        </Tr>
+                      </Tfoot>
+                    </Table>
+                  </TableContainer> 
+                </TabPanel>
               </TabPanels>
             </Tabs>
           </TabPanel>
