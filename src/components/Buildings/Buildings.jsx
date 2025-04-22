@@ -709,10 +709,11 @@ export const Buildings = () => {
                 </TabPanel>
                 <TabPanel>
                   <TableContainer height="60vh" overflowY="auto">
-                    <Table size="sm">
-                      <TableCaption placement="top">
+                    
+                    <Table size="sm"> 
+                      <TableCaption placement="top" >
                         {`Data about samples in building No ${selectedBuilding.no}. `}
-                        Link on final buildings reports 
+                        Link on final buildings reports{' '}
                         <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link">
                           <b>HERE </b>
                         </Link>
