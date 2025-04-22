@@ -58,7 +58,7 @@ import {
 } from './Buildings.styled';
 import { buildingData } from './buildingList';
 import { measures as measuresFloor } from './data/db_f';
-import { wall_data as measuresWall } from './data/db_w'; 
+import { wall_data as measuresWall } from './data/db_w';
 import { samples_data as measuresSamples } from './data/db_samples';
 import { eq_data as measuresEq } from './data/db_eq';
 import { attributeSchema } from 'components/Maps/Legend/legendAttribute';
@@ -538,7 +538,10 @@ export const Buildings = () => {
                     <Table size="sm">
                       <TableCaption placement="top">
                         {`Data about floor contamination in building No ${selectedBuilding.no}. `}
-                        Link on final buildings reports <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link"><b>HERE </b></Link>
+                        Link on final buildings reports{' '}
+                        <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link">
+                          <b>HERE </b>
+                        </Link>
                       </TableCaption>
                       <Thead>
                         <Tr>
@@ -592,9 +595,12 @@ export const Buildings = () => {
                     <Table size="sm">
                       <TableCaption placement="top">
                         {`Data about wall contamination in building No ${selectedBuilding.no}. `}
-                        Link on final buildings reports <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link"><b>HERE </b></Link>
+                        Link on final buildings reports{' '}
+                        <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link">
+                          <b>HERE </b>
+                        </Link>
                       </TableCaption>
-                      <Thead>                     
+                      <Thead>
                         <Tr>
                           <Th textTransform="none">H, m</Th>
                           <Th textTransform="none">Point</Th>
@@ -604,7 +610,7 @@ export const Buildings = () => {
                           <Th textTransform="none">Order</Th>
                           <Th textTransform="none">Measure</Th>
                           <Th textTransform="none">Measure H, m</Th>
-                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
                           <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
                           <Th textTransform="none">Beta, pcs/sq.m/min</Th>
                         </Tr>
@@ -636,7 +642,7 @@ export const Buildings = () => {
                           <Th textTransform="none">Order</Th>
                           <Th textTransform="none">Measure</Th>
                           <Th textTransform="none">Measure H, m</Th>
-                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
                           <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
                           <Th textTransform="none">Beta, pcs/sq.m/min</Th>
                         </Tr>
@@ -649,17 +655,20 @@ export const Buildings = () => {
                     <Table size="sm">
                       <TableCaption placement="top">
                         {`Data about equipment's contamination in building No ${selectedBuilding.no}. `}
-                        Link on final buildings reports <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link"><b>HERE </b></Link>
+                        Link on final buildings reports{' '}
+                        <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link">
+                          <b>HERE </b>
+                        </Link>
                       </TableCaption>
-                      <Thead>                        
+                      <Thead>
                         <Tr>
                           <Th textTransform="none">Equipment name, m</Th>
                           <Th textTransform="none">Mark</Th>
                           <Th textTransform="none">Material</Th>
                           <Th textTransform="none">Width/Diameter, m</Th>
                           <Th textTransform="none">Length, m</Th>
-                          <Th textTransform="none">Height, mr</Th>                          
-                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">Height, mr</Th>
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
                           <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
                           <Th textTransform="none">Beta, pcs/sq.m/min</Th>
                           <Th textTransform="none">Contamination level</Th>
@@ -688,8 +697,8 @@ export const Buildings = () => {
                           <Th textTransform="none">Material</Th>
                           <Th textTransform="none">Width/Diameter, m</Th>
                           <Th textTransform="none">Length, m</Th>
-                          <Th textTransform="none">Height, mr</Th>                          
-                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
+                          <Th textTransform="none">Height, mr</Th>
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
                           <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
                           <Th textTransform="none">Beta, pcs/sq.m/min</Th>
                           <Th textTransform="none">Contamination level</Th>
@@ -699,58 +708,236 @@ export const Buildings = () => {
                   </TableContainer>
                 </TabPanel>
                 <TabPanel>
-                                   <TableContainer height="60vh" overflowY="auto">
+                  <TableContainer height="60vh" overflowY="auto">
                     <Table size="sm">
                       <TableCaption placement="top">
                         {`Data about samples in building No ${selectedBuilding.no}. `}
-                        Link on final buildings reports <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link"><b>HERE </b></Link>
+                        Link on final buildings reports 
+                        <Link href="https://drive.google.com/drive/folders/149ATMNwS_5cmVtoNSjWDE61JjNo1Fqvr?usp=drive_link">
+                          <b>HERE </b>
+                        </Link>
                       </TableCaption>
-                      <Thead>                        
+                      <Thead>
                         <Tr>
-                          <Th textTransform="none">Equipment name, m</Th>
-                          <Th textTransform="none">Mark</Th>
-                          <Th textTransform="none">Material</Th>
-                          <Th textTransform="none">Width/Diameter, m</Th>
+                          <Th textTransform="none">H at ground, m</Th>
+                          <Th textTransform="none">Room</Th>
+                          <Th textTransform="none">
+                            Equipment type identifier
+                          </Th>
+                          <Th textTransform="none">
+                            Equipment No
+                          </Th>
+                          <Th textTransform="none">Sample serial number</Th>
+                          <Th textTransform="none">
+                            Measurement/sampling purpose
+                          </Th>
+                          <Th textTransform="none">Sample aggregate state</Th>
+                          <Th textTransform="none">Width, m</Th>
                           <Th textTransform="none">Length, m</Th>
-                          <Th textTransform="none">Height, mr</Th>                          
-                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
-                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
-                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
-                          <Th textTransform="none">Contamination level</Th>
+                          <Th textTransform="none">Height, m</Th>
+                          <Th textTransform="none">Thickness, mm</Th>
+                          <Th textTransform="none">Material</Th>
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
+                          <Th textTransform="none">
+                            Alpha particle flux density, pcs./(min·cm2)
+                          </Th>
+                          <Th textTransform="none">
+                            Beta particle flux density, pcs./(min·cm2)
+                          </Th>
+                          <Th textTransform="none">Photo</Th>
+                          <Th textTransform="none">Sampling report No </Th>
+                          <Th textTransform="none">Sample passport No.</Th>
+                          <Th textTransform="none">Test protocol No.</Th>
+                          <Th textTransform="none">
+                        Pb-210 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        U_238 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Th-230 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        U-235 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Ra-226 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Th-228 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Th-232 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        K-40 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Cs-137 activity comcentration
+                          </Th>
+                          <Th textTransform="none">Total alpha activity</Th>
+                          <Th textTransform="none">Total beta activity</Th>
+                          <Th textTransform="none">
+                        U-234 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Th-228 activity comcentration
+                          </Th>
+                          <Th textTransform="none">As mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Cd mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Co mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Cr mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Cu mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Fe mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Hq mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Mn mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Ni mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Pb mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Ti mass fraction, mg/kg</Th>
+                          <Th textTransform="none">V mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Zn mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Se mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Notes</Th>
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {dataSetEq.map((item, index) => (
+                        {dataSetSamples.map((item, index) => (
                           <Tr key={index}>
-                            <Td>{item.eqName}</Td>
-                            <Td>{item.mark}</Td>
+                            <Td>{item.H}</Td>
+                            <Td>{item.Room}</Td>
+                            <Td>{item.EqID}</Td>
+                            <Td>{item.EqNumber}</Td>
+                            <Td>{item.OrderNo}</Td>
+                            <Td>{item.AimMeasure}</Td>
+                            <Td>{item.AggregateState}</Td>
+                            <Td>{item.W_m}</Td>
+                            <Td>{item.L_m}</Td>
+                            <Td>{item.H_m}</Td>
+                            <Td>{item.T_mm}</Td>
                             <Td>{item.material}</Td>
-                            <Td>{item.d}</Td>
-                            <Td>{item.l}</Td>
-                            <Td>{item.h}</Td>
-                            <Td>{item.AEDR}</Td>
+                            <Td>{item.AEDR_01}</Td>
                             <Td>{item.alfa}</Td>
                             <Td>{item.beta}</Td>
-                            <Td>{item.level}</Td>
+                            <Td>{item.photo}</Td>
+                            <Td>{item.ActNo}</Td>
+                            <Td>{item.PassportNo}</Td>
+                            <Td>{item.ProtocolNo}</Td>
+                            <Td>{item.Pb210_AC}</Td>
+                            <Td>{item.U238_AC}</Td>
+                            <Td>{item.Th230_AC}</Td>
+                            <Td>{item.U235_AC}</Td>
+                            <Td>{item.Ra226_AC}</Td>
+                            <Td>{item.Th228_AC}</Td>
+                            <Td>{item.Th232_AC}</Td>
+                            <Td>{item.K40_AC}</Td>
+                            <Td>{item.Cs137_AC}</Td>
+                            <Td>{item.totalAlfa}</Td>
+                            <Td>{item.totalBeta}</Td>
+                            <Td>{item.U234_AC}</Td>
+                            <Td>{item.Po210_AC}</Td>
+                            <Td>{item.As_mf_mg_kg}</Td>
+                            <Td>{item.Cd_mf_mg_kg}</Td>
+                            <Td>{item.Co_mf_mg_kg}</Td>
+                            <Td>{item.Cr_mf_mg_kg}</Td>
+                            <Td>{item.Cu_mf_mg_kg}</Td>
+                            <Td>{item.Fe_mf_mg_kg}</Td>
+                            <Td>{item.Hg_mf_mg_kg}</Td>
+                            <Td>{item.Mn_mf_mg_kg}</Td>
+                            <Td>{item.Ni_mf_mg_kg}</Td>
+                            <Td>{item.Pb_mf_mg_kg}</Td>
+                            <Td>{item.Ti_mf_mg_kg}</Td>
+                            <Td>{item.V_mf_mg_kg}</Td>
+                            <Td>{item.Zn_mf_mg_kg}</Td>
+                            <Td>{item.Se_mf_mg_kg}</Td>
+                            <Td>{item.Notes}</Td>
                           </Tr>
                         ))}
                       </Tbody>
                       <Tfoot>
                         <Tr>
-                          <Th textTransform="none">Equipment name, m</Th>
-                          <Th textTransform="none">Mark</Th>
-                          <Th textTransform="none">Material</Th>
-                          <Th textTransform="none">Width/Diameter, m</Th>
+                        <Th textTransform="none">H at ground, m</Th>
+                          <Th textTransform="none">Room</Th>
+                          <Th textTransform="none">
+                            Equipment type identifier
+                          </Th>
+                          <Th textTransform="none">
+                            Equipment No
+                          </Th>
+                          <Th textTransform="none">Sample serial number</Th>
+                          <Th textTransform="none">
+                            Measurement/sampling purpose
+                          </Th>
+                          <Th textTransform="none">Sample aggregate state</Th>
+                          <Th textTransform="none">Width, m</Th>
                           <Th textTransform="none">Length, m</Th>
-                          <Th textTransform="none">Height, mr</Th>                          
-                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>                          
-                          <Th textTransform="none">Alfa, pcs/sq.m/min</Th>
-                          <Th textTransform="none">Beta, pcs/sq.m/min</Th>
-                          <Th textTransform="none">Contamination level</Th>
+                          <Th textTransform="none">Height, m</Th>
+                          <Th textTransform="none">Thickness, mm</Th>
+                          <Th textTransform="none">Material</Th>
+                          <Th textTransform="none">AEDR at 0.1 m, μSv/h</Th>
+                          <Th textTransform="none">
+                            Alpha particle flux density, pcs./(min·cm2)
+                          </Th>
+                          <Th textTransform="none">
+                            Beta particle flux density, pcs./(min·cm2)
+                          </Th>
+                          <Th textTransform="none">Photo</Th>
+                          <Th textTransform="none">Sampling report No </Th>
+                          <Th textTransform="none">Sample passport No.</Th>
+                          <Th textTransform="none">Test protocol No.</Th>
+                          <Th textTransform="none">
+                        Pb-210 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        U_238 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Th-230 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        U-235 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Ra-226 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Th-228 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Th-232 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        K-40 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Cs-137 activity comcentration
+                          </Th>
+                          <Th textTransform="none">Total alpha activity</Th>
+                          <Th textTransform="none">Total beta activity</Th>
+                          <Th textTransform="none">
+                        U-234 activity comcentration
+                          </Th>
+                          <Th textTransform="none">
+                        Th-228 activity comcentration
+                          </Th>
+                          <Th textTransform="none">As mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Cd mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Co mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Cr mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Cu mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Fe mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Hq mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Mn mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Ni mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Pb mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Ti mass fraction, mg/kg</Th>
+                          <Th textTransform="none">V mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Zn mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Se mass fraction, mg/kg</Th>
+                          <Th textTransform="none">Notes</Th>
                         </Tr>
                       </Tfoot>
                     </Table>
-                  </TableContainer> 
+                  </TableContainer>
                 </TabPanel>
               </TabPanels>
             </Tabs>
