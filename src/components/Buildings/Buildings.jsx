@@ -955,6 +955,6 @@ export const Buildings = () => {
       </Tabs>
     </BuildingSpace>
   ) : (
-    <p>Your don't have access her!</p>
+    <p>You don't have access her!</p>
   );
 };

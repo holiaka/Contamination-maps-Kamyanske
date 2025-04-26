@@ -232,7 +232,7 @@ export const Maps = () => {
       buildingLink = `<b>There is no description!!!</b>`;
     }
 
-    layer.bindPopup(`<b>Buildings No:</b> ${text.toString()}; </br>
+    layer.bindPopup(`<b>Building No:</b> ${text.toString()}; </br>
        <b>Enterprise:</b> ${text2} </br>       
        ${buildingLink}`);
   };
@@ -429,7 +429,7 @@ let notesText = notes ?? 'No data';
               onEachFeature={onEachFeatureTailing}
             ></GeoJSON>
           </LayersControl.Overlay>
-          <LayersControl.Overlay checked name="Buldings">
+          <LayersControl.Overlay checked name="Buildings">
             <GeoJSON
               data={buildings.features}
               style={buildingStyle}
