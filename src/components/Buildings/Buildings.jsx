@@ -344,6 +344,20 @@ export const Buildings = () => {
                 <MenuItem
                   icon={<GiNuclearWaste />}
                   as="a"
+                  href={`${address}?key=b103___0-0`}
+                >
+                  Building 103 (2022)
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  as="a"
+                  href={`${address}?key=b104___0-0`}
+                >
+                  Building 104 (2022)
+                </MenuItem>
+                <MenuItem
+                  icon={<GiNuclearWaste />}
+                  as="a"
                   href={`${address}?key=b112___0-0`}
                 >
                   Building 112

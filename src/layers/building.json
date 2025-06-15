@@ -109,7 +109,7 @@
         "Number": "103",
         "Enterprise": "SE Baryer",
         "Enterpri_1": "ГП Барьер",
-        "Obs": null
+        "Obs": "b103___0-0"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -178,7 +178,7 @@
         "Number": "104",
         "Enterprise": "SE Baryer",
         "Enterpri_1": "ГП Барьер",
-        "Obs": null
+        "Obs": "b104___0-0"
       },
       "geometry": {
         "type": "MultiPolygon",
