@@ -220,7 +220,7 @@ export const buildingData = [
       [48.494372, 34.677366],
     ],
       zoom: [19, 20, 20, 19, 20, 20, 19, 19],
-    photo: 6,
+    photo: 9,
   },
    {
     no: '104',
