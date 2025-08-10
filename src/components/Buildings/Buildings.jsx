@@ -640,7 +640,7 @@ export const Buildings = () => {
                             <Td>{item.Order}</Td>
                             <Td>{item.Measure}</Td>
                             <Td>{item.Sample_H_m}</Td>
-                            <Td>{item.AEDR_01.toFixed(2)}</Td>
+                            <Td>{item.AEDR_01}</Td>
                             <Td>{item.Alfa}</Td>
                             <Td>{item.Beta}</Td>
                           </Tr>
