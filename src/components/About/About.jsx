@@ -1,4 +1,4 @@
-import { Button, Heading, Link, Text, useColorModeValue } from '@chakra-ui/react';
+import { Button, Heading, Text, useColorModeValue } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { headerFontSize, mainFontSize } from './About.my-chakra-ui';
 import { Box } from './About.styled';
@@ -25,8 +25,8 @@ export const About = () => {
         region (Ukraine). The plant processed uranium ore for the Soviet nuclear
         program from 1948 to 1991, producing yellowcake. The site includes
         spatial products from previous research that showcase the volume of work
-        realized up to 2016 <Link color='blue'> [LINK] </Link>, as well as results from new observations in
-        the study area during 2023-2024 <Link color='blue'>[LINK]</Link>. All output data are presented as
+        realized up to 2016, as well as results from new observations in
+        the study area during 2023-2024. All output data are presented as
         maps, offering the possibility to obtain interactive information for
         individual observations (points). This project also investigated 20
         buildings characterized by significant radioactive contamination. The
